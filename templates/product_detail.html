@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.name }} - SAEUM</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        .header {
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #000;
+            text-decoration: none;
+        }
+        
+        .nav-icons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .nav-icons i {
+            font-size: 20px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .nav-icons i:hover {
+            color: #007bff;
+        }
+        
+        /* Product Detail Styles */
+        .product-detail {
+            background: #fff;
+            margin: 40px 0;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .product-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            padding: 60px;
+        }
+        
+        .product-images {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .main-image {
+            width: 100%;
+            height: 500px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .main-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .thumbnail-images {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+        }
+        
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            flex-shrink: 0;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color 0.3s;
+        }
+        
+        .thumbnail.active {
+            border-color: #007bff;
+        }
+        
+        .product-info {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .breadcrumb {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .brand-name {
+            color: #007bff;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .product-title {
+            font-size: 2.5rem;
+            font-weight: 300;
+            line-height: 1.2;
+        }
+        
+        .product-description {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .price-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px 0;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .current-price {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #000;
+        }
+        
+        .original-price {
+            font-size: 1.2rem;
+            color: #999;
+            text-decoration: line-through;
+        }
+        
+        .discount-badge {
+            background: #ff4757;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .product-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .quantity-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .quantity-btn {
+            background: none;
+            border: none;
+            padding: 12px 15px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background 0.3s;
+        }
+        
+        .quantity-btn:hover {
+            background: #f0f0f0;
+        }
+        
+        .quantity-input {
+            border: none;
+            text-align: center;
+            width: 60px;
+            padding: 12px 0;
+            font-size: 16px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+        }
+        
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #333;
+            border: 2px solid #ddd;
+        }
+        
+        .btn-secondary:hover {
+            border-color: #007bff;
+            color: #007bff;
+        }
+        
+        .product-details {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+        }
+        
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: #666;
+        }
+        
+        .detail-value {
+            color: #333;
+        }
+        
+        .stock-info {
+            color: #28a745;
+            font-weight: 600;
+        }
+        
+        .out-of-stock {
+            color: #dc3545;
+        }
+        
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .product-layout {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                padding: 30px;
+            }
+            
+            .product-title {
+                font-size: 2rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header className="header">
+        <div className="container">
+            <nav className="navbar">
+                <a href="/" className="logo">SAEUM</a>
+                <div className="nav-icons">
+                    <i className="fas fa-search"></i>
+                    <i className="fas fa-user"></i>
+                    <i className="fas fa-heart"></i>
+                    <i className="fas fa-shopping-bag"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function ProductDetail() {
+            const [product, setProduct] = useState(null);
+            const [loading, setLoading] = useState(true);
+            const [quantity, setQuantity] = useState(1);
+            const [selectedImage, setSelectedImage] = useState(0);
+
+            // URL에서 상품 slug 추출
+            const slug = window.location.pathname.split('/').pop();
+
+            useEffect(() => {
+                fetchProduct();
+            }, []);
+
+            const fetchProduct = async () => {
+                try {
+                    const response = await fetch(`http://127.0.0.1:8000/api/products/${slug}/`);
+                    if (!response.ok) {
+                        throw new Error('상품을 찾을 수 없습니다.');
+                    }
+                    const data = await response.json();
+                    setProduct(data);
+                } catch (error) {
+                    console.error('Error:', error);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            const handleQuantityChange = (change) => {
+                const newQuantity = quantity + change;
+                if (newQuantity >= 1 && newQuantity <= product.stock) {
+                    setQuantity(newQuantity);
+                }
+            };
+
+            const handleAddToCart = () => {
+                alert(`${product.name} ${quantity}개가 장바구니에 추가되었습니다.`);
+            };
+
+            const handleBuyNow = async () => {
+                try {
+                    // Stripe 공개 키 가져오기
+                    const keyResponse = await fetch('http://127.0.0.1:8000/api/payments/stripe-public-key/');
+                    const keyData = await keyResponse.json();
+                    
+                    if (!keyData.public_key) {
+                        alert('결제 시스템 설정에 문제가 있습니다.');
+                        return;
+                    }
+                    
+                    const stripe = Stripe(keyData.public_key);
+                    
+                    // Payment Intent 생성
+                    const response = await fetch('http://127.0.0.1:8000/api/payments/create-payment-intent/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            items: [{
+                                product_id: product.id,
+                                quantity: quantity
+                            }]
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (!response.ok) {
+                        alert(data.error || '결제 준비 중 오류가 발생했습니다.');
+                        return;
+                    }
+                    
+                    // 간단한 배송 정보 입력 (실제로는 별도 페이지에서 처리)
+                    const shippingInfo = {
+                        shipping_name: prompt('받으실 분 성함을 입력하세요:', '홍길동'),
+                        shipping_phone: prompt('연락처를 입력하세요:', '010-1234-5678'),
+                        shipping_address: prompt('배송 주소를 입력하세요:', '서울시 강남구'),
+                        shipping_zipcode: prompt('우편번호를 입력하세요:', '12345')
+                    };
+                    
+                    if (!shippingInfo.shipping_name || !shippingInfo.shipping_phone || 
+                        !shippingInfo.shipping_address || !shippingInfo.shipping_zipcode) {
+                        alert('배송 정보를 모두 입력해주세요.');
+                        return;
+                    }
+                    
+                    // Stripe 결제 진행
+                    const { error } = await stripe.confirmCardPayment(data.client_secret, {
+                        payment_method: {
+                            card: {
+                                // 테스트용 카드 정보 (실제로는 사용자가 입력)
+                                number: '4242424242424242',
+                                exp_month: 12,
+                                exp_year: 2025,
+                                cvc: '123'
+                            }
+                        }
+                    });
+                    
+                    if (error) {
+                        alert('결제 실패: ' + error.message);
+                    } else {
+                        alert('결제가 성공적으로 완료되었습니다!');
+                        // 주문 완료 페이지로 이동
+                        window.location.href = '/';
+                    }
+                    
+                } catch (error) {
+                    console.error('결제 오류:', error);
+                    alert('결제 처리 중 오류가 발생했습니다.');
+                }
+            };
+
+            if (loading) {
+                return (
+                    <div className="container" style={{textAlign: 'center', padding: '100px 0'}}>
+                        <div style={{fontSize: '18px', color: '#666'}}>로딩 중...</div>
+                    </div>
+                );
+            }
+
+            if (!product) {
+                return (
+                    <div className="container" style={{textAlign: 'center', padding: '100px 0'}}>
+                        <div style={{fontSize: '18px', color: '#ff4757'}}>상품을 찾을 수 없습니다.</div>
+                    </div>
+                );
+            }
+
+            const hasDiscount = product.sale_price && parseFloat(product.sale_price) < parseFloat(product.price);
+            const discountPercent = hasDiscount ? Math.round((1 - parseFloat(product.sale_price) / parseFloat(product.price)) * 100) : 0;
+
+            return (
+                <div className="container">
+                    <div className="product-detail">
+                        <div className="product-layout">
+                            <div className="product-images">
+                                <div className="main-image">
+                                    {product.images && product.images.length > 0 ? (
+                                        <img 
+                                            src={product.images[selectedImage]?.image} 
+                                            alt={product.name}
+                                        />
+                                    ) : (
+                                        <i className="fas fa-image" style={{fontSize: '80px', color: '#ccc'}}></i>
+                                    )}
+                                </div>
+                                {product.images && product.images.length > 1 && (
+                                    <div className="thumbnail-images">
+                                        {product.images.map((image, index) => (
+                                            <div 
+                                                key={index}
+                                                className={`thumbnail ${selectedImage === index ? 'active' : ''}`}
+                                                onClick={() => setSelectedImage(index)}
+                                            >
+                                                <img 
+                                                    src={image.image} 
+                                                    alt={`${product.name} ${index + 1}`}
+                                                    style={{width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px'}}
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="product-info">
+                                <div className="breadcrumb">
+                                    홈 > {product.category?.name} > {product.brand?.name}
+                                </div>
+                                
+                                <div className="brand-name">{product.brand?.name}</div>
+                                
+                                <h1 className="product-title">{product.name}</h1>
+                                
+                                {product.short_description && (
+                                    <div className="product-description">
+                                        {product.short_description}
+                                    </div>
+                                )}
+
+                                <div className="price-section">
+                                    <div className="current-price">
+                                        ₩{parseInt(product.current_price).toLocaleString()}
+                                    </div>
+                                    {hasDiscount && (
+                                        <>
+                                            <div className="original-price">
+                                                ₩{parseInt(product.price).toLocaleString()}
+                                            </div>
+                                            <div className="discount-badge">
+                                                {discountPercent}% OFF
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
+
+                                <div className="product-actions">
+                                    <div className="quantity-section">
+                                        <span>수량:</span>
+                                        <div className="quantity-controls">
+                                            <button 
+                                                className="quantity-btn"
+                                                onClick={() => handleQuantityChange(-1)}
+                                                disabled={quantity <= 1}
+                                            >
+                                                -
+                                            </button>
+                                            <input 
+                                                type="number" 
+                                                className="quantity-input"
+                                                value={quantity}
+                                                onChange={(e) => setQuantity(Math.max(1, Math.min(product.stock, parseInt(e.target.value) || 1)))}
+                                            />
+                                            <button 
+                                                className="quantity-btn"
+                                                onClick={() => handleQuantityChange(1)}
+                                                disabled={quantity >= product.stock}
+                                            >
+                                                +
+                                            </button>
+                                        </div>
+                                        <div className={`stock-info ${product.stock === 0 ? 'out-of-stock' : ''}`}>
+                                            {product.stock > 0 ? `재고 ${product.stock}개` : '품절'}
+                                        </div>
+                                    </div>
+
+                                    <div className="action-buttons">
+                                        <button 
+                                            className="btn btn-secondary"
+                                            onClick={handleAddToCart}
+                                            disabled={product.stock === 0}
+                                        >
+                                            <i className="fas fa-shopping-cart"></i> 장바구니
+                                        </button>
+                                        <button 
+                                            className="btn btn-primary"
+                                            onClick={handleBuyNow}
+                                            disabled={product.stock === 0}
+                                        >
+                                            바로 구매
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div className="product-details">
+                                    <div className="detail-item">
+                                        <span className="detail-label">상품코드</span>
+                                        <span className="detail-value">{product.sku}</span>
+                                    </div>
+                                    <div className="detail-item">
+                                        <span className="detail-label">브랜드</span>
+                                        <span className="detail-value">{product.brand?.name}</span>
+                                    </div>
+                                    <div className="detail-item">
+                                        <span className="detail-label">카테고리</span>
+                                        <span className="detail-value">{product.category?.name}</span>
+                                    </div>
+                                    {product.is_featured && (
+                                        <div className="detail-item">
+                                            <span className="detail-label">추천상품</span>
+                                            <span className="detail-value">⭐ 추천</span>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* 상세 설명 섹션 */}
+                        {product.description && (
+                            <div style={{padding: '60px', borderTop: '1px solid #eee'}}>
+                                <h3 style={{marginBottom: '30px', fontSize: '1.8rem', fontWeight: '300'}}>상품 상세</h3>
+                                <div style={{lineHeight: '1.8', color: '#666'}}>
+                                    {product.description}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<ProductDetail />, document.getElementById('root'));
+    </script>
+</body>
+</html>

@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAEUM - 프리미엄 쇼핑몰</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        .header {
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-top {
+            background: #000;
+            color: #fff;
+            text-align: center;
+            padding: 8px 0;
+            font-size: 14px;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #000;
+            text-decoration: none;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 40px;
+        }
+        
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-menu a:hover {
+            color: #007bff;
+        }
+        
+        .nav-icons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .nav-icons i {
+            font-size: 20px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .nav-icons i:hover {
+            color: #007bff;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 80px 0;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #fff;
+            color: #333;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: transform 0.3s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* Product Grid */
+        .section {
+            padding: 60px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            font-weight: 300;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .product-card {
+            background: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 250px;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: #ccc;
+        }
+        
+        .product-info {
+            padding: 20px;
+        }
+        
+        .brand-name {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .product-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .product-price {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .current-price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #000;
+        }
+        
+        .original-price {
+            font-size: 16px;
+            color: #999;
+            text-decoration: line-through;
+        }
+        
+        .sale-badge {
+            background: #ff4757;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 40px 0;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px 0;
+            font-size: 18px;
+            color: #666;
+        }
+        
+        .error {
+            text-align: center;
+            padding: 40px 0;
+            color: #ff4757;
+        }
+        
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .product-grid {
+                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // API 베이스 URL
+        const API_BASE_URL = 'http://127.0.0.1:8000/api';
+
+        // Header 컴포넌트
+        function Header() {
+            return (
+                <>
+                    <div className="header-top">
+                        🎉 8월 스페셜 혜택 - 전 상품 무료배송! 🚚
+                    </div>
+                    <header className="header">
+                        <div className="container">
+                            <nav className="navbar">
+                                <a href="/" className="logo">SAEUM</a>
+                                <ul className="nav-menu">
+                                    <li><a href="#featured">추천상품</a></li>
+                                    <li><a href="#brands">브랜드</a></li>
+                                    <li><a href="#new">신상품</a></li>
+                                    <li><a href="#sale">세일</a></li>
+                                </ul>
+                                <div className="nav-icons">
+                                    <i className="fas fa-search"></i>
+                                    <i className="fas fa-user"></i>
+                                    <i className="fas fa-heart"></i>
+                                    <i className="fas fa-shopping-bag"></i>
+                                </div>
+                            </nav>
+                        </div>
+                    </header>
+                </>
+            );
+        }
+
+        // Hero 섹션 컴포넌트
+        function Hero() {
+            return (
+                <section className="hero">
+                    <div className="container">
+                        <h1>프리미엄 라이프스타일</h1>
+                        <p>감도 높은 디자인과 퀄리티를 경험하세요</p>
+                        <a href="#featured" className="btn">컬렉션 둘러보기</a>
+                    </div>
+                </section>
+            );
+        }
+
+        // 상품 카드 컴포넌트
+        function ProductCard({ product }) {
+            const hasDiscount = product.sale_price && parseFloat(product.sale_price) < parseFloat(product.price);
+            
+            return (
+                <div className="product-card" onClick={() => window.location.href = `/products/${product.slug}/`}>
+                    <div className="product-image">
+                        {product.main_image ? (
+                            <img 
+                                src={product.main_image} 
+                                alt={product.name} 
+                                style={{"width": "100%", "height": "100%", "objectFit": "cover"}} 
+                            />
+                        ) : (
+                            <i className="fas fa-image"></i>
+                        )}
+                    </div>
+                    <div className="product-info">
+                        <div className="brand-name">{product.brand?.name}</div>
+                        <div className="product-name">{product.name}</div>
+                        {product.short_description && (
+                            <div style={{fontSize: '14px', color: '#666', marginBottom: '10px'}}>
+                                {product.short_description}
+                            </div>
+                        )}
+                        <div className="product-price">
+                            <span className="current-price">
+                                ₩{parseInt(product.current_price).toLocaleString()}
+                            </span>
+                            {hasDiscount && (
+                                <>
+                                    <span className="original-price">
+                                        ₩{parseInt(product.price).toLocaleString()}
+                                    </span>
+                                    <span className="sale-badge">SALE</span>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // 상품 목록 컴포넌트
+        function ProductList({ title, apiUrl, sectionId }) {
+            const [products, setProducts] = useState([]);
+            const [loading, setLoading] = useState(true);
+            const [error, setError] = useState(null);
+
+            useEffect(() => {
+                fetchProducts();
+            }, [apiUrl]);
+
+            const fetchProducts = async () => {
+                try {
+                    setLoading(true);
+                    const response = await fetch(apiUrl);
+                    if (!response.ok) {
+                        throw new Error('상품을 불러오는데 실패했습니다.');
+                    }
+                    const data = await response.json();
+                    setProducts(data.results || data);
+                } catch (err) {
+                    setError(err.message);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            if (loading) return <div className="loading">로딩 중...</div>;
+            if (error) return <div className="error">{error}</div>;
+
+            return (
+                <section id={sectionId} className="section">
+                    <div className="container">
+                        <h2 className="section-title">{title}</h2>
+                        <div className="product-grid">
+                            {products.slice(0, 8).map(product => (
+                                <ProductCard key={product.id} product={product} />
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // Footer 컴포넌트
+        function Footer() {
+            return (
+                <footer className="footer">
+                    <div className="container">
+                        <p>&copy; 2024 SAEUM. All rights reserved.</p>
+                        <p>프리미엄 쇼핑의 새로운 기준</p>
+                    </div>
+                </footer>
+            );
+        }
+
+        // 메인 앱 컴포넌트
+        function App() {
+            return (
+                <div>
+                    <Header />
+                    <Hero />
+                    <ProductList 
+                        title="추천 상품" 
+                        apiUrl={`${API_BASE_URL}/products/featured/`}
+                        sectionId="featured"
+                    />
+                    <ProductList 
+                        title="전체 상품" 
+                        apiUrl={`${API_BASE_URL}/products/`}
+                        sectionId="all"
+                    />
+                    <Footer />
+                </div>
+            );
+        }
+
+        // 앱 렌더링
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>

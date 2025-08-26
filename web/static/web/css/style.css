@@ -1,0 +1,803 @@
+/* 전체 스타일 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header 스타일 */
+.header-top {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-align: center;
+    padding: 0.5rem 0;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.header {
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+}
+
+.logo {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #2c3e50;
+    text-decoration: none;
+    letter-spacing: 2px;
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-menu li {
+    margin: 0;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: #555;
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.nav-menu a:hover {
+    color: #3498db;
+    background: rgba(52, 152, 219, 0.1);
+}
+
+.nav-icons {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.nav-icons i {
+    font-size: 1.2rem;
+    color: #555;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.nav-icons i:hover {
+    color: #3498db;
+}
+
+.search-box {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    outline: none;
+    width: 200px;
+    transition: border-color 0.3s ease;
+}
+
+.search-box:focus {
+    border-color: #3498db;
+}
+
+.btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.btn-primary {
+    background: #3498db;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #2980b9;
+}
+
+.btn-outline {
+    background: transparent;
+    color: #3498db;
+    border: 1px solid #3498db;
+}
+
+.btn-outline:hover {
+    background: #3498db;
+    color: white;
+}
+
+/* Hero Section 스타일 */
+.hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 6rem 0;
+    position: relative;
+    overflow: hidden;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+}
+
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.05)"/><circle cx="10" cy="60" r="0.5" fill="rgba(255,255,255,0.05)"/><circle cx="90" cy="30" r="0.5" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    opacity: 0.3;
+}
+
+.hero-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-text {
+    text-align: left;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.hero p {
+    font-size: 1.3rem;
+    margin-bottom: 2.5rem;
+    opacity: 0.9;
+    line-height: 1.6;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.hero-image {
+    position: relative;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.floating-products {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.floating-product {
+    position: absolute;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+    animation: float 6s ease-in-out infinite;
+}
+
+.floating-product:hover {
+    transform: scale(1.05);
+}
+
+.floating-product img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.floating-1 {
+    top: 10%;
+    left: 20%;
+    width: 200px;
+    height: 200px;
+    animation-delay: 0s;
+}
+
+.floating-2 {
+    top: 40%;
+    right: 10%;
+    width: 150px;
+    height: 150px;
+    animation-delay: 2s;
+}
+
+.floating-3 {
+    bottom: 20%;
+    left: 40%;
+    width: 120px;
+    height: 120px;
+    animation-delay: 4s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    25% { transform: translateY(-10px) rotate(1deg); }
+    50% { transform: translateY(-20px) rotate(0deg); }
+    75% { transform: translateY(-10px) rotate(-1deg); }
+}
+
+/* Section 스타일 */
+.section {
+    padding: 4rem 0;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+/* Product Grid 스타일 */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+/* Product Card 스타일 */
+.product-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.product-image {
+    position: relative;
+    overflow: hidden;
+    height: 250px;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-image img {
+    transform: scale(1.05);
+}
+
+.product-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #e74c3c;
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.product-info {
+    padding: 1.5rem;
+}
+
+.product-brand {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.product-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #2c3e50;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.product-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.stars {
+    display: flex;
+    gap: 2px;
+}
+
+.star {
+    color: #f39c12;
+    font-size: 0.9rem;
+}
+
+.star.empty {
+    color: #ddd;
+}
+
+.rating-count {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+}
+
+.product-price {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.current-price {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #e74c3c;
+}
+
+.original-price {
+    text-decoration: line-through;
+    color: #7f8c8d;
+    font-size: 1rem;
+}
+
+.discount-rate {
+    background: #e74c3c;
+    color: white;
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.product-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-add-cart {
+    flex: 1;
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 0.8rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.3s ease;
+}
+
+.btn-add-cart:hover {
+    background: #2980b9;
+}
+
+.btn-wishlist {
+    background: white;
+    border: 1px solid #ddd;
+    padding: 0.8rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-wishlist:hover {
+    background: #f8f9fa;
+    border-color: #e74c3c;
+    color: #e74c3c;
+}
+
+/* Footer 스타일 */
+.footer {
+    background: #2c3e50;
+    color: white;
+    padding: 3rem 0 1rem;
+    margin-top: 4rem;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.footer-section h3 {
+    margin-bottom: 1rem;
+    color: #3498db;
+}
+
+.footer-section p {
+    margin-bottom: 0.5rem;
+    color: #bdc3c7;
+}
+
+.footer-bottom {
+    border-top: 1px solid #34495e;
+    padding-top: 1rem;
+    text-align: center;
+    color: #bdc3c7;
+}
+
+/* Product Detail 스타일 */
+.product-detail {
+    padding: 2rem 0;
+}
+
+.breadcrumb {
+    margin-bottom: 2rem;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.breadcrumb a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.product-detail-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+}
+
+.product-images {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.main-image {
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    border-radius: 10px;
+    border: 1px solid #eee;
+}
+
+.main-product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.thumbnail-images {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+}
+
+.thumbnail {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 5px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+.thumbnail:hover,
+.thumbnail.active {
+    border-color: #3498db;
+}
+
+.product-info-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.product-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0;
+}
+
+.product-price-detail {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.product-price-detail .current-price {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #e74c3c;
+}
+
+.product-price-detail .original-price {
+    font-size: 1.3rem;
+    text-decoration: line-through;
+    color: #7f8c8d;
+}
+
+.product-price-detail .discount-rate {
+    background: #e74c3c;
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.product-description {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 10px;
+}
+
+.product-description h3 {
+    margin-bottom: 1rem;
+    color: #2c3e50;
+}
+
+.quantity-selector {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.quantity-controls button {
+    background: #f8f9fa;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.quantity-controls button:hover {
+    background: #e9ecef;
+}
+
+.quantity-controls button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.quantity {
+    padding: 0.5rem 1rem;
+    min-width: 50px;
+    text-align: center;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+}
+
+.product-actions-detail {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-large {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    flex: 1;
+}
+
+.loading-container,
+.error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+    gap: 1rem;
+}
+
+.page-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: #2c3e50;
+}
+
+/* 로딩 및 에러 스타일 */
+.loading, .error {
+    text-align: center;
+    padding: 2rem;
+    font-size: 1.1rem;
+}
+
+.error {
+    color: #e74c3c;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .header-top {
+        font-size: 0.8rem;
+        padding: 0.3rem 0;
+    }
+    
+    .navbar {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem 0;
+    }
+    
+    .logo {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .nav-menu {
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .nav-menu a {
+        font-size: 0.9rem;
+        padding: 0.4rem 0.8rem;
+    }
+    
+    .nav-icons {
+        gap: 1rem;
+        margin-top: 0.5rem;
+    }
+    
+    .nav-icons i {
+        font-size: 1.1rem;
+    }
+    
+    .hero {
+        padding: 4rem 0;
+        min-height: 50vh;
+    }
+    
+    .hero-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        text-align: center;
+    }
+    
+    .hero-text {
+        text-align: center;
+    }
+    
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+    
+    .hero p {
+        font-size: 1.1rem;
+    }
+    
+    .hero-actions {
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .hero-image {
+        height: 300px;
+    }
+    
+    .floating-1 {
+        width: 150px;
+        height: 150px;
+        top: 20%;
+        left: 10%;
+    }
+    
+    .floating-2 {
+        width: 120px;
+        height: 120px;
+        top: 50%;
+        right: 5%;
+    }
+    
+    .floating-3 {
+        width: 100px;
+        height: 100px;
+        bottom: 15%;
+        left: 30%;
+    }
+    
+    .product-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .container {
+        padding: 0 15px;
+    }
+
+    /* Product Detail 반응형 */
+    .product-detail-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .main-image {
+        height: 300px;
+    }
+    
+    .product-title {
+        font-size: 1.5rem;
+    }
+    
+    .product-price-detail .current-price {
+        font-size: 1.5rem;
+    }
+    
+    .product-actions-detail {
+        flex-direction: column;
+    }
+    
+    .btn-large {
+        width: 100%;
+    }
+    
+    .thumbnail-images {
+        justify-content: center;
+    }
+}
