@@ -11,8 +11,8 @@ const Hero = () => {
         React.createElement('div', { className: 'container' },
             React.createElement('div', { className: 'hero-content' },
                 React.createElement('div', { className: 'hero-text' },
-                    React.createElement('h1', null, '프리미엄 라이프스타일'),
-                    React.createElement('p', null, '감도 높은 디자인과 퀄리티를 경험하세요'),
+                    React.createElement('h1', null, '매월 새로운 스타일'),
+                    React.createElement('p', null, '트렌디한 패션과 라이프스타일을 매월 새롭게 만나보세요'),
                     React.createElement('div', { className: 'hero-actions' },
                         React.createElement('button', { 
                             className: 'btn btn-primary btn-large',

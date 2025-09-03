@@ -95,7 +95,13 @@ const ProductCard = ({ product }) => {
                     className: 'btn-add-cart',
                     onClick: (e) => {
                         e.stopPropagation();
-                        alert(`${product.name}이(가) 장바구니에 추가되었습니다.`);
+                        if (window.CartManager) {
+                            window.CartManager.addToCart(product, 1);
+                            // 성공 메시지 표시
+                            alert(`${product.name}이(가) 장바구니에 추가되었습니다.`);
+                        } else {
+                            alert('장바구니 기능을 초기화 중입니다. 잠시 후 다시 시도해주세요.');
+                        }
                     }
                 }, '장바구니'),
                 React.createElement('button', {

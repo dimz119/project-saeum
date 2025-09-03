@@ -17,6 +17,9 @@ const App = () => {
         } else if (path === '/products' || path === '/products/') {
             setCurrentPage('products');
             setSelectedProductId(null);
+        } else if (path === '/cart' || path === '/cart/') {
+            setCurrentPage('cart');
+            setSelectedProductId(null);
         } else if (path.startsWith('/products/')) {
             const id = path.split('/')[2];
             if (id) {
@@ -95,6 +98,9 @@ const App = () => {
                     productId: selectedProductId 
                 });
             
+            case 'cart':
+                return React.createElement(window.Components.Cart);
+            
             default:
                 return React.createElement('div', null, '페이지를 찾을 수 없습니다.');
         }
@@ -112,13 +118,13 @@ const App = () => {
             React.createElement('div', { className: 'container' },
                 React.createElement('div', { className: 'footer-content' },
                     React.createElement('div', { className: 'footer-section' },
-                        React.createElement('h3', null, '쇼핑몰'),
-                        React.createElement('p', null, '고품질 상품을 합리적인 가격에 제공합니다.')
+                        React.createElement('h3', null, 'MonthlyLook'),
+                        React.createElement('p', null, '매월 새로운 스타일을 제안하는 프리미엄 패션 플랫폼')
                     ),
                     React.createElement('div', { className: 'footer-section' },
                         React.createElement('h3', null, '고객센터'),
                         React.createElement('p', null, '전화: 1588-0000'),
-                        React.createElement('p', null, '이메일: support@shoppingmall.com')
+                        React.createElement('p', null, '이메일: support@monthlylook.com')
                     ),
                     React.createElement('div', { className: 'footer-section' },
                         React.createElement('h3', null, '정보'),
@@ -127,7 +133,7 @@ const App = () => {
                     )
                 ),
                 React.createElement('div', { className: 'footer-bottom' },
-                    React.createElement('p', null, '© 2024 쇼핑몰. All rights reserved.')
+                    React.createElement('p', null, '© 2024 MonthlyLook. All rights reserved.')
                 )
             )
         )

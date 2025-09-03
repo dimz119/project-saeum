@@ -20,7 +20,7 @@ const Header = () => {
                         href: '/', 
                         className: 'logo',
                         onClick: (e) => handleNavigation('/', e)
-                    }, 'SAEUM'),
+                    }, 'monthlylook'),
                     React.createElement('ul', { className: 'nav-menu' },
                         React.createElement('li', null,
                             React.createElement('a', { 
@@ -51,7 +51,16 @@ const Header = () => {
                         React.createElement('i', { className: 'fas fa-search' }),
                         React.createElement('i', { className: 'fas fa-user' }),
                         React.createElement('i', { className: 'fas fa-heart' }),
-                        React.createElement('i', { className: 'fas fa-shopping-bag' })
+                        React.createElement('i', { 
+                            className: 'fas fa-shopping-bag cart-icon',
+                            onClick: (e) => {
+                                e.preventDefault();
+                                if (window.Router) {
+                                    window.Router.navigate('/cart');
+                                }
+                            },
+                            style: { cursor: 'pointer', position: 'relative' }
+                        })
                     )
                 )
             )

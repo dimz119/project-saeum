@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}쇼핑몰{% endblock %}</title>
+    <title>{% block title %}MonthlyLook - 스타일리시한 월간 패션{% endblock %}</title>
     
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -13,7 +13,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- CSS -->
     {% compress css %}
@@ -38,11 +38,13 @@
     <!-- JavaScript -->
     {% compress js %}
     <script src="{% static 'web/src/utils/api.js' %}"></script>
+    <script src="{% static 'web/src/utils/cart.js' %}"></script>
     <script src="{% static 'web/src/components/Header.js' %}"></script>
     <script src="{% static 'web/src/components/Hero.js' %}"></script>
     <script src="{% static 'web/src/components/ProductCard.js' %}"></script>
     <script src="{% static 'web/src/components/ProductList.js' %}"></script>
     <script src="{% static 'web/src/components/ProductDetail.js' %}"></script>
+    <script src="{% static 'web/src/components/Cart.js' %}"></script>
     <script src="{% static 'web/src/App.js' %}"></script>
     {% endcompress %}
 </body>
