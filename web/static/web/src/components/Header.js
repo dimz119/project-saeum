@@ -24,26 +24,26 @@ const Header = () => {
                     React.createElement('ul', { className: 'nav-menu' },
                         React.createElement('li', null,
                             React.createElement('a', { 
-                                href: '/products',
-                                onClick: (e) => handleNavigation('/products', e)
+                                href: '/products/featured',
+                                onClick: (e) => handleNavigation('/products/featured', e)
                             }, '추천상품')
                         ),
                         React.createElement('li', null,
                             React.createElement('a', { 
-                                href: '/products',
-                                onClick: (e) => handleNavigation('/products', e)
+                                href: '/brands',
+                                onClick: (e) => handleNavigation('/brands', e)
                             }, '브랜드')
                         ),
                         React.createElement('li', null,
                             React.createElement('a', { 
-                                href: '/products',
-                                onClick: (e) => handleNavigation('/products', e)
+                                href: '/products/new',
+                                onClick: (e) => handleNavigation('/products/new', e)
                             }, '신상품')
                         ),
                         React.createElement('li', null,
                             React.createElement('a', { 
-                                href: '/products',
-                                onClick: (e) => handleNavigation('/products', e)
+                                href: '/products/sale',
+                                onClick: (e) => handleNavigation('/products/sale', e)
                             }, '세일')
                         )
                     ),

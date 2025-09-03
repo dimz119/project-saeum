@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Brand, Product, ProductImage, Review
+from .models import Category, Brand, Product, ProductImage, Review, Tag
 
 
 class ProductImageInline(admin.TabularInline):
@@ -23,13 +23,22 @@ class BrandAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
 
 
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    list_display = ['name', 'created_at']
+    list_filter = ['created_at']
+    search_fields = ['name']
+    prepopulated_fields = {'slug': ('name',)}
+
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['name', 'brand', 'category', 'price', 'sale_price', 'stock', 'is_active', 'is_featured']
-    list_filter = ['brand', 'category', 'is_active', 'is_featured', 'created_at']
+    list_filter = ['brand', 'category', 'tags', 'is_active', 'is_featured', 'created_at']
     search_fields = ['name', 'sku']
     prepopulated_fields = {'slug': ('name',)}
     inlines = [ProductImageInline]
+    filter_horizontal = ['tags']
     
     fieldsets = (
         ('기본 정보', {
@@ -40,6 +49,9 @@ class ProductAdmin(admin.ModelAdmin):
         }),
         ('가격 및 재고', {
             'fields': ('price', 'sale_price', 'stock')
+        }),
+        ('분류 및 태그', {
+            'fields': ('tags',)
         }),
         ('설정', {
             'fields': ('is_active', 'is_featured')

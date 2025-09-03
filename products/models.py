@@ -31,6 +31,19 @@ class Brand(models.Model):
         return self.name
 
 
+class Tag(models.Model):
+    name = models.CharField(max_length=50, unique=True, verbose_name="태그명")
+    slug = models.SlugField(unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        verbose_name = "태그"
+        verbose_name_plural = "태그"
+        
+    def __str__(self):
+        return self.name
+
+
 class Product(models.Model):
     name = models.CharField(max_length=200, verbose_name="상품명")
     slug = models.SlugField(unique=True)
@@ -42,6 +55,7 @@ class Product(models.Model):
     stock = models.PositiveIntegerField(default=0, verbose_name="재고")
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="카테고리")
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, verbose_name="브랜드")
+    tags = models.ManyToManyField(Tag, blank=True, verbose_name="태그")
     is_active = models.BooleanField(default=True, verbose_name="활성화")
     is_featured = models.BooleanField(default=False, verbose_name="추천상품")
     created_at = models.DateTimeField(auto_now_add=True)

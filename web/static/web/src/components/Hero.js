@@ -29,20 +29,14 @@ const Hero = () => {
                         // 플로팅 상품 이미지들
                         React.createElement('div', { className: 'floating-product floating-1' },
                             React.createElement('img', {
-                                src: 'https://via.placeholder.com/200x200/667eea/ffffff?text=New+Collection',
+                                src: '/static/web/img/main1.jpeg',
                                 alt: 'New Collection'
                             })
                         ),
                         React.createElement('div', { className: 'floating-product floating-2' },
                             React.createElement('img', {
-                                src: 'https://via.placeholder.com/150x150/764ba2/ffffff?text=Premium',
+                                src: '/static/web/img/main2.jpeg',
                                 alt: 'Premium'
-                            })
-                        ),
-                        React.createElement('div', { className: 'floating-product floating-3' },
-                            React.createElement('img', {
-                                src: 'https://via.placeholder.com/120x120/f093fb/ffffff?text=Sale',
-                                alt: 'Sale'
                             })
                         )
                     )

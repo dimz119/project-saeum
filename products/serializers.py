@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Brand, Product, ProductImage, Review
+from .models import Category, Brand, Product, ProductImage, Review, Tag
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -14,6 +14,12 @@ class BrandSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'slug', 'description', 'logo']
 
 
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ['id', 'name', 'slug']
+
+
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
@@ -23,6 +29,7 @@ class ProductImageSerializer(serializers.ModelSerializer):
 class ProductListSerializer(serializers.ModelSerializer):
     brand = BrandSerializer(read_only=True)
     category = CategorySerializer(read_only=True)
+    tags = TagSerializer(many=True, read_only=True)
     main_image = serializers.SerializerMethodField()
     current_price = serializers.SerializerMethodField()
     
@@ -30,7 +37,7 @@ class ProductListSerializer(serializers.ModelSerializer):
         model = Product
         fields = [
             'id', 'name', 'slug', 'short_description', 'price', 'sale_price',
-            'current_price', 'brand', 'category', 'main_image', 'is_featured'
+            'current_price', 'brand', 'category', 'tags', 'main_image', 'is_featured'
         ]
     
     def get_main_image(self, obj):

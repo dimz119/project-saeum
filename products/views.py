@@ -22,9 +22,9 @@ class ProductListView(generics.ListAPIView):
     queryset = Product.objects.filter(is_active=True)
     serializer_class = ProductListSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['category', 'brand', 'is_featured']
+    filterset_fields = ['category', 'brand', 'is_featured', 'tags__name']
     search_fields = ['name', 'description', 'short_description']
-    ordering_fields = ['price', 'created_at', 'name']
+    ordering_fields = ['price', 'created_at', 'name', 'brand__name']
     ordering = ['-created_at']
 
 

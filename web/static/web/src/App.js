@@ -17,12 +17,25 @@ const App = () => {
         } else if (path === '/products' || path === '/products/') {
             setCurrentPage('products');
             setSelectedProductId(null);
+        } else if (path === '/products/featured' || path === '/products/featured/') {
+            setCurrentPage('products-featured');
+            setSelectedProductId(null);
+        } else if (path === '/products/new' || path === '/products/new/') {
+            setCurrentPage('products-new');
+            setSelectedProductId(null);
+        } else if (path === '/products/sale' || path === '/products/sale/') {
+            setCurrentPage('products-sale');
+            setSelectedProductId(null);
+        } else if (path === '/brands' || path === '/brands/') {
+            setCurrentPage('brands');
+            setSelectedProductId(null);
         } else if (path === '/cart' || path === '/cart/') {
             setCurrentPage('cart');
             setSelectedProductId(null);
         } else if (path.startsWith('/products/')) {
-            const id = path.split('/')[2];
-            if (id) {
+            const segments = path.split('/');
+            const id = segments[2];
+            if (id && !isNaN(id)) {
                 setCurrentPage('product-detail');
                 setSelectedProductId(id);
             }
@@ -90,6 +103,46 @@ const App = () => {
                         title: '',
                         apiUrl: '/api/products/',
                         sectionId: 'all-products'
+                    })
+                );
+            
+            case 'products-featured':
+                return React.createElement('div', { className: 'container' },
+                    React.createElement('h1', { className: 'page-title' }, '추천 상품'),
+                    React.createElement(window.Components.ProductList, {
+                        title: '',
+                        apiUrl: '/api/products/?tags__name=' + encodeURIComponent('추천'),
+                        sectionId: 'featured-products'
+                    })
+                );
+            
+            case 'products-new':
+                return React.createElement('div', { className: 'container' },
+                    React.createElement('h1', { className: 'page-title' }, '신상품'),
+                    React.createElement(window.Components.ProductList, {
+                        title: '',
+                        apiUrl: '/api/products/?tags__name=' + encodeURIComponent('신상품'),
+                        sectionId: 'new-products'
+                    })
+                );
+            
+            case 'products-sale':
+                return React.createElement('div', { className: 'container' },
+                    React.createElement('h1', { className: 'page-title' }, '세일 상품'),
+                    React.createElement(window.Components.ProductList, {
+                        title: '',
+                        apiUrl: '/api/products/?tags__name=' + encodeURIComponent('세일'),
+                        sectionId: 'sale-products'
+                    })
+                );
+            
+            case 'brands':
+                return React.createElement('div', { className: 'container' },
+                    React.createElement('h1', { className: 'page-title' }, '브랜드별 상품'),
+                    React.createElement(window.Components.ProductList, {
+                        title: '',
+                        apiUrl: '/api/products/?ordering=brand__name',
+                        sectionId: 'brand-products'
                     })
                 );
             
