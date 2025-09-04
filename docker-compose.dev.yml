@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8000:8000"
+    volumes:
+      # 전체 프로젝트 코드를 마운트 (개발용)
+      - .:/app
+      # Python 패키지는 컨테이너 내부 것을 사용
+      - /app/.venv
+      # 정적 파일 디렉토리는 컨테이너와 동기화
+      - ./staticfiles:/app/staticfiles
+    environment:
+      - DEBUG=True
+      - DJANGO_SETTINGS_MODULE=shopping_mall.settings
+      - PYTHONPATH=/app
+    restart: unless-stopped
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py collectstatic --noinput &&
+             python manage.py runserver 0.0.0.0:8000"
+    # 개발 환경에서는 Django 개발 서버 사용
+    tty: true
+    stdin_open: true
+
+  # PostgreSQL 데이터베이스 (선택사항)
+  # db:
+  #   image: postgres:15
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data/
+  #   environment:
+  #     - POSTGRES_DB=monthlylook
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=password
+  #   ports:
+  #     - "5432:5432"
+
+  # Redis (캐시용, 선택사항)
+  # redis:
+  #   image: redis:7-alpine
+  #   ports:
+  #     - "6379:6379"
+
+# volumes:
+#   postgres_data:
