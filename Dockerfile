@@ -21,15 +21,24 @@ RUN apt-get update \
 COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 프로젝트 파일 복사
+# 프로젝트 파일 복사 (SQLite 파일 포함)
 COPY . /app/
 
-# 데이터베이스 마이그레이션
-RUN python manage.py makemigrations --noinput
+# 배포용 환경 변수 파일 복사
+COPY .env.production /app/.env
+
+# SQLite 파일 권한 설정
+RUN chmod 664 /app/db.sqlite3 || true
+
+# 데이터베이스 마이그레이션 (혹시 모를 변경사항 적용)
+RUN python manage.py makemigrations --noinput || true
 RUN python manage.py migrate --noinput
 
 # 정적 파일 수집
 RUN python manage.py collectstatic --noinput
+
+# Django Compressor 압축 (배포용)
+RUN python manage.py compress --force || echo "Compress command failed, continuing..."
 
 # 미디어 파일 디렉토리 생성
 RUN mkdir -p /app/media

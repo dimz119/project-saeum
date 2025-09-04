@@ -1,0 +1,34 @@
+# fly.toml app configuration file generated for project-saeum on 2025-09-03T22:32:21-07:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'project-saeum'
+primary_region = 'sjc'
+console_command = '/app/manage.py shell'
+
+[build]
+
+[env]
+  PORT = '8000'
+  DEBUG = 'False'
+  ALLOWED_HOSTS = 'project-saeum.fly.dev,*.fly.dev'
+  COMPRESS_ENABLED = 'True'
+  COMPRESS_OFFLINE = 'True'
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
+
+[[statics]]
+  guest_path = '/app/staticfiles'
+  url_prefix = '/static/'

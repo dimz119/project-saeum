@@ -34,6 +34,10 @@ urlpatterns = [
     path('', include('web.urls')),
 ]
 
+# 정적 파일 서빙 (개발 환경에서만)
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0] if settings.STATICFILES_DIRS else None)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0] if settings.STATICFILES_DIRS else settings.STATIC_ROOT)
+else:
+    # 배포 환경에서는 whitenoise가 정적 파일을 처리
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
