@@ -1,0 +1,29 @@
+{% extends 'web/base.html' %}
+{% load static %}
+
+{% block title %}로그인 - MonthlyLook{% endblock %}
+
+{% block content %}
+<div id="login-root"></div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'web/src/config.js' %}"></script>
+<script src="{% static 'web/src/utils/auth.js' %}"></script>
+<script src="{% static 'web/src/components/AuthProvider.js' %}"></script>
+<script src="{% static 'web/src/components/LoginForm.js' %}"></script>
+<script>
+    // 로그인 페이지 렌더링
+    document.addEventListener('DOMContentLoaded', function() {
+        const root = document.getElementById('login-root');
+        if (root) {
+            ReactDOM.render(
+                React.createElement(window.AuthProvider, null,
+                    React.createElement(window.LoginForm)
+                ),
+                root
+            );
+        }
+    });
+</script>
+{% endblock %}

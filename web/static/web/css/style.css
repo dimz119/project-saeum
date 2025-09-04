@@ -1334,3 +1334,245 @@ body {
         width: 100%;
     }
 }
+
+/* 인증 관련 스타일 */
+.auth-container {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    background-color: #f8f9fa;
+}
+
+.auth-form {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.register-form {
+    max-width: 600px;
+}
+
+.auth-title {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.form-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #374151;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-group input.error {
+    border-color: #dc2626;
+}
+
+.error-text {
+    color: #dc2626;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+.success-message {
+    background-color: #d1fae5;
+    color: #065f46;
+    padding: 0.75rem;
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    border: 1px solid #a7f3d0;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 0.875rem;
+    background-color: #1a1a1a;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+.submit-btn:hover:not(:disabled) {
+    background-color: #374151;
+}
+
+.submit-btn:disabled {
+    background-color: #9ca3af;
+    cursor: not-allowed;
+}
+
+.auth-links {
+    display: flex;
+    gap: 0.5rem; /* 간격을 줄임 */
+    align-items: center;
+    margin-top: 0; /* 상단 마진 제거 */
+}
+
+.auth-links a {
+    color: #2563eb;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.auth-links a:hover {
+    text-decoration: underline;
+}
+
+/* 헤더 사용자 정보 스타일 */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem; /* 간격을 적당히 줄임 */
+    height: 100%; /* 헤더 높이에 맞춤 */
+}
+
+.user-greeting {
+    font-family: 'Inter', 'Noto Sans KR', sans-serif; /* 일관된 폰트 */
+    font-size: 0.9rem;
+    color: #374151;
+    font-weight: 400;
+}
+
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* 간격을 줄임 */
+    height: 100%; /* 높이 맞춤 */
+}
+
+.user-link, .auth-link {
+    color: #1a1a1a;
+    text-decoration: none;
+    font-family: 'Inter', 'Noto Sans KR', sans-serif; /* 일관된 폰트 */
+    font-size: 1.1rem; /* nav-icons와 동일한 크기 */
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px; /* 고정 너비 */
+    height: 40px; /* 고정 높이 */
+    line-height: 1; /* 라인 높이 조정 */
+}
+
+.user-link:hover, .auth-link:hover {
+    background-color: #f3f4f6;
+    color: #666; /* nav-icons와 동일한 호버 색상 */
+    transform: translateY(-1px); /* 살짝 위로 올라가는 효과 */
+}
+
+.logout-btn {
+    background: none;
+    border: none;
+    color: #1a1a1a; /* 다른 아이콘과 동일한 색상 */
+    font-family: 'Inter', 'Noto Sans KR', sans-serif;
+    font-size: 1.1rem; /* nav-icons와 동일한 크기 */
+    font-weight: 400;
+    padding: 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px; /* 고정 너비 */
+    height: 40px; /* 고정 높이 */
+    line-height: 1;
+}
+
+.logout-btn:hover {
+    color: #666; /* nav-icons와 동일한 호버 색상 */
+    background-color: #f3f4f6;
+    transform: translateY(-1px);
+}
+
+.loading-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+}
+
+.loading-spinner {
+    font-size: 1.1rem;
+    color: #6b7280;
+}
+
+.user-info-loading {
+    color: #9ca3af;
+    font-size: 0.9rem;
+}
+
+/* 모바일 대응 */
+@media (max-width: 768px) {
+    .auth-form {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+    
+    .register-form {
+        max-width: none;
+    }
+    
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .user-info {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-end;
+    }
+    
+    .user-menu {
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+}

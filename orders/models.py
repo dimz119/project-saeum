@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 from products.models import Product
 
 
@@ -13,7 +13,7 @@ class Order(models.Model):
         ('cancelled', '주문취소'),
     ]
     
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="주문자")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="주문자")
     order_number = models.CharField(max_length=100, unique=True, verbose_name="주문번호")
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending', verbose_name="주문상태")
     
@@ -64,7 +64,7 @@ class OrderItem(models.Model):
 
 
 class Cart(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="사용자")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="사용자")
     created_at = models.DateTimeField(auto_now_add=True)
     
     class Meta:

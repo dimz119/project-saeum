@@ -1,11 +1,13 @@
-// API 기본 설정
-const API_BASE_URL = 'http://127.0.0.1:8000/api';
+// API 호출 관련 함수들
+
+// API 호출 함수
+const fetchProducts = async (endpoint = '') => {
 
 // API 요청 헬퍼 함수
 const api = {
     get: async (endpoint) => {
         try {
-            const response = await fetch(`${API_BASE_URL}${endpoint}`);
+            const response = await fetch(`${window.CONFIG.API_BASE_URL}${endpoint}`);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -18,7 +20,7 @@ const api = {
 
     post: async (endpoint, data) => {
         try {
-            const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+            const response = await fetch(`${window.CONFIG.API_BASE_URL}${endpoint}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

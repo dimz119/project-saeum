@@ -49,7 +49,6 @@ const Header = () => {
                     ),
                     React.createElement('div', { className: 'nav-icons' },
                         React.createElement('i', { className: 'fas fa-search' }),
-                        React.createElement('i', { className: 'fas fa-user' }),
                         React.createElement('i', { className: 'fas fa-heart' }),
                         React.createElement('i', { 
                             className: 'fas fa-shopping-bag cart-icon',
@@ -60,7 +59,23 @@ const Header = () => {
                                 }
                             },
                             style: { cursor: 'pointer', position: 'relative' }
-                        })
+                        }),
+                        // 사용자 인증 정보 컴포넌트 추가
+                        window.UserInfo ? React.createElement(window.UserInfo) : 
+                            React.createElement('div', { className: 'auth-links' },
+                                React.createElement('a', { 
+                                    href: '/login/',
+                                    className: 'auth-link',
+                                    onClick: (e) => handleNavigation('/login/', e),
+                                    title: '로그인'
+                                }, React.createElement('i', { className: 'fas fa-sign-in-alt' })),
+                                React.createElement('a', { 
+                                    href: '/register/',
+                                    className: 'auth-link',
+                                    onClick: (e) => handleNavigation('/register/', e),
+                                    title: '회원가입'
+                                }, React.createElement('i', { className: 'fas fa-user-plus' }))
+                            )
                     )
                 )
             )

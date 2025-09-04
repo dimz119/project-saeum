@@ -26,13 +26,17 @@ const ProductList = ({ title, apiUrl, sectionId, filterParams }) => {
                 }
             }
             
+            console.log(`ProductList fetching from: ${url}`); // 디버깅 로그 추가
+            
             const response = await fetch(url);
             if (!response.ok) {
-                throw new Error('상품을 불러오는데 실패했습니다.');
+                throw new Error(`상품을 불러오는데 실패했습니다. (${response.status})`);
             }
             const data = await response.json();
+            console.log(`ProductList received data:`, data); // 디버깅 로그 추가
             setProducts(data.results || data);
         } catch (err) {
+            console.error('ProductList fetch error:', err); // 에러 로그 추가
             setError(err.message);
         } finally {
             setLoading(false);
@@ -45,6 +49,18 @@ const ProductList = ({ title, apiUrl, sectionId, filterParams }) => {
 
     if (error) {
         return React.createElement('div', { className: 'error' }, error);
+    }
+
+    if (products.length === 0 && !loading) {
+        return React.createElement('section', 
+            { id: sectionId, className: 'section' },
+            React.createElement('div', { className: 'container' },
+                React.createElement('h2', { className: 'section-title' }, title),
+                React.createElement('div', { className: 'no-products' }, 
+                    React.createElement('p', null, '표시할 상품이 없습니다.')
+                )
+            )
+        );
     }
 
     return React.createElement('section', 

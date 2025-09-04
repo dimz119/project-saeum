@@ -1,5 +1,7 @@
 # SAEUM - 프리미엄 쇼핑몰
 
+test@example.com
+testpassword123
 Django REST API 백엔드와 React 프론트엔드, Stripe 결제 시스템을 활용한 현대적인 쇼핑몰 플랫폼입니다.
 
 ## 🌟 주요 기능

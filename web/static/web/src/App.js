@@ -77,21 +77,21 @@ const App = () => {
                     // Featured Products Section
                     React.createElement(window.Components.ProductList, {
                         title: '추천 상품',
-                        apiUrl: '/api/products/?featured=true',
+                        apiUrl: '/api/products/featured/',
                         sectionId: 'featured-products'
                     }),
                     
                     // Top Rated Products Section
                     React.createElement(window.Components.ProductList, {
                         title: '인기 상품',
-                        apiUrl: '/api/products/?ordering=-average_rating',
+                        apiUrl: '/api/products/?ordering=-created_at',
                         sectionId: 'top-products'
                     }),
                     
                     // New Products Section
                     React.createElement(window.Components.ProductList, {
                         title: '신상품',
-                        apiUrl: '/api/products/?ordering=-created_at',
+                        apiUrl: '/api/products/new/',
                         sectionId: 'new-products'
                     })
                 );
@@ -111,7 +111,7 @@ const App = () => {
                     React.createElement('h1', { className: 'page-title' }, '추천 상품'),
                     React.createElement(window.Components.ProductList, {
                         title: '',
-                        apiUrl: '/api/products/?tags__name=' + encodeURIComponent('추천'),
+                        apiUrl: '/api/products/featured/',
                         sectionId: 'featured-products'
                     })
                 );
@@ -121,7 +121,7 @@ const App = () => {
                     React.createElement('h1', { className: 'page-title' }, '신상품'),
                     React.createElement(window.Components.ProductList, {
                         title: '',
-                        apiUrl: '/api/products/?tags__name=' + encodeURIComponent('신상품'),
+                        apiUrl: '/api/products/new/',
                         sectionId: 'new-products'
                     })
                 );
@@ -131,7 +131,7 @@ const App = () => {
                     React.createElement('h1', { className: 'page-title' }, '세일 상품'),
                     React.createElement(window.Components.ProductList, {
                         title: '',
-                        apiUrl: '/api/products/?tags__name=' + encodeURIComponent('세일'),
+                        apiUrl: '/api/products/sale/',
                         sectionId: 'sale-products'
                     })
                 );
@@ -193,18 +193,8 @@ const App = () => {
     );
 };
 
-// 페이지 로드 시 앱 마운트
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM loaded, mounting App');
-    const rootElement = document.getElementById('root');
-    if (rootElement) {
-        console.log('Root element found, rendering App');
-        ReactDOM.render(React.createElement(App), rootElement);
-    } else {
-        console.error('Root element not found');
-    }
-});
-
 // 전역으로 내보내기
 window.Components = window.Components || {};
 window.Components.App = App;
+
+// 페이지별 렌더링은 각 템플릿에서 처리

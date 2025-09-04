@@ -45,6 +45,16 @@ class FeaturedProductListView(generics.ListAPIView):
     serializer_class = ProductListSerializer
 
 
+class NewProductListView(generics.ListAPIView):
+    queryset = Product.objects.filter(is_active=True, is_new=True)
+    serializer_class = ProductListSerializer
+
+
+class SaleProductListView(generics.ListAPIView):
+    queryset = Product.objects.filter(is_active=True, sale_price__isnull=False)
+    serializer_class = ProductListSerializer
+
+
 def index(request):
     return render(request, 'index.html')
 

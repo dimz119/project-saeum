@@ -28,17 +28,26 @@
 </head>
 <body>
     <div id="root">
+        {% block content %}
         <!-- React 앱이 여기에 마운트됩니다 -->
         <div style="padding: 20px; text-align: center;">
             <h1>Loading...</h1>
             <p>If you see this message, React is not loading properly.</p>
         </div>
+        {% endblock %}
     </div>
     
     <!-- JavaScript -->
-    {% compress js %}
+    <script>
+        // Components 객체 미리 초기화
+        window.Components = window.Components || {};
+        console.log('Components object initialized:', window.Components);
+    </script>
+    <script src="{% static 'web/src/config.js' %}"></script>
     <script src="{% static 'web/src/utils/api.js' %}"></script>
     <script src="{% static 'web/src/utils/cart.js' %}"></script>
+    <script src="{% static 'web/src/utils/auth.js' %}"></script>
+    <script src="{% static 'web/src/components/AuthProvider.js' %}"></script>
     <script src="{% static 'web/src/components/Header.js' %}"></script>
     <script src="{% static 'web/src/components/Hero.js' %}"></script>
     <script src="{% static 'web/src/components/ProductCard.js' %}"></script>
@@ -46,6 +55,70 @@
     <script src="{% static 'web/src/components/ProductDetail.js' %}"></script>
     <script src="{% static 'web/src/components/Cart.js' %}"></script>
     <script src="{% static 'web/src/App.js' %}"></script>
-    {% endcompress %}
+    
+    <script>
+        // auth 객체가 이미 auth.js에서 생성되므로 추가 설정 불필요
+        
+        // 메인 페이지에서만 React 앱 초기화 (로그인/회원가입 페이지 제외)
+        document.addEventListener('DOMContentLoaded', function() {
+            const root = document.getElementById('root');
+            const path = window.location.pathname;
+            
+            console.log('Page loaded, path:', path);
+            
+            // 로그인/회원가입 페이지가 아닌 경우에만 메인 앱 렌더링
+            if (root && path !== '/login/' && path !== '/register/') {
+                console.log('Loading main app for path:', path);
+                
+                let attempts = 0;
+                const maxAttempts = 20; // 최대 2초 대기
+                
+                const renderApp = () => {
+                    attempts++;
+                    console.log(`Render attempt ${attempts}/${maxAttempts}`);
+                    console.log('Current state:', {
+                        Components: !!window.Components,
+                        App: !!(window.Components && window.Components.App),
+                        AuthProvider: !!window.AuthProvider,
+                        React: !!window.React,
+                        ReactDOM: !!window.ReactDOM
+                    });
+                    
+                    if (window.Components && window.Components.App) {
+                        console.log('Rendering App with AuthProvider');
+                        // AuthProvider와 App을 한번에 렌더링
+                        if (window.AuthProvider) {
+                            ReactDOM.render(
+                                React.createElement(window.AuthProvider, null,
+                                    React.createElement(window.Components.App)
+                                ),
+                                root
+                            );
+                        } else {
+                            // AuthProvider가 없으면 App만 렌더링
+                            ReactDOM.render(
+                                React.createElement(window.Components.App),
+                                root
+                            );
+                        }
+                        console.log('App successfully rendered');
+                    } else if (attempts < maxAttempts) {
+                        console.log('App component not ready, retrying...');
+                        setTimeout(renderApp, 100);
+                    } else {
+                        console.error('Failed to load App component after maximum attempts');
+                        root.innerHTML = '<div style="padding: 20px; text-align: center; color: red;"><h2>앱 로딩 실패</h2><p>페이지를 새로고침해주세요.</p></div>';
+                    }
+                };
+                
+                // 약간의 지연 후 렌더링 시작 (스크립트 로딩 완료 대기)
+                setTimeout(renderApp, 200);
+            } else {
+                console.log('Skipping main app rendering for:', path);
+            }
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

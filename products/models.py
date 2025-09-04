@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 
 
 class Category(models.Model):
@@ -58,6 +58,7 @@ class Product(models.Model):
     tags = models.ManyToManyField(Tag, blank=True, verbose_name="태그")
     is_active = models.BooleanField(default=True, verbose_name="활성화")
     is_featured = models.BooleanField(default=False, verbose_name="추천상품")
+    is_new = models.BooleanField(default=False, verbose_name="신상품")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -105,7 +106,7 @@ class Review(models.Model):
     ]
     
     product = models.ForeignKey(Product, related_name='reviews', on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     rating = models.IntegerField(choices=RATING_CHOICES, verbose_name="평점")
     title = models.CharField(max_length=200, verbose_name="리뷰 제목")
     content = models.TextField(verbose_name="리뷰 내용")
