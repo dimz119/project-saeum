@@ -16,6 +16,11 @@ urlpatterns = [
     path('wishlist/toggle/', views.wishlist_toggle, name='wishlist-toggle'),
     path('wishlist/check/', views.wishlist_check, name='wishlist-check'),
     
+    # Review API Routes
+    path('reviews/create/', views.review_create, name='review-create'),
+    path('reviews/<int:review_id>/delete/', views.review_delete, name='review-delete'),
+    path('<int:product_id>/reviews/', views.product_reviews, name='product-reviews'),
+    
     # Product detail routes
     path('<int:pk>/', views.ProductDetailByIdView.as_view(), name='product-detail-by-id'),
     path('<slug:slug>/', views.ProductDetailView.as_view(), name='product-detail'),

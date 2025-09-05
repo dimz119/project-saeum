@@ -176,6 +176,17 @@ const ProductCard = ({ product }) => {
                     className: 'btn-add-cart',
                     onClick: (e) => {
                         e.stopPropagation();
+                        
+                        // 로그인 확인
+                        const user = window.auth?.getCurrentUserSync();
+                        if (!user) {
+                            alert('로그인이 필요한 서비스입니다.');
+                            if (window.Router) {
+                                window.Router.navigate('/login/');
+                            }
+                            return;
+                        }
+                        
                         if (window.CartManager) {
                             window.CartManager.addToCart(product, 1);
                             // 성공 메시지 표시

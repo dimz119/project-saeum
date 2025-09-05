@@ -39,6 +39,18 @@ const apiCall = async (endpoint, options = {}) => {
         const response = await fetch(url, config);
         
         if (!response.ok) {
+            // 400, 401 등의 에러에서도 JSON 응답을 확인
+            if (response.status === 400) {
+                try {
+                    const errorData = await response.json();
+                    console.error('API 400 Error:', errorData);
+                    return errorData; // 에러 응답을 반환
+                } catch (parseError) {
+                    console.error('Error parsing 400 response:', parseError);
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+            }
+            
             // 토큰이 만료된 경우 토큰 갱신 시도
             if (response.status === 401 && token) {
                 const refreshed = await refreshToken();

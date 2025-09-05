@@ -1057,6 +1057,12 @@ body {
     margin-bottom: 1rem;
 }
 
+.review-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
 .review-user strong {
     color: #2c3e50;
     margin-right: 0.5rem;
@@ -1082,6 +1088,21 @@ body {
 
 .review-rating .star.empty {
     color: #ecf0f1;
+}
+
+.btn-delete-review {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-delete-review:hover {
+    background: #c0392b;
 }
 
 .review-content p {

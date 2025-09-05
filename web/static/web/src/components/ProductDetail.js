@@ -110,22 +110,94 @@ const ProductDetail = ({ productId }) => {
         alert(`${product.name} ${quantity}개 주문하기`);
     };
 
-    const handleSubmitReview = (e) => {
+    const handleSubmitReview = async (e) => {
         e.preventDefault();
-        if (newComment.trim()) {
-            const newReview = {
-                id: reviews.length + 1,
-                user: '새 사용자', // 실제로는 로그인한 사용자 정보
-                rating: newRating,
-                comment: newComment.trim(),
-                date: new Date().toISOString().split('T')[0]
-            };
-            setReviews([newReview, ...reviews]);
-            setNewComment('');
-            setNewRating(5);
-            alert('리뷰가 추가되었습니다!');
+        
+        // 로그인 확인
+        const user = window.auth?.getCurrentUserSync();
+        if (!user) {
+            alert('로그인이 필요한 서비스입니다.');
+            if (window.Router) {
+                window.Router.navigate('/login/');
+            }
+            return;
+        }
+        
+        if (!newComment.trim()) {
+            alert('리뷰 내용을 입력해주세요.');
+            return;
+        }
+        
+        try {
+            const response = await window.auth.apiCall('/products/reviews/create/', {
+                method: 'POST',
+                body: JSON.stringify({
+                    product_id: product.id,
+                    rating: newRating,
+                    content: newComment.trim()
+                })
+            });
+            
+            console.log('리뷰 작성 응답:', response);
+            
+            if (response && response.message) {
+                alert(response.message);
+                // 리뷰 목록 새로고침
+                fetchProductReviews();
+                setNewComment('');
+                setNewRating(5);
+            } else if (response && response.error) {
+                alert(response.error);
+            } else {
+                alert('리뷰 작성 중 오류가 발생했습니다.');
+            }
+        } catch (error) {
+            console.error('리뷰 작성 실패:', error);
+            alert('리뷰 작성 중 오류가 발생했습니다.');
         }
     };
+    
+    const handleDeleteReview = async (reviewId) => {
+        if (!confirm('정말로 이 리뷰를 삭제하시겠습니까?')) {
+            return;
+        }
+        
+        try {
+            const response = await window.auth.apiCall(`/products/reviews/${reviewId}/delete/`, {
+                method: 'DELETE'
+            });
+            
+            if (response && response.message) {
+                alert(response.message);
+                // 리뷰 목록 새로고침
+                fetchProductReviews();
+            } else {
+                alert('리뷰 삭제 중 오류가 발생했습니다.');
+            }
+        } catch (error) {
+            console.error('리뷰 삭제 실패:', error);
+            alert('리뷰 삭제 중 오류가 발생했습니다.');
+        }
+    };
+    
+    const fetchProductReviews = async () => {
+        try {
+            const response = await fetch(`${window.CONFIG.API_BASE_URL}/products/${product.id}/reviews/`);
+            if (response.ok) {
+                const reviewsData = await response.json();
+                setReviews(reviewsData);
+            }
+        } catch (error) {
+            console.error('리뷰 목록 로드 실패:', error);
+        }
+    };
+    
+    // 상품 로드 시 리뷰도 함께 로드
+    React.useEffect(() => {
+        if (product && product.id) {
+            fetchProductReviews();
+        }
+    }, [product]);
 
     if (loading) {
         return React.createElement('div', { className: 'loading-container' },
@@ -347,27 +419,51 @@ const ProductDetail = ({ productId }) => {
                     React.createElement('h3', null, `리뷰 (${reviews.length}개)`),
                     reviews.length === 0 ? 
                         React.createElement('p', { className: 'no-reviews' }, '아직 리뷰가 없습니다. 첫 번째 리뷰를 작성해보세요!') :
-                        reviews.map(review =>
-                            React.createElement('div', { key: review.id, className: 'review-item' },
+                        reviews.map(review => {
+                            const currentUser = window.auth?.getCurrentUserSync();
+                            // 사용자 이름 접근 방식 수정
+                            const currentUserName = currentUser?.user?.username || currentUser?.username;
+                            const isMyReview = currentUserName && review.user_name === currentUserName;
+                            const reviewDate = new Date(review.created_at).toLocaleDateString('ko-KR');
+                            
+                            // 디버깅용 로그
+                            console.log('Review debug:', {
+                                reviewId: review.id,
+                                reviewUserName: review.user_name,
+                                currentUser: currentUser,
+                                currentUserName: currentUserName,
+                                isMyReview: isMyReview
+                            });
+                            
+                            return React.createElement('div', { key: review.id, className: 'review-item' },
                                 React.createElement('div', { className: 'review-header' },
                                     React.createElement('div', { className: 'review-user' },
-                                        React.createElement('strong', null, review.user),
-                                        React.createElement('span', { className: 'review-date' }, review.date)
+                                        React.createElement('strong', null, review.user_name || '익명'),
+                                        React.createElement('span', { className: 'review-date' }, reviewDate)
                                     ),
-                                    React.createElement('div', { className: 'review-rating' },
-                                        Array.from({ length: 5 }, (_, i) =>
-                                            React.createElement('span', {
-                                                key: i,
-                                                className: `star ${i < review.rating ? 'filled' : 'empty'}`
-                                            }, '★')
-                                        )
+                                    React.createElement('div', { className: 'review-actions' },
+                                        React.createElement('div', { className: 'review-rating' },
+                                            Array.from({ length: 5 }, (_, i) =>
+                                                React.createElement('span', {
+                                                    key: i,
+                                                    className: `star ${i < review.rating ? 'filled' : 'empty'}`
+                                                }, '★')
+                                            )
+                                        ),
+                                        // 임시로 모든 리뷰에 삭제 버튼 표시 (디버깅용)
+                                        React.createElement('button', {
+                                            className: 'btn-delete-review',
+                                            onClick: () => handleDeleteReview(review.id),
+                                            title: '리뷰 삭제',
+                                            style: { backgroundColor: isMyReview ? '#e74c3c' : '#95a5a6' }
+                                        }, isMyReview ? '삭제' : '삭제(본인만)')
                                     )
                                 ),
                                 React.createElement('div', { className: 'review-content' },
-                                    React.createElement('p', null, review.comment)
+                                    React.createElement('p', null, review.content || review.comment)
                                 )
-                            )
-                        )
+                            );
+                        })
                 )
             )
         )

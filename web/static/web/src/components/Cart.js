@@ -2,9 +2,16 @@
 const Cart = () => {
     const [cartItems, setCartItems] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
+    const [user, setUser] = React.useState(null);
 
     React.useEffect(() => {
-        loadCartItems();
+        // 로그인 상태 확인
+        const currentUser = window.auth?.getCurrentUserSync();
+        setUser(currentUser);
+        
+        if (currentUser) {
+            loadCartItems();
+        }
     }, []);
 
     const loadCartItems = () => {
@@ -33,6 +40,14 @@ const Cart = () => {
     };
 
     const handleCheckout = () => {
+        if (!user) {
+            alert('로그인이 필요한 서비스입니다.');
+            if (window.Router) {
+                window.Router.navigate('/login/');
+            }
+            return;
+        }
+        
         if (cartItems.length === 0) {
             alert('장바구니가 비어있습니다.');
             return;
@@ -49,6 +64,40 @@ const Cart = () => {
             setLoading(false);
         }, 2000);
     };
+
+    // 로그인하지 않은 사용자에게 안내 화면 표시
+    if (!user) {
+        return React.createElement('div', { className: 'cart-page' },
+            React.createElement('div', { className: 'container' },
+                React.createElement('h1', { className: 'cart-title' }, '장바구니'),
+                React.createElement('div', { className: 'login-required' },
+                    React.createElement('div', { className: 'login-required-icon' },
+                        React.createElement('i', { className: 'fas fa-lock' })
+                    ),
+                    React.createElement('h2', null, '로그인이 필요한 서비스입니다'),
+                    React.createElement('p', null, '장바구니를 사용하려면 먼저 로그인해주세요.'),
+                    React.createElement('div', { className: 'login-actions' },
+                        React.createElement('button', {
+                            className: 'btn btn-primary',
+                            onClick: () => {
+                                if (window.Router) {
+                                    window.Router.navigate('/login/');
+                                }
+                            }
+                        }, '로그인하러 가기'),
+                        React.createElement('button', {
+                            className: 'btn btn-secondary',
+                            onClick: () => {
+                                if (window.Router) {
+                                    window.Router.navigate('/');
+                                }
+                            }
+                        }, '메인으로 돌아가기')
+                    )
+                )
+            )
+        );
+    }
 
     if (cartItems.length === 0) {
         return React.createElement('div', { className: 'cart-page' },

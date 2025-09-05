@@ -9,10 +9,10 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 import json
-from .models import Category, Brand, Product, Wishlist
+from .models import Category, Brand, Product, Wishlist, Review
 from .serializers import (
     CategorySerializer, BrandSerializer, 
-    ProductListSerializer, ProductDetailSerializer, WishlistSerializer
+    ProductListSerializer, ProductDetailSerializer, WishlistSerializer, ReviewSerializer
 )
 
 
@@ -141,3 +141,77 @@ def wishlist_check(request):
     ).exists()
     
     return Response({'is_wishlisted': is_wishlisted})
+
+
+@csrf_exempt
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def review_create(request):
+    """리뷰 작성"""
+    product_id = request.data.get('product_id')
+    rating = request.data.get('rating')
+    content = request.data.get('content')
+    
+    if not all([product_id, rating, content]):
+        return Response(
+            {'error': '상품 ID, 평점, 내용이 모두 필요합니다.'}, 
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    
+    try:
+        # 기존 리뷰 확인
+        existing_review = Review.objects.filter(
+            user=request.user, 
+            product_id=product_id
+        ).exists()
+        
+        if existing_review:
+            return Response(
+                {'error': '이미 이 상품에 대한 리뷰를 작성하셨습니다.'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        review = Review.objects.create(
+            user=request.user,
+            product_id=product_id,
+            rating=rating,
+            title='',  # 제목은 선택사항
+            content=content
+        )
+        
+        serializer = ReviewSerializer(review)
+        return Response({
+            'message': '리뷰가 작성되었습니다.',
+            'review': serializer.data
+        }, status=status.HTTP_201_CREATED)
+        
+    except Exception as e:
+        return Response(
+            {'error': '리뷰 작성 중 오류가 발생했습니다.'}, 
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+
+@csrf_exempt
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def review_delete(request, review_id):
+    """리뷰 삭제 (본인만 가능)"""
+    try:
+        review = Review.objects.get(id=review_id, user=request.user)
+        review.delete()
+        return Response({'message': '리뷰가 삭제되었습니다.'})
+    except Review.DoesNotExist:
+        return Response(
+            {'error': '리뷰를 찾을 수 없거나 삭제 권한이 없습니다.'}, 
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+
+@csrf_exempt
+@api_view(['GET'])
+def product_reviews(request, product_id):
+    """상품별 리뷰 목록"""
+    reviews = Review.objects.filter(product_id=product_id).order_by('-created_at')
+    serializer = ReviewSerializer(reviews, many=True)
+    return Response(serializer.data)
