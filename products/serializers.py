@@ -32,12 +32,15 @@ class ProductListSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True, read_only=True)
     main_image = serializers.SerializerMethodField()
     current_price = serializers.SerializerMethodField()
+    average_rating = serializers.SerializerMethodField()
+    review_count = serializers.SerializerMethodField()
     
     class Meta:
         model = Product
         fields = [
             'id', 'name', 'slug', 'short_description', 'price', 'sale_price',
-            'current_price', 'brand', 'category', 'tags', 'main_image', 'is_featured'
+            'current_price', 'brand', 'category', 'tags', 'main_image', 'is_featured',
+            'average_rating', 'review_count'
         ]
     
     def get_main_image(self, obj):
@@ -50,6 +53,15 @@ class ProductListSerializer(serializers.ModelSerializer):
     
     def get_current_price(self, obj):
         return str(obj.current_price)
+    
+    def get_average_rating(self, obj):
+        reviews = obj.reviews.all()
+        if reviews.exists():
+            return sum(review.rating for review in reviews) / reviews.count()
+        return 0
+    
+    def get_review_count(self, obj):
+        return obj.reviews.count()
 
 
 class ReviewSerializer(serializers.ModelSerializer):
