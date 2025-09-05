@@ -104,6 +104,38 @@ body {
     color: #666;
 }
 
+/* 카운터 배지 스타일 */
+.nav-icons .wishlist-icon-container {
+    position: relative;
+    display: inline-block;
+}
+
+.nav-icons .count-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #ff4757;
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1;
+    min-width: 18px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(255, 71, 87, 0.3);
+    z-index: 10;
+}
+
+.nav-icons .cart-icon-container {
+    position: relative;
+    display: inline-block;
+}
+
 .search-box {
     padding: 0.5rem 1rem;
     border: 1px solid #ddd;
@@ -1095,27 +1127,7 @@ body {
     }
 }
 
-/* Cart Icon Styles */
-.cart-icon {
-    position: relative;
-}
-
-.cart-count {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    background: #e74c3c;
-    color: white;
-    border-radius: 50%;
-    width: 18px;
-    height: 18px;
-    font-size: 0.7rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    line-height: 1;
-}
+/* Cart Icon Styles - cart-count 스타일 제거됨 (count-badge 사용) */
 
 /* Cart Page Styles */
 .cart-page {
@@ -1574,5 +1586,189 @@ body {
     .user-menu {
         flex-wrap: wrap;
         justify-content: flex-end;
+    }
+}
+
+/* 찜목록 페이지 스타일 */
+.wishlist-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.wishlist-page .page-title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: #333;
+}
+
+.empty-wishlist {
+    text-align: center;
+    padding: 4rem 0;
+    color: #666;
+}
+
+.empty-wishlist p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.wishlist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.wishlist-item {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 1.5rem;
+}
+
+.wishlist-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.wishlist-item-image {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+}
+
+.wishlist-item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    transition: transform 0.3s ease;
+}
+
+.wishlist-item-image:hover img {
+    transform: scale(1.05);
+}
+
+.wishlist-item-info {
+    padding: 1.5rem;
+}
+
+.product-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #333;
+    line-height: 1.4;
+    transition: color 0.3s ease;
+}
+
+.product-name:hover {
+    color: #007bff;
+}
+
+.product-brand {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.product-price {
+    margin-bottom: 1.5rem;
+}
+
+.original-price {
+    text-decoration: line-through;
+    color: #999;
+    font-size: 0.9rem;
+    margin-right: 0.5rem;
+}
+
+.sale-price {
+    color: #e74c3c;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.current-price {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.wishlist-actions {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+}
+
+.wishlist-actions .btn {
+    flex: 1;
+    min-width: 120px;
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.wishlist-actions .btn-secondary {
+    background: #007bff;
+    color: white;
+    border: none;
+}
+
+.wishlist-actions .btn-secondary:hover {
+    background: #0056b3;
+    transform: translateY(-1px);
+}
+
+.wishlist-actions .remove-btn {
+    background: white;
+    color: #dc3545;
+    border: 2px solid #dc3545;
+}
+
+.wishlist-actions .remove-btn:hover {
+    background: #dc3545;
+    color: white;
+    transform: translateY(-1px);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .wishlist-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .wishlist-item {
+        margin-bottom: 1rem;
+    }
+    
+    .wishlist-item-image {
+        height: 200px;
+    }
+    
+    .wishlist-item-info {
+        padding: 1rem;
+    }
+    
+    .wishlist-actions {
+        flex-direction: column;
+    }
+    
+    .wishlist-actions .btn {
+        min-width: auto;
     }
 }

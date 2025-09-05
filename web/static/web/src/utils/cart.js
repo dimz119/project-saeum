@@ -80,25 +80,11 @@ window.CartManager = {
         return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
     },
 
-    // 장바구니 카운트 UI 업데이트
+    // 장바구니 카운트 UI 업데이트 (React Header 컴포넌트용)
     updateCartCount: function() {
-        const count = this.getTotalCount();
-        const cartIcon = document.querySelector('.cart-icon');
-        
-        if (cartIcon) {
-            // 기존 카운트 제거
-            const existingCount = cartIcon.querySelector('.cart-count');
-            if (existingCount) {
-                existingCount.remove();
-            }
-
-            // 새 카운트 추가 (0보다 클 때만)
-            if (count > 0) {
-                const countElement = document.createElement('span');
-                countElement.className = 'cart-count';
-                countElement.textContent = count;
-                cartIcon.appendChild(countElement);
-            }
+        // React 컴포넌트의 updateCartCount 함수 호출
+        if (window.updateCartCount) {
+            window.updateCartCount();
         }
     },
 
@@ -106,6 +92,16 @@ window.CartManager = {
     clearCart: function() {
         localStorage.removeItem('cart');
         this.updateCartCount();
+    }
+};
+
+// cartUtils 별칭 추가 (Header에서 사용)
+window.cartUtils = {
+    getCartItems: function() {
+        return window.CartManager.getCart();
+    },
+    getTotalCount: function() {
+        return window.CartManager.getTotalCount();
     }
 };
 

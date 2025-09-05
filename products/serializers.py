@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Brand, Product, ProductImage, Review, Tag
+from .models import Category, Brand, Product, ProductImage, Review, Tag, Wishlist
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -89,3 +89,27 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     
     def get_review_count(self, obj):
         return obj.reviews.count()
+
+
+class WishlistSerializer(serializers.ModelSerializer):
+    product = ProductListSerializer(read_only=True)
+    product_id = serializers.IntegerField(write_only=True)
+    
+    class Meta:
+        model = Wishlist
+        fields = ['id', 'product', 'product_id', 'created_at']
+        read_only_fields = ['id', 'created_at']
+    
+    def create(self, validated_data):
+        user = self.context['request'].user
+        product_id = validated_data['product_id']
+        
+        wishlist_item, created = Wishlist.objects.get_or_create(
+            user=user,
+            product_id=product_id
+        )
+        
+        if not created:
+            raise serializers.ValidationError("이미 찜목록에 추가된 상품입니다.")
+        
+        return wishlist_item

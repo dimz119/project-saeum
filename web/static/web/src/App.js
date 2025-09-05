@@ -32,6 +32,9 @@ const App = () => {
         } else if (path === '/cart' || path === '/cart/') {
             setCurrentPage('cart');
             setSelectedProductId(null);
+        } else if (path === '/wishlist' || path === '/wishlist/') {
+            setCurrentPage('wishlist');
+            setSelectedProductId(null);
         } else if (path.startsWith('/products/')) {
             const segments = path.split('/');
             const id = segments[2];
@@ -153,6 +156,9 @@ const App = () => {
             
             case 'cart':
                 return React.createElement(window.Components.Cart);
+            
+            case 'wishlist':
+                return React.createElement(window.Components.WishlistPage);
             
             default:
                 return React.createElement('div', null, '페이지를 찾을 수 없습니다.');

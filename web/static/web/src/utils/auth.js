@@ -95,16 +95,32 @@ const isAuthenticated = () => {
     return !!tokenStorage.getAccessToken();
 };
 
-// 사용자 정보 가져오기
+// 현재 사용자 캐시
+let currentUserCache = null;
+
+// 사용자 정보 가져오기 (비동기)
 const getCurrentUser = async () => {
     if (!isAuthenticated()) return null;
     
     try {
-        return await apiCall('/auth/user-info/');
+        const userData = await apiCall('/auth/user-info/');
+        currentUserCache = userData; // 캐시에 저장
+        return userData;
     } catch (error) {
         console.error('Failed to get user info:', error);
         return null;
     }
+};
+
+// 동기적으로 캐시된 사용자 정보 반환
+const getCurrentUserSync = () => {
+    if (!isAuthenticated()) return null;
+    return currentUserCache;
+};
+
+// 사용자 캐시 초기화
+const clearUserCache = () => {
+    currentUserCache = null;
 };
 
 // CSRF 토큰 가져오기
@@ -149,6 +165,7 @@ const login = async (email, password) => {
         
         if (response.ok) {
             tokenStorage.setTokens(data.tokens);
+            currentUserCache = data.user; // 사용자 정보 캐시에 저장
             console.log('Tokens saved successfully');
             return { success: true, user: data.user, message: data.message };
         } else {
@@ -202,6 +219,7 @@ const logout = async () => {
     }
     
     tokenStorage.clearTokens();
+    clearUserCache(); // 사용자 캐시 초기화
     window.location.href = '/';
 };
 
@@ -211,6 +229,8 @@ window.auth = {
     register,
     logout,
     getCurrentUser,
+    getCurrentUserSync,
+    clearUserCache,
     isAuthenticated,
     tokenStorage,
     apiCall,

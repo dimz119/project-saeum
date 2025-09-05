@@ -1,6 +1,19 @@
 // 상품 카드 컴포넌트
 const ProductCard = ({ product }) => {
+    const [isWishlisted, setIsWishlisted] = React.useState(false);
+    const [isLoading, setIsLoading] = React.useState(false);
+    
     const hasDiscount = product.sale_price && parseFloat(product.sale_price) < parseFloat(product.price);
+    
+    // 컴포넌트 마운트 시 찜상태 확인
+    React.useEffect(() => {
+        const user = window.auth.getCurrentUserSync();
+        if (user && window.API?.wishlist) {
+            window.API.wishlist.checkWishlist(product.id)
+                .then(result => setIsWishlisted(result.is_wishlisted))
+                .catch(console.error);
+        }
+    }, [product.id]);
     
     const handleClick = () => {
         // React Router 네비게이션 사용
@@ -9,6 +22,46 @@ const ProductCard = ({ product }) => {
         } else {
             // 폴백: 페이지 리로드
             window.location.href = `/products/${product.id}`;
+        }
+    };
+
+    const handleWishlistToggle = async (e) => {
+        e.stopPropagation(); // 카드 클릭 이벤트 방지
+        
+        const user = window.auth.getCurrentUserSync();
+        if (!user) {
+            alert('로그인이 필요한 서비스입니다.');
+            if (window.Router) {
+                window.Router.navigate('/login/');
+            }
+            return;
+        }
+
+        if (isLoading) return;
+        
+        setIsLoading(true);
+        try {
+            const result = await window.API.wishlist.toggleWishlist(product.id);
+            setIsWishlisted(result.is_wishlisted);
+            
+            // 사용자에게 피드백 제공
+            if (result.is_wishlisted) {
+                alert('찜목록에 추가되었습니다.');
+                console.log('찜목록에 추가되었습니다.');
+            } else {
+                alert('찜목록에서 제거되었습니다.');
+                console.log('찜목록에서 제거되었습니다.');
+            }
+            
+            // 찜 카운트 업데이트 이벤트 발생
+            if (window.updateWishlistCount) {
+                window.updateWishlistCount();
+            }
+        } catch (error) {
+            console.error('찜목록 처리 중 오류:', error);
+            alert('오류가 발생했습니다. 다시 시도해주세요.');
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -51,7 +104,35 @@ const ProductCard = ({ product }) => {
                     transition: 'transform 0.3s ease'
                 }
             }),
-            hasDiscount && React.createElement('div', { className: 'product-badge' }, 'SALE')
+            hasDiscount && React.createElement('div', { className: 'product-badge' }, 'SALE'),
+            // 찜하기 버튼 추가
+            React.createElement('button', {
+                className: `wishlist-btn ${isWishlisted ? 'active' : ''}`,
+                onClick: handleWishlistToggle,
+                disabled: isLoading,
+                style: {
+                    position: 'absolute',
+                    top: '10px',
+                    right: '10px',
+                    background: 'rgba(255, 255, 255, 0.9)',
+                    border: 'none',
+                    borderRadius: '50%',
+                    width: '35px',
+                    height: '35px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    zIndex: 2
+                }
+            }, React.createElement('i', {
+                className: `fas fa-heart`,
+                style: {
+                    color: isWishlisted ? '#ff4757' : '#ddd',
+                    fontSize: '16px'
+                }
+            }))
         ),
         React.createElement('div', { className: 'product-info' },
             React.createElement('div', { className: 'product-brand' }, 
@@ -105,12 +186,13 @@ const ProductCard = ({ product }) => {
                     }
                 }, '장바구니'),
                 React.createElement('button', {
-                    className: 'btn-wishlist',
-                    onClick: (e) => {
-                        e.stopPropagation();
-                        alert(`${product.name}이(가) 찜 목록에 추가되었습니다.`);
+                    className: `btn-wishlist ${isWishlisted ? 'active' : ''}`,
+                    onClick: handleWishlistToggle,
+                    disabled: isLoading,
+                    style: {
+                        color: isWishlisted ? '#ff4757' : '#666'
                     }
-                }, '♡')
+                }, isWishlisted ? '♥' : '♡')
             )
         )
     );
