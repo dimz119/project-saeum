@@ -35,6 +35,9 @@ const App = () => {
         } else if (path === '/wishlist' || path === '/wishlist/') {
             setCurrentPage('wishlist');
             setSelectedProductId(null);
+        } else if (path === '/search' || path === '/search/' || path.startsWith('/search/?')) {
+            setCurrentPage('search');
+            setSelectedProductId(null);
         } else if (path.startsWith('/products/')) {
             const segments = path.split('/');
             const id = segments[2];
@@ -159,6 +162,9 @@ const App = () => {
             
             case 'wishlist':
                 return React.createElement(window.Components.WishlistPage);
+            
+            case 'search':
+                return React.createElement(window.Components.SearchPage);
             
             default:
                 return React.createElement('div', null, '페이지를 찾을 수 없습니다.');

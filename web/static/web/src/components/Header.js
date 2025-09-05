@@ -100,7 +100,17 @@ const Header = () => {
                         )
                     ),
                     React.createElement('div', { className: 'nav-icons' },
-                        React.createElement('i', { className: 'fas fa-search' }),
+                        React.createElement('i', { 
+                            className: 'fas fa-search',
+                            onClick: (e) => {
+                                e.preventDefault();
+                                if (window.Router) {
+                                    window.Router.navigate('/search/');
+                                }
+                            },
+                            style: { cursor: 'pointer' },
+                            title: '검색'
+                        }),
                         React.createElement('div', { 
                             className: 'wishlist-icon-container'
                         },
