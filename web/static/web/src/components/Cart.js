@@ -39,7 +39,7 @@ const Cart = () => {
         return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
     };
 
-    const handleCheckout = () => {
+    const handleCheckout = async () => {
         if (!user) {
             alert('로그인이 필요한 서비스입니다.');
             if (window.Router) {
@@ -54,15 +54,37 @@ const Cart = () => {
         }
         
         setLoading(true);
-        // 체크아웃 로직 시뮬레이션
-        setTimeout(() => {
-            alert('주문이 완료되었습니다!');
-            if (window.CartManager) {
-                window.CartManager.clearCart();
+        
+        try {
+            // 장바구니 항목을 Stripe 형식으로 변환
+            const items = cartItems.map(item => ({
+                product_id: item.id,
+                quantity: item.quantity
+            }));
+            
+            // Stripe Checkout Session 생성
+            const response = await window.auth.apiCall('/payments/create-checkout-session/', {
+                method: 'POST',
+                body: JSON.stringify({
+                    items: items,
+                    success_url: `${window.location.origin}/cart/success/?session_id={CHECKOUT_SESSION_ID}`,
+                    cancel_url: `${window.location.origin}/cart/`
+                })
+            });
+            
+            if (response && response.checkout_url) {
+                // Stripe 체크아웃 페이지로 리다이렉트
+                window.location.href = response.checkout_url;
+            } else {
+                alert('결제 페이지로 이동하는 중 오류가 발생했습니다.');
+                setLoading(false);
             }
-            loadCartItems();
+            
+        } catch (error) {
+            console.error('체크아웃 오류:', error);
+            alert('결제 처리 중 오류가 발생했습니다.');
             setLoading(false);
-        }, 2000);
+        }
     };
 
     // 로그인하지 않은 사용자에게 안내 화면 표시

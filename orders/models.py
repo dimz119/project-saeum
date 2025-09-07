@@ -13,16 +13,16 @@ class Order(models.Model):
         ('cancelled', '주문취소'),
     ]
     
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="주문자")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True, verbose_name="주문자")
     order_number = models.CharField(max_length=100, unique=True, verbose_name="주문번호")
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending', verbose_name="주문상태")
     
     # 배송 정보
-    shipping_name = models.CharField(max_length=100, verbose_name="배송받는 분")
-    shipping_phone = models.CharField(max_length=20, verbose_name="연락처")
-    shipping_address = models.CharField(max_length=255, verbose_name="배송주소")
+    shipping_name = models.CharField(max_length=100, null=True, blank=True, default='온라인 주문자', verbose_name="배송받는 분")
+    shipping_phone = models.CharField(max_length=20, null=True, blank=True, default='미제공', verbose_name="연락처")
+    shipping_address = models.CharField(max_length=255, null=True, blank=True, default='온라인 주문', verbose_name="배송주소")
     shipping_detail_address = models.CharField(max_length=255, blank=True, verbose_name="상세주소")
-    shipping_zipcode = models.CharField(max_length=10, verbose_name="우편번호")
+    shipping_zipcode = models.CharField(max_length=10, null=True, blank=True, default='00000', verbose_name="우편번호")
     
     # 결제 정보
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="총 주문금액")
