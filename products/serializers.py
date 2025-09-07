@@ -52,7 +52,7 @@ class ProductListSerializer(serializers.ModelSerializer):
         return None
     
     def get_current_price(self, obj):
-        return str(obj.current_price)
+        return float(obj.current_price)
     
     def get_average_rating(self, obj):
         reviews = obj.reviews.all()
@@ -91,7 +91,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
         ]
     
     def get_current_price(self, obj):
-        return str(obj.current_price)
+        return float(obj.current_price)
     
     def get_average_rating(self, obj):
         reviews = obj.reviews.all()

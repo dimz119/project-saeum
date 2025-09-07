@@ -302,16 +302,16 @@ const ProductDetail = ({ productId }) => {
 
                     // Price
                     React.createElement('div', { className: 'product-price-detail' },
-                        product.discount_price && product.discount_price < product.price && 
+                        product.sale_price && product.sale_price < product.price && 
                         React.createElement('span', { className: 'original-price' }, 
-                            `₩${product.price.toLocaleString()}`
+                            `₩${parseFloat(product.price).toLocaleString()}`
                         ),
                         React.createElement('span', { className: 'current-price' }, 
-                            `₩${(product.discount_price || product.price).toLocaleString()}`
+                            `₩${product.current_price.toLocaleString()}`
                         ),
-                        product.discount_price && product.discount_price < product.price &&
+                        product.sale_price && product.sale_price < product.price &&
                         React.createElement('span', { className: 'discount-rate' },
-                            `${Math.round((1 - product.discount_price / product.price) * 100)}% 할인`
+                            `${Math.round((1 - parseFloat(product.sale_price) / parseFloat(product.price)) * 100)}% 할인`
                         )
                     ),
 

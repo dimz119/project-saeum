@@ -32,13 +32,17 @@ const App = () => {
         } else if (path === '/cart' || path === '/cart/') {
             setCurrentPage('cart');
             setSelectedProductId(null);
+        } else if (path === '/orders' || path === '/orders/') {
+            setCurrentPage('orders');
+            setSelectedProductId(null);
         } else if (path === '/wishlist' || path === '/wishlist/') {
             setCurrentPage('wishlist');
             setSelectedProductId(null);
         } else if (path === '/search' || path === '/search/' || path.startsWith('/search/?')) {
             setCurrentPage('search');
             setSelectedProductId(null);
-        } else if (path === '/cart/success' || path === '/cart/success/' || path.startsWith('/cart/success/?')) {
+        } else if (path === '/cart/success' || path === '/cart/success/' || path.startsWith('/cart/success/?') ||
+                   path === '/checkout-success' || path === '/checkout-success/' || path.startsWith('/checkout-success/?')) {
             setCurrentPage('checkout-success');
             setSelectedProductId(null);
         } else if (path.startsWith('/products/')) {
@@ -162,6 +166,9 @@ const App = () => {
             
             case 'cart':
                 return React.createElement(window.Components.Cart);
+            
+            case 'orders':
+                return React.createElement(window.Components.OrdersPage);
             
             case 'wishlist':
                 return React.createElement(window.Components.WishlistPage);

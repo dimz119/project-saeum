@@ -6,7 +6,8 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      # 프로덕션에서는 데이터만 마운트
+      # 개발용: 전체 프로젝트 마운트 (JavaScript 실시간 반영)
+      - .:/app
       - ./media:/app/media
     env_file:
       - .env

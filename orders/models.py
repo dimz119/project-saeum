@@ -20,6 +20,7 @@ class Order(models.Model):
     # 배송 정보
     shipping_name = models.CharField(max_length=100, null=True, blank=True, default='온라인 주문자', verbose_name="배송받는 분")
     shipping_phone = models.CharField(max_length=20, null=True, blank=True, default='미제공', verbose_name="연락처")
+    shipping_email = models.EmailField(max_length=255, null=True, blank=True, verbose_name="이메일")
     shipping_address = models.CharField(max_length=255, null=True, blank=True, default='온라인 주문', verbose_name="배송주소")
     shipping_detail_address = models.CharField(max_length=255, blank=True, verbose_name="상세주소")
     shipping_zipcode = models.CharField(max_length=10, null=True, blank=True, default='00000', verbose_name="우편번호")

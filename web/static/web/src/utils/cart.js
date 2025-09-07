@@ -32,7 +32,7 @@ window.CartManager = {
             cart.push({
                 id: product.id,
                 name: product.name,
-                price: product.discount_price || product.price,
+                price: product.current_price,
                 originalPrice: product.price,
                 image: product.main_image || '/static/web/img/glass.png',
                 quantity: quantity,
