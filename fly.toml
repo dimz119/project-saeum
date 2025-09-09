@@ -15,6 +15,11 @@ console_command = '/app/manage.py shell'
   ALLOWED_HOSTS = 'project-saeum.fly.dev,*.fly.dev'
   COMPRESS_ENABLED = 'True'
   COMPRESS_OFFLINE = 'True'
+  USE_S3 = 'True'
+  DJANGO_SETTINGS_MODULE = 'shopping_mall.settings'
+
+[deploy]
+  release_command = 'python manage.py migrate --noinput'
 
 [http_service]
   internal_port = 8000

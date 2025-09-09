@@ -65,7 +65,7 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',  # CSRF 미들웨어 비활성화
+    'django.middleware.csrf.CsrfViewMiddleware',  # CSRF 미들웨어 다시 활성화
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -97,6 +97,7 @@ WSGI_APPLICATION = 'shopping_mall.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# 개발/배포 환경 모두 SQLite 사용
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -187,6 +188,7 @@ CORS_ALLOW_ALL_ORIGINS = False
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:8000",
     "http://127.0.0.1:8000",
+    "https://project-saeum.fly.dev",
 ]
 
 # API 경로에서 CSRF 체크 제외

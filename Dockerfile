@@ -1,5 +1,5 @@
-# Python 3.11 공식 이미지 사용
-FROM python:3.11-slim
+# Python 3.13 공식 이미지 사용
+FROM python:3.13-slim
 
 # 환경 변수 설정
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -13,8 +13,8 @@ WORKDIR /app
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         build-essential \
-        libpq-dev \
         gettext \
+        sqlite3 \
     && rm -rf /var/lib/apt/lists/*
 
 # Python 의존성 설치
@@ -24,15 +24,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # 프로젝트 파일 복사 (SQLite 파일 포함)
 COPY . /app/
 
-# 배포용 환경 변수 파일 복사
-COPY .env.production /app/.env
-
-# SQLite 파일 권한 설정
-RUN chmod 664 /app/db.sqlite3 || true
-
-# 데이터베이스 마이그레이션 (혹시 모를 변경사항 적용)
-RUN python manage.py makemigrations --noinput || true
-RUN python manage.py migrate --noinput
+# 배포용 환경 변수는 Fly.io에서 설정됨
+# SQLite 파일을 포함한 프로젝트 파일들이 함께 업로드됨
 
 # 정적 파일 수집
 RUN python manage.py collectstatic --noinput
