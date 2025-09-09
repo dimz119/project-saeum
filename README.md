@@ -1,7 +1,6 @@
 # Testing Account
 test@example.com
 test123
-source .venv/bin/activate && python manage.py collectstatic --noinput --clear
 
 # SAEUM - 프리미엄 쇼핑몰
 

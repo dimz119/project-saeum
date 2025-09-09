@@ -242,8 +242,6 @@ const ProductDetail = ({ productId }) => {
     };
 
     const images = getProductImages();
-    // 실제 상품 이미지 개수(썸네일로 보여줄 이미지 개수)
-    const realImageCount = product.images && product.images.length ? product.images.length : (product.main_image ? 1 : 0);
 
     return React.createElement('div', { className: 'product-detail' },
         // Breadcrumb
@@ -269,8 +267,8 @@ const ProductDetail = ({ productId }) => {
                             className: 'main-product-image'
                         })
                     ),
-                    realImageCount > 1 && React.createElement('div', { className: 'thumbnail-images' },
-                        images.slice(0, realImageCount).map((img, index) =>
+                    images.length > 1 && React.createElement('div', { className: 'thumbnail-images' },
+                        images.map((img, index) =>
                             React.createElement('img', {
                                 key: index,
                                 src: img.image,

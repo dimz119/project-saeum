@@ -6,7 +6,6 @@ from .models import Category, Brand, Product, ProductImage, Review, Tag, Wishlis
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
     extra = 1
-    max_num = 3
     readonly_fields = ['image_preview']
     
     def image_preview(self, obj):

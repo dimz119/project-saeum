@@ -4,84 +4,13 @@
 {% block title %}로그인 - MonthlyLook{% endblock %}
 
 {% block content %}
-<style>
-/* 강제 인라인 스타일 */
-.auth-container {
-    max-width: 400px !important;
-    margin: 2rem auto !important;
-    padding: 2rem !important;
-    background: white !important;
-    border-radius: 8px !important;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15) !important;
-    border: 2px solid #e0e0e0 !important;
-}
-
-.form-group {
-    margin-bottom: 1.5rem !important;
-}
-
-.form-group label {
-    display: block !important;
-    margin-bottom: 0.5rem !important;
-    color: #333 !important;
-    font-weight: 500 !important;
-}
-
-.form-group input {
-    width: 100% !important;
-    padding: 12px !important;
-    border: 2px solid #ddd !important;
-    border-radius: 6px !important;
-    font-size: 16px !important;
-    box-sizing: border-box !important;
-    background: white !important;
-    color: #333 !important;
-}
-
-.form-group input:focus {
-    outline: none !important;
-    border-color: #007bff !important;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3) !important;
-}
-
-.submit-btn {
-    width: 100% !important;
-    padding: 12px !important;
-    background: #007bff !important;
-    color: white !important;
-    border: none !important;
-    border-radius: 6px !important;
-    font-size: 16px !important;
-    font-weight: 500 !important;
-    cursor: pointer !important;
-    margin-top: 10px !important;
-}
-
-.submit-btn:hover {
-    background: #0056b3 !important;
-}
-
-.auth-links {
-    text-align: center !important;
-    margin-top: 1rem !important;
-}
-
-.auth-links a {
-    color: #007bff !important;
-    text-decoration: none !important;
-}
-
-.error-text {
-    color: #dc3545 !important;
-    font-size: 14px !important;
-    margin-top: 5px !important;
-    display: block !important;
-}
-</style>
 <div id="login-root"></div>
 {% endblock %}
 
 {% block extra_js %}
+<script src="{% static 'web/src/config.js' %}"></script>
+<script src="{% static 'web/src/utils/auth.js' %}"></script>
+<script src="{% static 'web/src/components/AuthProvider.js' %}"></script>
 <script src="{% static 'web/src/components/LoginForm.js' %}"></script>
 <script>
     // 로그인 페이지 렌더링
