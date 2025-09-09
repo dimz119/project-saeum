@@ -1,12 +1,25 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Category, Brand, Product, ProductImage, Review, Tag, Wishlist
+from .models import Category, Brand, Product, ProductImage, Review, Tag, Wishlist, ModelPhoto
 
 
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
     extra = 1
     readonly_fields = ['image_preview']
+    
+    def image_preview(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" width="100" height="100" />', obj.image.url)
+        return "이미지 없음"
+    image_preview.short_description = "이미지 미리보기"
+
+
+class ModelPhotoInline(admin.TabularInline):
+    model = ModelPhoto
+    extra = 1
+    readonly_fields = ['image_preview']
+    fields = ['image', 'image_preview', 'caption', 'alt_text', 'order', 'is_active']
     
     def image_preview(self, obj):
         if obj.image:
@@ -52,7 +65,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ['brand', 'category', 'tags', 'is_active', 'is_featured', 'created_at']
     search_fields = ['name', 'sku']
     prepopulated_fields = {'slug': ('name',)}
-    inlines = [ProductImageInline]
+    inlines = [ProductImageInline, ModelPhotoInline]
     filter_horizontal = ['tags']
     
     fieldsets = (
@@ -102,3 +115,17 @@ class WishlistAdmin(admin.ModelAdmin):
     list_filter = ['created_at', 'product__brand', 'product__category']
     search_fields = ['user__username', 'product__name']
     readonly_fields = ['created_at']
+
+
+@admin.register(ModelPhoto)
+class ModelPhotoAdmin(admin.ModelAdmin):
+    list_display = ['product', 'image_preview', 'caption', 'order', 'is_active', 'created_at']
+    list_filter = ['is_active', 'product__brand', 'product__category', 'created_at']
+    search_fields = ['product__name', 'caption']
+    readonly_fields = ['image_preview', 'created_at']
+    
+    def image_preview(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" width="100" height="100" />', obj.image.url)
+        return "이미지 없음"
+    image_preview.short_description = "이미지 미리보기"

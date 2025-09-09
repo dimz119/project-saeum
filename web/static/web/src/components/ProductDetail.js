@@ -13,7 +13,6 @@ const ProductDetail = ({ productId }) => {
     React.useEffect(() => {
         fetchProduct();
         fetchReviews();
-        fetchModelPhotos();
     }, [productId]);
 
     const fetchProduct = async () => {
@@ -25,6 +24,10 @@ const ProductDetail = ({ productId }) => {
             }
             const data = await response.json();
             setProduct(data);
+            // API에서 받은 model_photos를 설정
+            if (data.model_photos) {
+                setModelPhotos(data.model_photos);
+            }
         } catch (err) {
             setError(err.message);
         } finally {
@@ -64,34 +67,7 @@ const ProductDetail = ({ productId }) => {
         }
     };
 
-    const fetchModelPhotos = async () => {
-        try {
-            // 임시 샘플 모델 사진 데이터 (실제로는 API에서 가져오기)
-            const sampleModelPhotos = [
-                {
-                    id: 1,
-                    image: '/static/web/img/model.jpg',
-                    alt: '모델 착용 사진 1',
-                    caption: '일상 스타일링 - 편안하고 자연스러운 룩'
-                },
-                {
-                    id: 2,
-                    image: '/static/web/img/model.jpg',
-                    alt: '모델 착용 사진 2',
-                    caption: '비즈니스 룩 - 세련되고 전문적인 이미지'
-                },
-                {
-                    id: 3,
-                    image: '/static/web/img/model.jpg',
-                    alt: '모델 착용 사진 3',
-                    caption: '캐주얼 스타일 - 여유롭고 편안한 분위기'
-                }
-            ];
-            setModelPhotos(sampleModelPhotos);
-        } catch (err) {
-            console.error('모델 사진 로딩 실패:', err);
-        }
-    };
+
 
     const handleAddToCart = () => {
         if (window.CartManager && product) {
@@ -347,17 +323,17 @@ const ProductDetail = ({ productId }) => {
                 )
             ),
 
-            // Model Photos Section
-            React.createElement('div', { className: 'model-photos-section' },
+            // Model Photos Section - 착용사진이 있을 때만 표시
+            modelPhotos && modelPhotos.length > 0 && React.createElement('div', { className: 'model-photos-section' },
                 React.createElement('h2', { className: 'model-photos-title' }, '착용 사진'),
                 React.createElement('p', { className: 'model-photos-subtitle' }, '다양한 스타일링을 확인해보세요 (스크롤하여 더 많은 사진 보기)'),
                 React.createElement('div', { className: 'model-photos-grid' },
-                    modelPhotos.map(photo =>
+                    modelPhotos.filter(photo => photo.is_active !== false).map(photo =>
                         React.createElement('div', { key: photo.id, className: 'model-photo-item' },
                             React.createElement('div', { className: 'model-photo-wrapper' },
                                 React.createElement('img', {
                                     src: photo.image,
-                                    alt: photo.alt,
+                                    alt: photo.alt_text || photo.caption,
                                     className: 'model-photo',
                                     onError: (e) => {
                                         e.target.src = '/static/web/img/model.jpg';

@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-from .utils import brand_logo_upload, product_image_upload
+from .utils import brand_logo_upload, product_image_upload, model_photo_upload
 
 
 class Category(models.Model):
@@ -137,3 +137,21 @@ class Wishlist(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.product.name}"
+
+
+class ModelPhoto(models.Model):
+    product = models.ForeignKey(Product, related_name='model_photos', on_delete=models.CASCADE, verbose_name="상품")
+    image = models.ImageField(upload_to=model_photo_upload, verbose_name="착용사진")
+    caption = models.CharField(max_length=200, verbose_name="사진 설명")
+    alt_text = models.CharField(max_length=255, blank=True, verbose_name="대체 텍스트")
+    order = models.PositiveIntegerField(default=0, verbose_name="정렬순서")
+    is_active = models.BooleanField(default=True, verbose_name="활성화")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="생성일시")
+    
+    class Meta:
+        verbose_name = "착용사진"
+        verbose_name_plural = "착용사진"
+        ordering = ['order', '-created_at']
+        
+    def __str__(self):
+        return f"{self.product.name} - 착용사진 {self.order}"

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Brand, Product, ProductImage, Review, Tag, Wishlist
+from .models import Category, Brand, Product, ProductImage, Review, Tag, Wishlist, ModelPhoto
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -24,6 +24,12 @@ class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
         fields = ['id', 'image', 'alt_text', 'is_main', 'order']
+
+
+class ModelPhotoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ModelPhoto
+        fields = ['id', 'image', 'caption', 'alt_text', 'order', 'is_active']
 
 
 class ProductListSerializer(serializers.ModelSerializer):
@@ -76,6 +82,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     brand = BrandSerializer(read_only=True)
     category = CategorySerializer(read_only=True)
     images = ProductImageSerializer(many=True, read_only=True)
+    model_photos = ModelPhotoSerializer(many=True, read_only=True)
     reviews = ReviewSerializer(many=True, read_only=True)
     current_price = serializers.SerializerMethodField()
     average_rating = serializers.SerializerMethodField()
@@ -86,7 +93,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'name', 'slug', 'description', 'short_description',
             'price', 'sale_price', 'current_price', 'sku', 'stock',
-            'brand', 'category', 'images', 'reviews', 'average_rating',
+            'brand', 'category', 'images', 'model_photos', 'reviews', 'average_rating',
             'review_count', 'is_active', 'is_featured', 'created_at'
         ]
     

@@ -25,3 +25,6 @@ product_image_upload = UUIDFileNameGenerator('products')
 
 # 브랜드 로고용 업로드 경로  
 brand_logo_upload = UUIDFileNameGenerator('brands')
+
+# 착용사진용 업로드 경로
+model_photo_upload = UUIDFileNameGenerator('model_photos')
