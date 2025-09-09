@@ -221,24 +221,19 @@ const ProductDetail = ({ productId }) => {
         );
     }
 
-    // 이미지 처리 함수 - 항상 4개 이미지 제공
+    // 이미지 처리 함수 - 실제 업로드된 이미지만 반환
     const getProductImages = () => {
         const baseImages = [];
         
-        // 1. 실제 상품 이미지들 추가
+        // 실제 상품 이미지들만 추가
         if (product.images && product.images.length > 0) {
             baseImages.push(...product.images);
         } else if (product.main_image) {
             baseImages.push({ image: product.main_image });
         }
         
-        // 2. 부족한 이미지를 glass.png로 채우기 (총 4개가 되도록)
-        while (baseImages.length < 4) {
-            baseImages.push({ image: '/static/web/img/glass.png' });
-        }
-        
-        // 3. 4개만 선택 (혹시 더 많은 이미지가 있다면)
-        return baseImages.slice(0, 4);
+        // placeholder 없이 실제 이미지만 반환
+        return baseImages;
     };
 
     const images = getProductImages();
