@@ -5,6 +5,7 @@
     box-sizing: border-box;
 }
 
+
 body {
     font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     line-height: 1.6;
@@ -15,6 +16,7 @@ body {
 .container {
     max-width: 1200px;
     margin: 0 auto;
+
     padding: 0 20px;
 }
 
@@ -89,31 +91,64 @@ body {
 
 .nav-icons {
     display: flex;
-    gap: 1.5rem;
+    gap: 1rem;
     align-items: center;
+    height: 50px;
 }
 
-.nav-icons i {
-    font-size: 1.1rem;
-    color: #1a1a1a;
-    cursor: pointer;
-    transition: color 0.3s ease;
+/* 모든 아이콘 컨테이너에 균등한 공간 할당 */
+.nav-icons > * {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 44px !important;
+    position: relative !important;
+    flex-shrink: 0 !important;
 }
 
-.nav-icons i:hover {
+/* 단일 아이콘 (검색 아이콘 등) */
+.nav-icons > i {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 44px !important;
+    font-size: 1.3rem !important;
+    color: #1a1a1a !important;
+    cursor: pointer !important;
+    transition: color 0.3s ease !important;
+    flex-shrink: 0 !important;
+}
+
+.nav-icons > i:hover {
     color: #666;
 }
 
 /* 카운터 배지 스타일 */
 .nav-icons .wishlist-icon-container {
     position: relative;
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+}
+
+.nav-icons .wishlist-icon-container i {
+    font-size: 1.3rem;
+    color: #1a1a1a;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.nav-icons .wishlist-icon-container:hover i {
+    color: #666;
 }
 
 .nav-icons .count-badge {
     position: absolute;
-    top: -8px;
-    right: -8px;
+    top: 2px;
+    right: 2px;
     background: #ff4757;
     color: white;
     border-radius: 50%;
@@ -122,18 +157,67 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
+    font-size: 10px;
     font-weight: bold;
     line-height: 1;
     min-width: 18px;
     text-align: center;
     box-shadow: 0 2px 4px rgba(255, 71, 87, 0.3);
-    z-index: 10;
+    z-index: 15;
 }
 
 .nav-icons .cart-icon-container {
     position: relative;
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+}
+
+.nav-icons .cart-icon-container i {
+    font-size: 1.3rem;
+    color: #1a1a1a;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.nav-icons .cart-icon-container:hover i {
+    color: #666;
+}
+
+/* auth-links 컨테이너도 동일한 스타일 적용 */
+.nav-icons .auth-links {
+    display: flex;
+    gap: 0.5rem;
+    height: 50px;
+    align-items: center;
+}
+
+.nav-icons .auth-links .auth-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    text-decoration: none;
+    color: #1a1a1a !important;
+    transition: color 0.3s ease;
+    flex-shrink: 0;
+}
+
+.nav-icons .auth-links .auth-link:hover {
+    color: #666 !important;
+}
+
+.nav-icons .auth-links .auth-link i {
+    font-size: 1.3rem;
+    color: #1a1a1a !important;
+}
+
+.nav-icons .auth-links .auth-link:hover i {
+    color: #666 !important;
 }
 
 .search-box {
@@ -569,12 +653,16 @@ body {
 .main-product-image {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    background: #fff;
 }
 
 .thumbnail-images {
     display: flex;
-    gap: 0.5rem;
+        max-width: 600px;
+        aspect-ratio: 1/1;
+        height: auto;
+        min-height: 300px;
     overflow-x: auto;
 }
 
@@ -809,11 +897,14 @@ body {
     }
     
     .floating-3 {
-        width: 100px;
-        height: 100px;
-        bottom: 15%;
-        left: 30%;
-    }
+        width: 100%;
+        height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        border-radius: 10px;
+        border: 1px solid #eee;
     
     .product-grid {
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -1210,7 +1301,12 @@ body {
     height: 100px;
     border-radius: 8px;
     overflow: hidden;
-    background: #f8f9fa;
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        display: block;
+        margin: auto;
 }
 
 .cart-item-image img {
@@ -1370,33 +1466,33 @@ body {
 
 /* 인증 관련 스타일 */
 .auth-container {
-    min-height: 80vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem 1rem;
-    background-color: #f8f9fa;
+    min-height: 80vh !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 2rem 1rem !important;
+    background-color: #f8f9fa !important;
 }
 
 .auth-form {
-    background: white;
-    padding: 2.5rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
+    background: white !important;
+    padding: 2.5rem !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+    width: 100% !important;
+    max-width: 400px !important;
 }
 
 .register-form {
-    max-width: 600px;
+    max-width: 600px !important;
 }
 
 .auth-title {
-    text-align: center;
-    margin-bottom: 2rem;
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: #1a1a1a;
+    text-align: center !important;
+    margin-bottom: 2rem !important;
+    font-size: 1.8rem !important;
+    font-weight: 600 !important;
+    color: #1a1a1a !important;
 }
 
 .form-row {
@@ -1410,29 +1506,29 @@ body {
 }
 
 .form-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.5rem !important;
 }
 
 .form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-    color: #374151;
+    display: block !important;
+    margin-bottom: 0.5rem !important;
+    font-weight: 500 !important;
+    color: #374151 !important;
 }
 
 .form-group input {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #d1d5db;
-    border-radius: 4px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
+    width: 100% !important;
+    padding: 0.75rem !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 4px !important;
+    font-size: 1rem !important;
+    transition: border-color 0.3s ease !important;
 }
 
 .form-group input:focus {
-    outline: none;
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    outline: none !important;
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
 }
 
 .form-group input.error {
@@ -1457,112 +1553,125 @@ body {
 }
 
 .submit-btn {
-    width: 100%;
-    padding: 0.875rem;
-    background-color: #1a1a1a;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-bottom: 1rem;
+    width: 100% !important;
+    padding: 0.875rem !important;
+    background-color: #1a1a1a !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 4px !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    transition: background-color 0.3s ease !important;
+    margin-bottom: 1rem !important;
 }
 
 .submit-btn:hover:not(:disabled) {
-    background-color: #374151;
+    background-color: #374151 !important;
 }
 
 .submit-btn:disabled {
-    background-color: #9ca3af;
-    cursor: not-allowed;
+    background-color: #9ca3af !important;
+    cursor: not-allowed !important;
 }
 
 .auth-links {
-    display: flex;
-    gap: 0.5rem; /* 간격을 줄임 */
-    align-items: center;
-    margin-top: 0; /* 상단 마진 제거 */
+    display: flex !important;
+    gap: 0.5rem !important; /* 간격을 줄임 */
+    align-items: center !important;
+    margin-top: 0 !important; /* 상단 마진 제거 */
 }
 
 .auth-links a {
-    color: #2563eb;
-    text-decoration: none;
-    font-size: 0.9rem;
+    color: #2563eb !important;
+    text-decoration: none !important;
+    font-size: 0.9rem !important;
 }
 
 .auth-links a:hover {
-    text-decoration: underline;
+    text-decoration: underline !important;
 }
 
 /* 헤더 사용자 정보 스타일 */
 .user-info {
     display: flex;
     align-items: center;
-    gap: 0.75rem; /* 간격을 적당히 줄임 */
-    height: 100%; /* 헤더 높이에 맞춤 */
+    gap: 1rem;
+    height: 50px;
+    white-space: nowrap;
 }
 
 .user-greeting {
-    font-family: 'Inter', 'Noto Sans KR', sans-serif; /* 일관된 폰트 */
-    font-size: 0.9rem;
+    font-family: 'Inter', 'Noto Sans KR', sans-serif;
+    font-size: 0.85rem;
     color: #374151;
     font-weight: 400;
+    margin-right: 0.5rem;
+    flex-shrink: 0;
 }
 
 .user-menu {
     display: flex;
     align-items: center;
-    gap: 0.5rem; /* 간격을 줄임 */
-    height: 100%; /* 높이 맞춤 */
+    gap: 0;
+    height: auto;
 }
 
 .user-link, .auth-link {
-    color: #1a1a1a;
+    color: #000000 !important;
     text-decoration: none;
-    font-family: 'Inter', 'Noto Sans KR', sans-serif; /* 일관된 폰트 */
-    font-size: 1.1rem; /* nav-icons와 동일한 크기 */
-    padding: 0.5rem;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-    display: inline-flex;
+    font-size: 1.3rem;
+    transition: color 0.3s ease;
+    display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px; /* 고정 너비 */
-    height: 40px; /* 고정 높이 */
-    line-height: 1; /* 라인 높이 조정 */
+    width: 44px;
+    height: 44px;
+    padding: 44px;
+    flex-shrink: 0;
+    cursor: pointer;
 }
 
 .user-link:hover, .auth-link:hover {
-    background-color: #f3f4f6;
-    color: #666; /* nav-icons와 동일한 호버 색상 */
-    transform: translateY(-1px); /* 살짝 위로 올라가는 효과 */
+    color: #666 !important;
+}
+
+.user-link i, .auth-link i {
+    color: #000000 !important;
+    font-size: 1.3rem;
+}
+
+.user-link:hover i, .auth-link:hover i {
+    color: #333333 !important;
 }
 
 .logout-btn {
     background: none;
     border: none;
-    color: #1a1a1a; /* 다른 아이콘과 동일한 색상 */
-    font-family: 'Inter', 'Noto Sans KR', sans-serif;
-    font-size: 1.1rem; /* nav-icons와 동일한 크기 */
-    font-weight: 400;
-    padding: 0.5rem;
-    border-radius: 4px;
+    color: #000000 !important;
+    font-size: 1.3rem;
     cursor: pointer;
-    transition: all 0.3s ease;
-    display: inline-flex;
+    transition: color 0.3s ease;
+    display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px; /* 고정 너비 */
-    height: 40px; /* 고정 높이 */
-    line-height: 1;
+    width: 44px;
+    height: 44px;
+    padding: 44px;
+    flex-shrink: 0;
 }
 
 .logout-btn:hover {
-    color: #666; /* nav-icons와 동일한 호버 색상 */
-    background-color: #f3f4f6;
-    transform: translateY(-1px);
+    color: #666 !important;
+}
+
+.logout-btn i {
+    color: #000000 !important;
+    font-size: 1.3rem;
+}
+
+.logout-btn:hover i {
+    color: #333333 !important;
 }
 
 .loading-container {
@@ -2107,4 +2216,291 @@ body {
         font-size: 0.8rem;
         padding: 0.4rem 0.8rem;
     }
+}
+
+/* EMERGENCY AUTH STYLING - 최우선 적용 */
+html body div.auth-container,
+html body .auth-container,
+div.auth-container,
+.auth-container {
+    max-width: 400px !important;
+    margin: 2rem auto !important;
+    padding: 2rem !important;
+    background: white !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15) !important;
+    border: 2px solid #e0e0e0 !important;
+    min-height: unset !important;
+    display: block !important;
+    align-items: unset !important;
+    justify-content: unset !important;
+    background-color: white !important;
+}
+
+html body div.auth-form,
+html body .auth-form,
+div.auth-form,
+.auth-form {
+    background: transparent !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    width: 100% !important;
+    max-width: none !important;
+}
+
+html body div.form-group,
+html body .form-group,
+div.form-group,
+.form-group {
+    margin-bottom: 1.5rem !important;
+}
+
+html body div.form-group label,
+html body .form-group label,
+div.form-group label,
+.form-group label {
+    display: block !important;
+    margin-bottom: 0.5rem !important;
+    color: #333 !important;
+    font-weight: 500 !important;
+}
+
+html body div.form-group input,
+html body .form-group input,
+div.form-group input,
+.form-group input {
+    width: 100% !important;
+    padding: 12px !important;
+    border: 2px solid #ddd !important;
+    border-radius: 6px !important;
+    font-size: 16px !important;
+    box-sizing: border-box !important;
+    background: white !important;
+    color: #333 !important;
+}
+
+html body div.form-group input:focus,
+html body .form-group input:focus,
+div.form-group input:focus,
+.form-group input:focus {
+    outline: none !important;
+    border-color: #007bff !important;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3) !important;
+}
+
+html body button.submit-btn,
+html body .submit-btn,
+button.submit-btn,
+.submit-btn {
+    width: 100% !important;
+    padding: 12px !important;
+    background: #007bff !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 6px !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    margin-top: 10px !important;
+}
+
+html body button.submit-btn:hover,
+html body .submit-btn:hover,
+button.submit-btn:hover,
+.submit-btn:hover {
+    background: #0056b3 !important;
+}
+
+html body .auth-links,
+div.auth-links,
+.auth-links {
+    text-align: center !important;
+    margin-top: 1rem !important;
+}
+
+html body .auth-links a,
+div.auth-links a,
+.auth-links a {
+    color: #007bff !important;
+    text-decoration: none !important;
+}
+
+html body .error-text,
+div.error-text,
+.error-text {
+    color: #dc3545 !important;
+    font-size: 14px !important;
+    margin-top: 5px !important;
+    display: block !important;
+}
+
+/* 아이콘 색상 강제 통일 */
+.nav-icons i,
+.nav-icons .user-link i,
+.nav-icons .auth-link i,
+.nav-icons .logout-btn i,
+.user-menu i,
+.auth-links i {
+    color: #1a1a1a !important;
+}
+
+.nav-icons i:hover,
+.nav-icons .user-link:hover i,
+.nav-icons .auth-link:hover i,
+.nav-icons .logout-btn:hover i,
+.user-menu i:hover,
+.auth-links i:hover {
+    color: #666 !important;
+}
+
+/* FontAwesome 아이콘 색상 강제 설정 */
+.fa-search,
+.fa-heart,
+.fa-shopping-bag,
+.fa-user,
+.fa-box,
+.fa-sign-in-alt,
+.fa-user-plus,
+.fa-sign-out-alt {
+    color: #1a1a1a !important;
+}
+
+.fa-search:hover,
+.fa-heart:hover,
+.fa-shopping-bag:hover,
+.fa-user:hover,
+.fa-box:hover,
+.fa-sign-in-alt:hover,
+.fa-user-plus:hover,
+.fa-sign-out-alt:hover {
+    color: #666 !important;
+}
+
+/* 모든 아이콘 색상 최우선 강제 적용 */
+i,
+i.fa,
+i.fas,
+i.far,
+i.fal,
+i.fab,
+i[class*="fa-"],
+span[class*="fa-"],
+.fa,
+.fas,
+.far,
+.fal,
+.fab {
+    color: #1a1a1a !important;
+    fill: #1a1a1a !important;
+}
+
+i:hover,
+i.fa:hover,
+i.fas:hover,
+i.far:hover,
+i.fal:hover,
+i.fab:hover,
+i[class*="fa-"]:hover,
+span[class*="fa-"]:hover,
+.fa:hover,
+.fas:hover,
+.far:hover,
+.fal:hover,
+.fab:hover {
+    color: #666 !important;
+    fill: #666 !important;
+}
+
+/* 네비게이션 아이콘 특별 강제 적용 */
+.nav-icons i,
+.nav-icons .fa,
+.nav-icons .fas,
+.nav-icons .far,
+.nav-icons .fal,
+.nav-icons .fab,
+.nav-icons [class*="fa-"] {
+    color: #1a1a1a !important;
+    fill: #1a1a1a !important;
+}
+
+.nav-icons i:hover,
+.nav-icons .fa:hover,
+.nav-icons .fas:hover,
+.nav-icons .far:hover,
+.nav-icons .fal:hover,
+.nav-icons .fab:hover,
+.nav-icons [class*="fa-"]:hover {
+    color: #666 !important;
+    fill: #666 !important;
+}
+
+/* 헤더 네비게이션 아이콘 강제 적용 */
+header i,
+header .fa,
+header .fas,
+header .far,
+header .fal,
+header .fab,
+header [class*="fa-"] {
+    color: #1a1a1a !important;
+    fill: #1a1a1a !important;
+}
+
+/* 주문내역 아이콘 컨테이너 스타일 (장바구니와 동일) */
+.nav-icons .orders-icon-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+    padding: 0 0.5rem;
+    flex-shrink: 0;
+}
+
+.nav-icons .orders-icon-container i {
+    font-size: 1.3rem;
+    color: #1a1a1a;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.nav-icons .orders-icon-container:hover i {
+    color: #666;
+}
+
+/* user-menu 내 주문내역 링크 스타일 */
+.user-menu .orders-link {
+    color: #1a1a1a !important;
+    text-decoration: none;
+    font-size: 1.3rem;
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+    padding: 0 0.5rem;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.user-menu .orders-link:hover {
+    color: #666 !important;
+}
+
+.user-menu .orders-link i {
+    color: #1a1a1a !important;
+}
+
+.user-menu .orders-link:hover i {
+    color: #666 !important;
+}
+
+/* Menu item wrapper styling */
+.menu-item {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 44px;
 }

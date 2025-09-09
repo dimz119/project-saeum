@@ -171,17 +171,23 @@ const UserInfo = () => {
     return React.createElement('div', { className: 'user-info' },
         React.createElement('span', { className: 'user-greeting' }, `안녕하세요, ${user.first_name || user.username}님`),
         React.createElement('div', { className: 'user-menu' },
-            React.createElement('a', { href: '/profile', className: 'user-link', title: '프로필' }, 
-                React.createElement('i', { className: 'fas fa-user' })
+            React.createElement('div', { className: 'menu-item' },
+                React.createElement('a', { href: '/profile', className: 'user-link', title: '프로필' }, 
+                    React.createElement('i', { className: 'fas fa-user' })
+                )
             ),
-            React.createElement('a', { href: '/orders', className: 'user-link', title: '주문내역' }, 
-                React.createElement('i', { className: 'fas fa-box' })
+            React.createElement('div', { className: 'menu-item' },
+                React.createElement('a', { href: '/orders', className: 'user-link', title: '주문내역' }, 
+                    React.createElement('i', { className: 'fas fa-box' })
+                )
             ),
-            React.createElement('button', { 
-                onClick: handleLogout, 
-                className: 'logout-btn',
-                title: '로그아웃'
-            }, React.createElement('i', { className: 'fas fa-sign-out-alt' }))
+            React.createElement('div', { className: 'menu-item' },
+                React.createElement('button', { 
+                    onClick: handleLogout, 
+                    className: 'logout-btn',
+                    title: '로그아웃'
+                }, React.createElement('i', { className: 'fas fa-sign-out-alt' }))
+            )
         )
     );
 };

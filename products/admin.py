@@ -1,10 +1,19 @@
 from django.contrib import admin
+from django.utils.html import format_html
 from .models import Category, Brand, Product, ProductImage, Review, Tag, Wishlist
 
 
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
     extra = 1
+    max_num = 3
+    readonly_fields = ['image_preview']
+    
+    def image_preview(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" width="100" height="100" />', obj.image.url)
+        return "이미지 없음"
+    image_preview.short_description = "이미지 미리보기"
 
 
 @admin.register(Category)
@@ -17,10 +26,17 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Brand)
 class BrandAdmin(admin.ModelAdmin):
-    list_display = ['name', 'created_at']
+    list_display = ['name', 'logo_preview', 'created_at']
     list_filter = ['created_at']
     search_fields = ['name']
     prepopulated_fields = {'slug': ('name',)}
+    readonly_fields = ['logo_preview']
+    
+    def logo_preview(self, obj):
+        if obj.logo:
+            return format_html('<img src="{}" width="50" height="50" />', obj.logo.url)
+        return "로고 없음"
+    logo_preview.short_description = "로고 미리보기"
 
 
 @admin.register(Tag)
@@ -61,9 +77,16 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(ProductImage)
 class ProductImageAdmin(admin.ModelAdmin):
-    list_display = ['product', 'is_main', 'order']
+    list_display = ['product', 'image_preview', 'is_main', 'order']
     list_filter = ['is_main', 'product__brand']
     search_fields = ['product__name']
+    readonly_fields = ['image_preview']
+    
+    def image_preview(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" width="100" height="100" />', obj.image.url)
+        return "이미지 없음"
+    image_preview.short_description = "이미지 미리보기"
 
 
 @admin.register(Review)

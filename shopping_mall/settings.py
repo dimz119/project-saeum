@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'django_filters',
     'compressor',
     'social_django',
+    'storages',
     'web',
     'products',
     'orders',
@@ -271,3 +272,52 @@ SOCIAL_AUTH_PIPELINE = (
 
 # Custom User Model
 AUTH_USER_MODEL = 'accounts.User'
+
+# AWS S3 Settings
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = 'monthly-look-public'
+AWS_S3_REGION_NAME = 'us-west-2'
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com'
+AWS_DEFAULT_ACL = None  # ACL 비활성화
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+
+# S3 Static files settings
+AWS_LOCATION = 'static'
+AWS_S3_FILE_OVERWRITE = False
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+
+# Django 5.2+ STORAGES 설정
+# S3 업로드 문제 해결 전까지 임시로 로컬 스토리지 사용
+USE_S3 = os.getenv('USE_S3', 'False').lower() == 'true'
+
+if USE_S3:
+    STORAGES = {
+        'default': {
+            'BACKEND': 'shopping_mall.storage_backends.MediaStorage',
+        },
+        'staticfiles': {
+            'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage',
+        },
+    }
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+else:
+    STORAGES = {
+        'default': {
+            'BACKEND': 'django.core.files.storage.FileSystemStorage',
+        },
+        'staticfiles': {
+            'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage',
+        },
+    }
+    MEDIA_URL = '/media/'
+
+# Media files settings - URL은 STORAGES 설정에서 결정됨
+
+# Custom storage classes for media files
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Legacy settings (for compatibility)
+DEFAULT_FILE_STORAGE = 'shopping_mall.storage_backends.MediaStorage'

@@ -1,6 +1,28 @@
 from django.db import models
 from django.conf import settings
 
+# 브랜드 로고 업로드 경로 함수
+def brand_logo_upload(instance, filename):
+    return f"brand_logos/{instance.slug}/{filename}"
+
+# 상품 이미지 업로드 경로 함수
+def product_image_upload(instance, filename):
+    return f"product_images/{instance.product.slug}/{filename}"
+
+# 착용 사진(모델 사진) 모델
+class ProductModelPhoto(models.Model):
+    product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='model_photos')
+    image = models.ImageField(upload_to='model_photos/', verbose_name='착용 사진')
+    caption = models.CharField(max_length=100, blank=True, verbose_name='설명')
+    order = models.PositiveIntegerField(default=0, verbose_name='정렬순서')
+
+    class Meta:
+        ordering = ['order', 'id']
+        verbose_name = '착용 사진'
+        verbose_name_plural = '착용 사진'
+
+    def __str__(self):
+        return f"{self.product.name} - 착용사진 {self.order}"
 
 class Category(models.Model):
     name = models.CharField(max_length=100, verbose_name="카테고리명")
@@ -15,21 +37,19 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-
 class Brand(models.Model):
     name = models.CharField(max_length=100, verbose_name="브랜드명")
     slug = models.SlugField(unique=True)
     description = models.TextField(blank=True, verbose_name="브랜드 설명")
-    logo = models.ImageField(upload_to='brands/', blank=True, verbose_name="브랜드 로고")
+    logo = models.ImageField(upload_to=brand_logo_upload, blank=True, verbose_name="브랜드 로고")
     created_at = models.DateTimeField(auto_now_add=True)
     
     class Meta:
         verbose_name = "브랜드"
         verbose_name_plural = "브랜드"
-        
+    
     def __str__(self):
         return self.name
-
 
 class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True, verbose_name="태그명")
@@ -42,7 +62,6 @@ class Tag(models.Model):
         
     def __str__(self):
         return self.name
-
 
 class Product(models.Model):
     name = models.CharField(max_length=200, verbose_name="상품명")
@@ -66,7 +85,7 @@ class Product(models.Model):
         verbose_name = "상품"
         verbose_name_plural = "상품"
         ordering = ['-created_at']
-        
+    
     def __str__(self):
         return self.name
     
@@ -79,10 +98,9 @@ class Product(models.Model):
     def current_price(self):
         return self.sale_price if self.sale_price else self.price
 
-
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='products/', verbose_name="상품 이미지")
+    image = models.ImageField(upload_to=product_image_upload, verbose_name="상품 이미지")
     alt_text = models.CharField(max_length=255, blank=True, verbose_name="대체 텍스트")
     is_main = models.BooleanField(default=False, verbose_name="메인 이미지")
     order = models.PositiveIntegerField(default=0, verbose_name="정렬순서")
@@ -91,10 +109,9 @@ class ProductImage(models.Model):
         verbose_name = "상품 이미지"
         verbose_name_plural = "상품 이미지"
         ordering = ['order']
-        
+    
     def __str__(self):
         return f"{self.product.name} - 이미지 {self.order}"
-
 
 class Review(models.Model):
     RATING_CHOICES = [
@@ -118,10 +135,9 @@ class Review(models.Model):
         verbose_name_plural = "리뷰"
         ordering = ['-created_at']
         unique_together = ['product', 'user']
-        
+    
     def __str__(self):
         return f"{self.product.name} - {self.user.username}"
-
 
 class Wishlist(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="사용자")
