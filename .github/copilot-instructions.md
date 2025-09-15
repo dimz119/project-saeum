@@ -1,0 +1,1 @@
+Everytime, it changes the code, run `source .venv/bin/activate && python manage.py collectstatic --noinput --clear` after changing the code.

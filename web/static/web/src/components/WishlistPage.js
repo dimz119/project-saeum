@@ -46,6 +46,18 @@ const WishlistPage = () => {
         }
     };
 
+    const handleAddToCart = (product) => {
+        try {
+            if (window.CartManager) {
+                window.CartManager.addToCart(product, 1);
+                alert('장바구니에 상품이 추가되었습니다.');
+            }
+        } catch (error) {
+            console.error('장바구니 추가 실패:', error);
+            alert('장바구니 추가에 실패했습니다. 다시 시도해주세요.');
+        }
+    };
+
     const handleProductClick = (productId) => {
         if (window.Router) {
             window.Router.navigate(`/products/${productId}`);
@@ -129,6 +141,10 @@ const WishlistPage = () => {
                                         className: 'btn btn-secondary',
                                         onClick: () => handleProductClick(item.product.id)
                                     }, '상품 보기'),
+                                    React.createElement('button', {
+                                        className: 'btn btn-primary',
+                                        onClick: () => handleAddToCart(item.product)
+                                    }, '장바구니 추가'),
                                     React.createElement('button', {
                                         className: 'btn btn-outline remove-btn',
                                         onClick: () => handleRemoveFromWishlist(item.product.id)
