@@ -28,19 +28,16 @@ const Header = () => {
     const updateWishlistCount = React.useCallback(async () => {
         try {
             const user = window.auth.getCurrentUserSync();
-            if (user && window.API?.wishlist) {
-                const wishlist = await window.API.wishlist.getWishlist();
-                setWishlistCount(wishlist.length);
+            if (user) {
+                const response = await window.API.wishlist.getWishlist();
+                setWishlistCount(response.length);
             } else {
                 setWishlistCount(0);
             }
         } catch (error) {
-            console.error('찜목록 카운트 업데이트 실패:', error);
-            setWishlistCount(0);
+            console.error(t('wishlist.errors.count_update_failed'), error);
         }
-    }, []);
-
-    // 장바구니 카운트 업데이트 함수
+    }, [t]);    // 장바구니 카운트 업데이트 함수
     const updateCartCount = React.useCallback(async () => {
         try {
             const user = window.auth.getCurrentUserSync();
@@ -52,7 +49,7 @@ const Header = () => {
                 setCartCount(0);
             }
         } catch (error) {
-            console.error('장바구니 카운트 업데이트 실패:', error);
+            console.error(t('cart.errors.count_update_failed'), error);
             setCartCount(0);
         }
     }, []);

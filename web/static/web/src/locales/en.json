@@ -36,18 +36,29 @@
   "pages": {
     "home": "Home",
     "products": "Products",
+    "all_products": "All Products",
+    "featured_products": "Featured Products",
+    "new_products": "New Products",
+    "sale_products": "Sale Products",
+    "top_products": "Popular Products",
     "brands": "Brands",
     "cart": "Shopping Cart",
     "orders": "Orders",
     "wishlist": "Wishlist",
     "search": "Search",
-    "not_found": "Page not found"
+    "product_search": "Product Search",
+    "not_found": "Page not found",
+    "profile": "Profile"
   },
   "auth": {
     "login_required": "Login is required for this service.",
     "login": "Login",
     "register": "Register",
-    "logout": "Logout"
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password",
+    "logging_in": "Logging in...",
+    "profile_update_error": "An error occurred while updating profile."
   },
   "product": {
     "price": "Price",
@@ -63,12 +74,20 @@
     "description": "Description",
     "features": "Features",
     "reviews": "Reviews",
+    "view_details": "View Product",
     "added_to_cart_message": " has been added to your cart.",
-    "cart_initializing": "Cart system is initializing. Please try again in a moment."
+    "cart_initializing": "Cart system is initializing. Please try again in a moment.",
+    "errors": {
+      "update_failed": "Failed to update product information"
+    }
   },
   "cart": {
     "title": "Shopping Cart",
     "empty": "Your cart is empty",
+    "empty_title": "Your cart is empty",
+    "empty_description": "Add items you love to your cart!",
+    "login_required": "Please log in to view your cart.",
+    "clear_cart": "Clear Cart",
     "item": "Item",
     "items": "Items",
     "total": "Total",
@@ -76,7 +95,10 @@
     "checkout": "Checkout",
     "remove": "Remove",
     "update_quantity": "Update Quantity",
-    "continue_shopping": "Continue Shopping"
+    "continue_shopping": "Continue Shopping",
+    "errors": {
+      "count_update_failed": "Failed to update cart count"
+    }
   },
   "order": {
     "title": "Orders",
@@ -85,21 +107,63 @@
     "status": "Status",
     "total": "Total",
     "details": "Details",
-    "view_order": "View Order"
+    "view_order": "View Order",
+    "processing": "Processing order...",
+    "completed": "Order completed successfully!",
+    "failed": "Order processing failed",
+    "error": "An error occurred while processing your order.",
+    "network_error": "A network error occurred.",
+    "load_error": "Failed to load order list.",
+    "info": "Order Information",
+    "shipping_info": "Shipping Information",
+    "no_info": "Loading order information or session has expired.",
+    "back_to_cart": "Back to Cart",
+    "go_home": "Go Home",
+    "view_orders": "View Orders",
+    "errors": {
+      "payment_preparation_error": "Payment preparation error: {{error}}"
+    }
   },
   "wishlist": {
     "title": "Wishlist",
-    "empty": "Your wishlist is empty",
+    "empty": "Your wishlist is empty.",
     "add_to_cart": "Add to Cart",
-    "remove": "Remove",
-    "view_product": "View Product"
+    "remove": "Remove from Wishlist",
+    "remove_from_wishlist": "Remove from Wishlist",
+    "view_product": "View Product",
+    "continue_shopping": "Continue Shopping",
+    "go_to_login": "Go to Login",
+    "added_to_cart": "Product has been added to your cart.",
+    "added_to_wishlist": "Added to wishlist.",
+    "removed_from_wishlist": "Removed from wishlist.",
+    "error": "An error occurred. Please try again.",
+    "errors": {
+      "load_failed": "Failed to load wishlist",
+      "remove_failed": "Failed to remove from wishlist",
+      "count_update_failed": "Failed to update wishlist count",
+      "processing_error": "Error processing wishlist"
+    }
   },
   "search": {
     "title": "Search",
-    "placeholder": "Search for products...",
-    "no_results": "No products found",
+    "product_search": "Product Search",
+    "placeholder": "Search products, brands...",
+    "no_results": "No search results found",
+    "no_results_for": "No results found for \"{{query}}\"",
     "results": "Search Results",
-    "showing_results": "Showing {{count}} results for \"{{query}}\""
+    "showing_results": "{{count}} results for \"{{query}}\"",
+    "search_suggestions": "Try different search terms",
+    "search_description": "Easily search by brand name or product type",
+    "popular_searches": "Popular Searches",
+    "search_tips": {
+      "brand": "• Try searching by brand name (e.g., Ray-Ban, Gucci)",
+      "product_type": "• Try searching by product type (e.g., sunglasses, glasses)",
+      "check_spelling": "• Check the spelling of your search terms"
+    },
+    "errors": {
+      "request_failed": "Search request failed",
+      "search_failed": "Search failed"
+    }
   },
   "common": {
     "loading": "Loading...",
@@ -116,7 +180,14 @@
     "close": "Close",
     "open": "Open",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "brand": "Brand",
+    "home": "Go Home",
+    "no_products": "No products to display.",
+    "load_products_error": "Failed to load products.",
+    "errors": {
+      "unknown": "Unknown error"
+    }
   },
   "validation": {
     "required": "This field is required",

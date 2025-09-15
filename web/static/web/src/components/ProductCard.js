@@ -49,11 +49,11 @@ const ProductCard = ({ product }) => {
             
             // 사용자에게 피드백 제공
             if (result.is_wishlisted) {
-                alert('찜목록에 추가되었습니다.');
-                console.log('찜목록에 추가되었습니다.');
+                alert(t('wishlist.added_to_wishlist'));
+                console.log(t('wishlist.added_to_wishlist'));
             } else {
-                alert('찜목록에서 제거되었습니다.');
-                console.log('찜목록에서 제거되었습니다.');
+                alert(t('wishlist.removed_from_wishlist'));
+                console.log(t('wishlist.removed_from_wishlist'));
             }
             
             // 찜 카운트 업데이트 이벤트 발생
@@ -61,7 +61,7 @@ const ProductCard = ({ product }) => {
                 window.updateWishlistCount();
             }
         } catch (error) {
-            console.error('찜목록 처리 중 오류:', error);
+            console.error(t('wishlist.errors.processing_error'), error);
             alert('오류가 발생했습니다. 다시 시도해주세요.');
         } finally {
             setIsLoading(false);

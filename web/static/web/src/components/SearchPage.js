@@ -1,5 +1,6 @@
 // 검색 페이지 컴포넌트
 const SearchPage = () => {
+    const { t } = window.useTranslation();
     const [searchQuery, setSearchQuery] = React.useState('');
     const [searchResults, setSearchResults] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
@@ -24,12 +25,12 @@ const SearchPage = () => {
         try {
             const response = await fetch(`/api/products/?search=${encodeURIComponent(query)}`);
             if (!response.ok) {
-                throw new Error('검색 요청 실패');
+                throw new Error(t('search.errors.request_failed'));
             }
             const data = await response.json();
             setSearchResults(data.results || data);
         } catch (error) {
-            console.error('검색 실패:', error);
+            console.error(t('search.errors.search_failed'), error);
             setSearchResults([]);
         } finally {
             setLoading(false);
@@ -71,7 +72,7 @@ const SearchPage = () => {
             React.createElement('div', { className: 'search-item-info' },
                 React.createElement('h3', { className: 'search-item-name' }, product.name),
                 React.createElement('p', { className: 'search-item-brand' }, 
-                    product.brand?.name || '브랜드'
+                    product.brand?.name || t('product.brand')
                 ),
                 React.createElement('div', { className: 'search-item-price' },
                     product.is_on_sale && product.sale_price
@@ -94,7 +95,7 @@ const SearchPage = () => {
     return React.createElement('div', { className: 'container' },
         React.createElement('div', { className: 'search-page' },
             React.createElement('div', { className: 'search-header' },
-                React.createElement('h1', { className: 'page-title' }, '상품 검색'),
+                React.createElement('h1', { className: 'page-title' }, t('search.product_search')),
                 React.createElement('form', { 
                     className: 'search-form',
                     onSubmit: handleSearchSubmit
@@ -103,7 +104,7 @@ const SearchPage = () => {
                         React.createElement('input', {
                             type: 'text',
                             className: 'search-input',
-                            placeholder: '상품명, 브랜드를 검색하세요...',
+                            placeholder: t('search.placeholder'),
                             value: searchQuery,
                             onChange: (e) => setSearchQuery(e.target.value)
                         }),
@@ -119,15 +120,15 @@ const SearchPage = () => {
             
             loading && React.createElement('div', { className: 'search-loading' },
                 React.createElement('div', { className: 'loading-spinner' }),
-                React.createElement('p', null, '검색 중...')
+                React.createElement('p', null, t('common.loading'))
             ),
             
             !loading && hasSearched && React.createElement('div', { className: 'search-results' },
                 React.createElement('div', { className: 'search-results-header' },
                     React.createElement('h2', null, 
                         searchResults.length > 0 
-                            ? `"${searchQuery}" 검색 결과 (${searchResults.length}개)`
-                            : `"${searchQuery}" 검색 결과가 없습니다`
+                            ? t('search.showing_results', { query: searchQuery, count: searchResults.length })
+                            : t('search.no_results_for', { query: searchQuery })
                     )
                 ),
                 
@@ -139,12 +140,12 @@ const SearchPage = () => {
                         React.createElement('div', { className: 'no-results-icon' },
                             React.createElement('i', { className: 'fas fa-search' })
                         ),
-                        React.createElement('h3', null, '검색 결과가 없습니다'),
-                        React.createElement('p', null, '다른 검색어로 시도해보세요'),
+                        React.createElement('h3', null, t('search.no_results')),
+                        React.createElement('p', null, t('search.search_suggestions')),
                         React.createElement('ul', { className: 'search-suggestions' },
-                            React.createElement('li', null, '• 브랜드명으로 검색해보세요 (예: 레이밴, 구찌)'),
-                            React.createElement('li', null, '• 상품 종류로 검색해보세요 (예: 선글라스, 안경)'),
-                            React.createElement('li', null, '• 검색어의 철자를 확인해보세요')
+                            React.createElement('li', null, t('search.search_tips.brand')),
+                            React.createElement('li', null, t('search.search_tips.product_type')),
+                            React.createElement('li', null, t('search.search_tips.check_spelling'))
                         )
                     )
             ),

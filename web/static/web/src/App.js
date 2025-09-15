@@ -140,21 +140,21 @@ const App = () => {
                     
                     // Featured Products Section
                     React.createElement(window.Components.ProductList, {
-                        title: '추천 상품',
+                        title: t('pages.featured_products'),
                         apiUrl: '/api/products/featured/',
                         sectionId: 'featured-products'
                     }),
                     
                     // Top Rated Products Section
                     React.createElement(window.Components.ProductList, {
-                        title: '인기 상품',
+                        title: t('pages.top_products'),
                         apiUrl: '/api/products/?ordering=-created_at',
                         sectionId: 'top-products'
                     }),
                     
                     // New Products Section
                     React.createElement(window.Components.ProductList, {
-                        title: '신상품',
+                        title: t('pages.new_products'),
                         apiUrl: '/api/products/new/',
                         sectionId: 'new-products'
                     })
@@ -162,7 +162,7 @@ const App = () => {
             
             case 'products':
                 return React.createElement('div', { className: 'container' },
-                    React.createElement('h1', { className: 'page-title' }, '전체 상품'),
+                    React.createElement('h1', { className: 'page-title' }, t('pages.all_products')),
                     React.createElement(window.Components.ProductList, {
                         title: '',
                         apiUrl: '/api/products/',
@@ -172,7 +172,7 @@ const App = () => {
             
             case 'products-featured':
                 return React.createElement('div', { className: 'container' },
-                    React.createElement('h1', { className: 'page-title' }, '추천 상품'),
+                    React.createElement('h1', { className: 'page-title' }, t('pages.featured_products')),
                     React.createElement(window.Components.ProductList, {
                         title: '',
                         apiUrl: '/api/products/featured/',
@@ -182,7 +182,7 @@ const App = () => {
             
             case 'products-new':
                 return React.createElement('div', { className: 'container' },
-                    React.createElement('h1', { className: 'page-title' }, '신상품'),
+                    React.createElement('h1', { className: 'page-title' }, t('pages.new_products')),
                     React.createElement(window.Components.ProductList, {
                         title: '',
                         apiUrl: '/api/products/new/',
@@ -192,7 +192,7 @@ const App = () => {
             
             case 'products-sale':
                 return React.createElement('div', { className: 'container' },
-                    React.createElement('h1', { className: 'page-title' }, '세일 상품'),
+                    React.createElement('h1', { className: 'page-title' }, t('pages.sale_products')),
                     React.createElement(window.Components.ProductList, {
                         title: '',
                         apiUrl: '/api/products/sale/',

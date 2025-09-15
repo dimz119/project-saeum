@@ -1,5 +1,8 @@
 // 찜목록 컴포넌트
 const WishlistPage = () => {
+    // i18n hook 사용
+    const { t } = window.useTranslation ? window.useTranslation() : { t: window.t || ((key) => key) };
+    
     const [wishlistItems, setWishlistItems] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(null);
@@ -14,7 +17,7 @@ const WishlistPage = () => {
             const user = window.auth.getCurrentUserSync();
             
             if (!user) {
-                setError('로그인이 필요한 서비스입니다.');
+                setError(t('auth.login_required'));
                 setLoading(false);
                 return;
             }
@@ -23,8 +26,8 @@ const WishlistPage = () => {
             setWishlistItems(response);
             setError(null);
         } catch (err) {
-            console.error('찜목록 로드 실패:', err);
-            setError('찜목록을 불러오는데 실패했습니다.');
+            console.error(t('wishlist.errors.load_failed'), err);
+            setError(t('wishlist.errors.load_failed'));
         } finally {
             setLoading(false);
         }
@@ -41,8 +44,8 @@ const WishlistPage = () => {
                 window.updateWishlistCount();
             }
         } catch (error) {
-            console.error('찜목록 제거 실패:', error);
-            alert('오류가 발생했습니다. 다시 시도해주세요.');
+            console.error(t('wishlist.errors.remove_failed'), error);
+            alert(t('wishlist.error'));
         }
     };
 
@@ -50,7 +53,7 @@ const WishlistPage = () => {
         try {
             if (window.CartManager) {
                 window.CartManager.addToCart(product, 1);
-                alert('장바구니에 상품이 추가되었습니다.');
+                alert(t('wishlist.added_to_cart'));
             }
         } catch (error) {
             console.error('장바구니 추가 실패:', error);
@@ -66,7 +69,7 @@ const WishlistPage = () => {
 
     if (loading) {
         return React.createElement('div', { className: 'container' },
-            React.createElement('div', { className: 'loading' }, '로딩 중...')
+            React.createElement('div', { className: 'loading' }, t('common.loading'))
         );
     }
 
@@ -77,22 +80,22 @@ const WishlistPage = () => {
                 React.createElement('button', {
                     className: 'btn btn-primary',
                     onClick: () => window.Router && window.Router.navigate('/login/')
-                }, '로그인하러 가기')
+                }, t('auth.go_to_login'))
             )
         );
     }
 
     return React.createElement('div', { className: 'container' },
         React.createElement('div', { className: 'wishlist-page' },
-            React.createElement('h1', { className: 'page-title' }, '찜목록'),
+            React.createElement('h1', { className: 'page-title' }, t('pages.wishlist')),
             
             wishlistItems.length === 0 
                 ? React.createElement('div', { className: 'empty-wishlist' },
-                    React.createElement('p', null, '찜한 상품이 없습니다.'),
+                    React.createElement('p', null, t('wishlist.empty')),
                     React.createElement('button', {
                         className: 'btn btn-primary',
                         onClick: () => window.Router && window.Router.navigate('/')
-                    }, '쇼핑 계속하기')
+                    }, t('common.continue_shopping'))
                 )
                 : React.createElement('div', { className: 'wishlist-grid' },
                     wishlistItems.map(item => 
@@ -120,7 +123,7 @@ const WishlistPage = () => {
                                     style: { cursor: 'pointer' }
                                 }, item.product.name),
                                 React.createElement('p', { className: 'product-brand' }, 
-                                    item.product.brand?.name || '브랜드'
+                                    item.product.brand?.name || t('product.brand')
                                 ),
                                 React.createElement('div', { className: 'product-price' },
                                     item.product.is_on_sale && item.product.sale_price
@@ -140,7 +143,7 @@ const WishlistPage = () => {
                                     React.createElement('button', {
                                         className: 'btn btn-secondary',
                                         onClick: () => handleProductClick(item.product.id)
-                                    }, '상품 보기'),
+                                    }, t('product.view_details')),
                                     React.createElement('button', {
                                         className: 'btn btn-primary',
                                         onClick: () => handleAddToCart(item.product)
@@ -148,7 +151,7 @@ const WishlistPage = () => {
                                     React.createElement('button', {
                                         className: 'btn btn-outline remove-btn',
                                         onClick: () => handleRemoveFromWishlist(item.product.id)
-                                    }, '찜목록에서 제거')
+                                    }, t('wishlist.remove_from_wishlist'))
                                 )
                             )
                         )

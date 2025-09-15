@@ -1,5 +1,8 @@
 // 상품 목록 컴포넌트
 const ProductList = ({ title, apiUrl, sectionId, filterParams }) => {
+    // i18n hook 사용
+    const { t } = window.useTranslation ? window.useTranslation() : { t: window.t || ((key) => key) };
+    
     const [products, setProducts] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(null);
@@ -30,7 +33,7 @@ const ProductList = ({ title, apiUrl, sectionId, filterParams }) => {
             
             const response = await fetch(url);
             if (!response.ok) {
-                throw new Error(`상품을 불러오는데 실패했습니다. (${response.status})`);
+                throw new Error(t('common.load_products_error'));
             }
             const data = await response.json();
             console.log(`ProductList received data:`, data); // 디버깅 로그 추가
@@ -44,7 +47,7 @@ const ProductList = ({ title, apiUrl, sectionId, filterParams }) => {
     };
 
     if (loading) {
-        return React.createElement('div', { className: 'loading' }, '로딩 중...');
+        return React.createElement('div', { className: 'loading' }, t('common.loading'));
     }
 
     if (error) {
@@ -57,7 +60,7 @@ const ProductList = ({ title, apiUrl, sectionId, filterParams }) => {
             React.createElement('div', { className: 'container' },
                 React.createElement('h2', { className: 'section-title' }, title),
                 React.createElement('div', { className: 'no-products' }, 
-                    React.createElement('p', null, '표시할 상품이 없습니다.')
+                    React.createElement('p', null, t('common.no_products'))
                 )
             )
         );

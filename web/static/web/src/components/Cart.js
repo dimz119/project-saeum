@@ -1,5 +1,6 @@
 // 장바구니 페이지 컴포넌트
 const Cart = () => {
+    const { t } = window.useTranslation();
     const [cartItems, setCartItems] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
     const [user, setUser] = React.useState(null);
@@ -35,7 +36,7 @@ const Cart = () => {
                         };
                     }
                 } catch (error) {
-                    console.error('상품 정보 업데이트 실패:', error);
+                    console.error(t('product.errors.update_failed'), error);
                 }
                 return item; // 업데이트 실패시 기존 아이템 반환
             }));
@@ -89,7 +90,7 @@ const Cart = () => {
         }
         
         if (cartItems.length === 0) {
-            alert('장바구니가 비어있습니다.');
+            alert(t('cart.empty'));
             return;
         }
 
@@ -127,7 +128,7 @@ const Cart = () => {
                 }
             } else {
                 const errorData = await response.json();
-                alert(`결제 준비 중 오류가 발생했습니다: ${errorData.error || '알 수 없는 오류'}`);
+                alert(t('order.errors.payment_preparation_error', { error: errorData.error || t('common.errors.unknown') }));
             }
         } catch (error) {
             console.error('체크아웃 오류:', error);
@@ -171,7 +172,7 @@ const Cart = () => {
                         className: 'empty-cart-icon'
                     }, '🔒'),
                     React.createElement('h2', null, '로그인이 필요합니다'),
-                    React.createElement('p', null, '장바구니를 보려면 로그인해주세요.'),
+                    React.createElement('p', null, t('cart.login_required')),
                     React.createElement('button', {
                         className: 'btn btn-primary',
                         onClick: () => {
@@ -194,15 +195,15 @@ const Cart = () => {
             },
                 React.createElement('h1', {
                     className: 'cart-title'
-                }, '장바구니'),
+                }, t('cart.title')),
                 React.createElement('div', {
                     className: 'empty-cart'
                 },
                     React.createElement('div', {
                         className: 'empty-cart-icon'
                     }, '🛒'),
-                    React.createElement('h2', null, '장바구니가 비어있습니다'),
-                    React.createElement('p', null, '마음에 드는 상품을 담아보세요!'),
+                    React.createElement('h2', null, t('cart.empty_title')),
+                    React.createElement('p', null, t('cart.empty_description')),
                     React.createElement('button', {
                         className: 'btn btn-primary',
                         onClick: () => {
@@ -226,7 +227,7 @@ const Cart = () => {
             },
                 React.createElement('h1', {
                     className: 'cart-title'
-                }, '장바구니'),
+                }, t('cart.title')),
                 
                 // 장바구니 아이템들
                 React.createElement('div', {
@@ -309,7 +310,7 @@ const Cart = () => {
                             className: 'btn btn-secondary',
                             onClick: clearCart,
                             disabled: loading
-                        }, '장바구니 비우기'),
+                        }, t('cart.clear_cart')),
                         React.createElement('button', {
                             className: 'btn btn-outline',
                             onClick: () => {
