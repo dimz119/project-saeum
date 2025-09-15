@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Category, Brand, Product, ProductImage, Review, Tag, Wishlist, ModelPhoto
+from .models import Category, Brand, Product, ProductImage, Review, Tag, Wishlist, ModelPhoto, Announcement
 
 
 class ProductImageInline(admin.TabularInline):
@@ -129,3 +129,15 @@ class ModelPhotoAdmin(admin.ModelAdmin):
             return format_html('<img src="{}" width="100" height="100" />', obj.image.url)
         return "이미지 없음"
     image_preview.short_description = "이미지 미리보기"
+
+
+@admin.register(Announcement)
+class AnnouncementAdmin(admin.ModelAdmin):
+    list_display = ['title', 'is_active', 'is_banner', 'start_date', 'end_date', 'created_at']
+    list_filter = ['is_active', 'is_banner', 'created_at']
+    search_fields = ['title', 'content']
+    list_editable = ['is_active', 'is_banner']
+    fields = ['title', 'content', 'is_active', 'is_banner', 'start_date', 'end_date']
+    
+    class Meta:
+        model = Announcement

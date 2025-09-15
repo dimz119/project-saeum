@@ -2,6 +2,24 @@
 const Header = () => {
     const [wishlistCount, setWishlistCount] = React.useState(0);
     const [cartCount, setCartCount] = React.useState(0);
+    const [announcement, setAnnouncement] = React.useState({ title: '', id: null });
+    
+    // 공지사항 로드 함수
+    const loadAnnouncement = React.useCallback(async () => {
+        try {
+            console.log('공지사항 로드 시작');
+            const response = await fetch('/api/products/announcements/latest/');
+            if (response.ok) {
+                const data = await response.json();
+                console.log('공지사항 데이터:', data);
+                setAnnouncement({ title: data.title, id: data.id });
+            } else {
+                console.log('공지사항 응답 실패:', response.status);
+            }
+        } catch (error) {
+            console.error('공지사항 로드 실패:', error);
+        }
+    }, []);
     
     // 찜목록 카운트 업데이트 함수
     const updateWishlistCount = React.useCallback(async () => {
@@ -40,6 +58,7 @@ const Header = () => {
     React.useEffect(() => {
         updateWishlistCount();
         updateCartCount();
+        loadAnnouncement();
         
         // 전역 함수로 등록하여 다른 컴포넌트에서 호출 가능하게 함
         window.updateWishlistCount = updateWishlistCount;
@@ -50,7 +69,7 @@ const Header = () => {
             delete window.updateWishlistCount;
             delete window.updateCartCount;
         };
-    }, [updateWishlistCount, updateCartCount]);
+    }, [updateWishlistCount, updateCartCount, loadAnnouncement]);
 
     const handleNavigation = (path, e) => {
         e.preventDefault();
@@ -61,10 +80,28 @@ const Header = () => {
         }
     };
 
+    const handleAnnouncementClick = (e) => {
+        e.preventDefault();
+        console.log('공지사항 클릭됨:', announcement);
+        console.log('Router 존재 여부:', !!window.Router);
+        if (announcement.id && window.Router) {
+            console.log('네비게이션 실행:', `/announcements/${announcement.id}`);
+            window.Router.navigate(`/announcements/${announcement.id}`);
+        } else {
+            console.log('네비게이션 실패 - announcement.id:', announcement.id, 'Router:', !!window.Router);
+            // 폴백으로 일반 페이지 이동 시도
+            if (announcement.id) {
+                window.location.href = `/announcements/${announcement.id}`;
+            }
+        }
+    };
+
     return React.createElement('div', null,
-        React.createElement('div', { className: 'header-top' },
-            '🎉 8월 스페셜 혜택 - 전 상품 무료배송! 🚚'
-        ),
+        announcement.title && React.createElement('div', { 
+            className: 'header-top',
+            onClick: handleAnnouncementClick,
+            style: { cursor: announcement.id ? 'pointer' : 'default' }
+        }, announcement.title),
         React.createElement('header', { className: 'header' },
             React.createElement('div', { className: 'container' },
                 React.createElement('nav', { className: 'navbar' },

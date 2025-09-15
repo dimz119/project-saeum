@@ -21,6 +21,10 @@ urlpatterns = [
     path('reviews/<int:review_id>/delete/', views.review_delete, name='review-delete'),
     path('<int:product_id>/reviews/', views.product_reviews, name='product-reviews'),
     
+    # Announcement API Routes
+    path('announcements/latest/', views.latest_announcement, name='latest-announcement'),
+    path('announcements/<int:announcement_id>/', views.announcement_detail, name='announcement-detail'),
+    
     # Product detail routes
     path('<int:pk>/', views.ProductDetailByIdView.as_view(), name='product-detail-by-id'),
     path('<slug:slug>/', views.ProductDetailView.as_view(), name='product-detail'),

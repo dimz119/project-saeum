@@ -45,6 +45,9 @@ const App = () => {
                    path === '/checkout-success' || path === '/checkout-success/' || path.startsWith('/checkout-success/?')) {
             setCurrentPage('checkout-success');
             setSelectedProductId(null);
+        } else if (path.startsWith('/announcements/')) {
+            setCurrentPage('announcement-detail');
+            setSelectedProductId(null);
         } else if (path.startsWith('/products/')) {
             const segments = path.split('/');
             const id = segments[2];
@@ -178,6 +181,9 @@ const App = () => {
             
             case 'checkout-success':
                 return React.createElement(window.Components.CheckoutSuccess);
+            
+            case 'announcement-detail':
+                return React.createElement(window.Components.AnnouncementDetail);
             
             default:
                 return React.createElement('div', null, '페이지를 찾을 수 없습니다.');

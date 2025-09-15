@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 import json
-from .models import Category, Brand, Product, Wishlist, Review
+from .models import Category, Brand, Product, Wishlist, Review, Announcement
 from .serializers import (
     CategorySerializer, BrandSerializer, 
     ProductListSerializer, ProductDetailSerializer, WishlistSerializer, ReviewSerializer
@@ -215,3 +215,38 @@ def product_reviews(request, product_id):
     reviews = Review.objects.filter(product_id=product_id).order_by('-created_at')
     serializer = ReviewSerializer(reviews, many=True)
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def latest_announcement(request):
+    """최신 활성 공지사항 조회"""
+    print(f"[DEBUG] latest_announcement 호출됨")
+    announcement = Announcement.objects.filter(is_active=True, is_banner=True).first()
+    print(f"[DEBUG] 찾은 공지사항: {announcement}")
+    if announcement:
+        response_data = {
+            'id': announcement.id,
+            'title': announcement.title,
+            'content': announcement.content,
+            'created_at': announcement.created_at
+        }
+        print(f"[DEBUG] 응답 데이터: {response_data}")
+        return Response(response_data)
+    print(f"[DEBUG] 공지사항 없음")
+    return Response({'title': '', 'content': ''})
+
+
+@api_view(['GET'])
+def announcement_detail(request, announcement_id):
+    """공지사항 상세 조회"""
+    try:
+        announcement = get_object_or_404(Announcement, id=announcement_id, is_active=True)
+        return Response({
+            'id': announcement.id,
+            'title': announcement.title,
+            'content': announcement.content,
+            'created_at': announcement.created_at,
+            'updated_at': announcement.updated_at
+        })
+    except:
+        return Response({'error': '공지사항을 찾을 수 없습니다.'}, status=404)

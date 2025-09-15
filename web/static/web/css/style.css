@@ -2143,3 +2143,82 @@ body {
         padding: 0.4rem 0.8rem;
     }
 }
+
+/* 공지사항 상세 페이지 스타일 */
+.announcement-detail {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.back-btn {
+    margin-bottom: 2rem;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+}
+
+.announcement-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.announcement-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+}
+
+.announcement-meta {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.announcement-date {
+    font-weight: 500;
+}
+
+.announcement-updated {
+    color: #495057;
+    font-style: italic;
+}
+
+.announcement-content {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #495057;
+}
+
+.announcement-content p {
+    margin-bottom: 1rem;
+}
+
+.announcement-content p:empty {
+    margin-bottom: 0.5rem;
+}
+
+/* 헤더 상단 배너 호버 효과 */
+.header-top {
+    transition: background-color 0.3s ease;
+}
+
+.header-top:hover {
+    background-color: #2980b9;
+}
+
+/* 모바일 반응형 */
+@media (max-width: 768px) {
+    .announcement-detail {
+        padding: 1rem 0.5rem;
+    }
+    
+    .announcement-title {
+        font-size: 1.5rem;
+    }
+    
+    .announcement-content {
+        font-size: 1rem;
+    }
+}

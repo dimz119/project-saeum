@@ -155,3 +155,22 @@ class ModelPhoto(models.Model):
         
     def __str__(self):
         return f"{self.product.name} - 착용사진 {self.order}"
+
+
+class Announcement(models.Model):
+    title = models.CharField(max_length=200, verbose_name="공지사항 제목")
+    content = models.TextField(verbose_name="공지사항 내용")
+    is_active = models.BooleanField(default=True, verbose_name="활성화")
+    is_banner = models.BooleanField(default=False, verbose_name="상단 배너 표시")
+    start_date = models.DateTimeField(null=True, blank=True, verbose_name="시작일")
+    end_date = models.DateTimeField(null=True, blank=True, verbose_name="종료일")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="생성일")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="수정일")
+    
+    class Meta:
+        verbose_name = "공지사항"
+        verbose_name_plural = "공지사항"
+        ordering = ['-created_at']
+        
+    def __str__(self):
+        return self.title
