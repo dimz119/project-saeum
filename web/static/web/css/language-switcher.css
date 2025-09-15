@@ -1,0 +1,63 @@
+/* Language Switcher Styles */
+.footer .language-section {
+    min-width: 150px;
+}
+
+.footer .language-switcher {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.footer .language-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    min-width: 60px;
+}
+
+.footer .language-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.footer .language-btn.active {
+    background: #007bff;
+    border-color: #007bff;
+    color: white;
+}
+
+.footer .language-btn.active:hover {
+    background: #0056b3;
+    border-color: #0056b3;
+}
+
+/* Responsive design for language switcher */
+@media (max-width: 768px) {
+    .footer .language-switcher {
+        justify-content: center;
+        margin-top: 15px;
+    }
+    
+    .footer .language-section {
+        text-align: center;
+    }
+}
+
+/* Footer content responsive adjustments */
+@media (max-width: 768px) {
+    .footer .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+    
+    .footer .footer-section {
+        margin-bottom: 20px;
+    }
+}

@@ -1,0 +1,138 @@
+{
+  "header": {
+    "brand": "MonthlyLook",
+    "featured_products": "Featured Products",
+    "brands": "Brands",
+    "new_products": "New Products",
+    "sale": "Sale",
+    "search": "Search",
+    "wishlist": "Wishlist",
+    "cart": "Cart",
+    "login": "Login",
+    "register": "Register"
+  },
+  "footer": {
+    "brand": "MonthlyLook",
+    "brand_description": "Premium fashion platform suggesting new styles every month",
+    "customer_service": "Customer Service",
+    "phone": "Phone: 1588-0000",
+    "email": "Email: support@monthlylook.com",
+    "information": "Information",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "copyright": "© 2024 MonthlyLook. All rights reserved.",
+    "language_switcher": "Language",
+    "select_english": "English",
+    "select_korean": "한국어"
+  },
+  "hero": {
+    "title": "New Style Every Month",
+    "subtitle": "Discover trendy fashion and lifestyle collections refreshed monthly",
+    "shop_now": "Shop Now",
+    "view_collection": "View Collection",
+    "new_collection_alt": "New Collection",
+    "premium_alt": "Premium"
+  },
+  "pages": {
+    "home": "Home",
+    "products": "Products",
+    "brands": "Brands",
+    "cart": "Shopping Cart",
+    "orders": "Orders",
+    "wishlist": "Wishlist",
+    "search": "Search",
+    "not_found": "Page not found"
+  },
+  "auth": {
+    "login_required": "Login is required for this service.",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout"
+  },
+  "product": {
+    "price": "Price",
+    "sale_price": "Sale Price",
+    "original_price": "Original Price",
+    "brand": "Brand",
+    "add_to_cart": "Add to Cart",
+    "add_to_wishlist": "Add to Wishlist",
+    "remove_from_wishlist": "Remove from Wishlist",
+    "out_of_stock": "Out of Stock",
+    "in_stock": "In Stock",
+    "quantity": "Quantity",
+    "description": "Description",
+    "features": "Features",
+    "reviews": "Reviews",
+    "added_to_cart_message": " has been added to your cart.",
+    "cart_initializing": "Cart system is initializing. Please try again in a moment."
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "empty": "Your cart is empty",
+    "item": "Item",
+    "items": "Items",
+    "total": "Total",
+    "subtotal": "Subtotal",
+    "checkout": "Checkout",
+    "remove": "Remove",
+    "update_quantity": "Update Quantity",
+    "continue_shopping": "Continue Shopping"
+  },
+  "order": {
+    "title": "Orders",
+    "order_number": "Order Number",
+    "date": "Date",
+    "status": "Status",
+    "total": "Total",
+    "details": "Details",
+    "view_order": "View Order"
+  },
+  "wishlist": {
+    "title": "Wishlist",
+    "empty": "Your wishlist is empty",
+    "add_to_cart": "Add to Cart",
+    "remove": "Remove",
+    "view_product": "View Product"
+  },
+  "search": {
+    "title": "Search",
+    "placeholder": "Search for products...",
+    "no_results": "No products found",
+    "results": "Search Results",
+    "showing_results": "Showing {{count}} results for \"{{query}}\""
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Retry",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "close": "Close",
+    "open": "Open",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Please enter a valid email address",
+    "password": "Password must be at least 8 characters",
+    "confirm_password": "Passwords do not match",
+    "phone": "Please enter a valid phone number"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "shipping_address": "Shipping Address",
+    "billing_address": "Billing Address",
+    "payment_method": "Payment Method",
+    "order_summary": "Order Summary",
+    "place_order": "Place Order",
+    "success": "Order placed successfully!",
+    "thank_you": "Thank you for your order"
+  }
+}

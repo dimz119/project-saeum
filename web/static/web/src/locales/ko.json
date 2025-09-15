@@ -1,0 +1,138 @@
+{
+  "header": {
+    "brand": "먼슬리룩",
+    "featured_products": "추천상품",
+    "brands": "브랜드",
+    "new_products": "신상품",
+    "sale": "세일",
+    "search": "검색",
+    "wishlist": "위시리스트",
+    "cart": "장바구니",
+    "login": "로그인",
+    "register": "회원가입"
+  },
+  "footer": {
+    "brand": "먼슬리룩",
+    "brand_description": "매월 새로운 스타일을 제안하는 프리미엄 패션 플랫폼",
+    "customer_service": "고객센터",
+    "phone": "전화: 1588-0000",
+    "email": "이메일: support@monthlylook.com",
+    "information": "정보",
+    "terms": "이용약관",
+    "privacy": "개인정보처리방침",
+    "copyright": "© 2024 먼슬리룩. 모든 권리 보유.",
+    "language_switcher": "언어",
+    "select_english": "English",
+    "select_korean": "한국어"
+  },
+  "hero": {
+    "title": "매월 새로운 스타일",
+    "subtitle": "트렌디한 패션과 라이프스타일을 매월 새롭게 만나보세요",
+    "shop_now": "지금 쇼핑하기",
+    "view_collection": "컬렉션 보기",
+    "new_collection_alt": "신상품 컬렉션",
+    "premium_alt": "프리미엄"
+  },
+  "pages": {
+    "home": "홈",
+    "products": "상품",
+    "brands": "브랜드",
+    "cart": "장바구니",
+    "orders": "주문내역",
+    "wishlist": "위시리스트",
+    "search": "검색",
+    "not_found": "페이지를 찾을 수 없습니다"
+  },
+  "auth": {
+    "login_required": "로그인이 필요한 서비스입니다.",
+    "login": "로그인",
+    "register": "회원가입",
+    "logout": "로그아웃"
+  },
+  "product": {
+    "price": "가격",
+    "sale_price": "할인가",
+    "original_price": "정가",
+    "brand": "브랜드",
+    "add_to_cart": "장바구니 담기",
+    "add_to_wishlist": "위시리스트 추가",
+    "remove_from_wishlist": "위시리스트 제거",
+    "out_of_stock": "품절",
+    "in_stock": "재고있음",
+    "quantity": "수량",
+    "description": "상품설명",
+    "features": "상품특징",
+    "reviews": "리뷰",
+    "added_to_cart_message": "이(가) 장바구니에 추가되었습니다.",
+    "cart_initializing": "장바구니 기능을 초기화 중입니다. 잠시 후 다시 시도해주세요."
+  },
+  "cart": {
+    "title": "장바구니",
+    "empty": "장바구니가 비어있습니다",
+    "item": "개",
+    "items": "개",
+    "total": "총 금액",
+    "subtotal": "소계",
+    "checkout": "결제하기",
+    "remove": "삭제",
+    "update_quantity": "수량 변경",
+    "continue_shopping": "쇼핑 계속하기"
+  },
+  "order": {
+    "title": "주문내역",
+    "order_number": "주문번호",
+    "date": "주문일자",
+    "status": "상태",
+    "total": "총 금액",
+    "details": "상세정보",
+    "view_order": "주문 보기"
+  },
+  "wishlist": {
+    "title": "위시리스트",
+    "empty": "위시리스트가 비어있습니다",
+    "add_to_cart": "장바구니 담기",
+    "remove": "삭제",
+    "view_product": "상품 보기"
+  },
+  "search": {
+    "title": "검색",
+    "placeholder": "상품을 검색하세요...",
+    "no_results": "검색 결과가 없습니다",
+    "results": "검색 결과",
+    "showing_results": "\"{{query}}\"에 대한 {{count}}개의 결과"
+  },
+  "common": {
+    "loading": "로딩중...",
+    "error": "오류가 발생했습니다",
+    "retry": "재시도",
+    "cancel": "취소",
+    "confirm": "확인",
+    "save": "저장",
+    "edit": "수정",
+    "delete": "삭제",
+    "back": "뒤로",
+    "next": "다음",
+    "previous": "이전",
+    "close": "닫기",
+    "open": "열기",
+    "yes": "예",
+    "no": "아니오"
+  },
+  "validation": {
+    "required": "필수 입력 항목입니다",
+    "email": "올바른 이메일 주소를 입력하세요",
+    "password": "비밀번호는 최소 8자 이상이어야 합니다",
+    "confirm_password": "비밀번호가 일치하지 않습니다",
+    "phone": "올바른 전화번호를 입력하세요"
+  },
+  "checkout": {
+    "title": "결제",
+    "shipping_address": "배송 주소",
+    "billing_address": "청구 주소",
+    "payment_method": "결제 방법",
+    "order_summary": "주문 요약",
+    "place_order": "주문하기",
+    "success": "주문이 성공적으로 완료되었습니다!",
+    "thank_you": "주문해 주셔서 감사합니다"
+  }
+}

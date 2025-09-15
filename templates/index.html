@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -503,25 +504,101 @@
                 flex-direction: column;
             }
         }
+        
+        /* Language Switcher Styles */
+        .footer .language-section {
+            min-width: 150px;
+        }
+
+        .footer .language-switcher {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .footer .language-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            min-width: 60px;
+        }
+
+        .footer .language-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .footer .language-btn.active {
+            background: #007bff;
+            border-color: #007bff;
+            color: white;
+        }
+
+        .footer .language-btn.active:hover {
+            background: #0056b3;
+            border-color: #0056b3;
+        }
+
+        /* Responsive design for language switcher */
+        @media (max-width: 768px) {
+            .footer .language-switcher {
+                justify-content: center;
+                margin-top: 15px;
+            }
+            
+            .footer .language-section {
+                text-align: center;
+            }
+        }
+
+        /* Footer content responsive adjustments */
+        @media (max-width: 768px) {
+            .footer .footer-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            
+            .footer .footer-section {
+                margin-bottom: 20px;
+            }
+        }
     </style>
 </head>
 <body>
     <div id="root">
-        <div class="loading">로딩 중...</div>
+        <div class="loading">Loading... 로딩 중...</div>
     </div>
 
     <!-- 설정 및 컴포넌트 로드 -->
-    <script type="text/babel" src="{% load static %}web/src/config.js"></script>
-    <script type="text/babel" src="{% load static %}web/src/utils/auth.js"></script>
-    <script type="text/babel" src="{% load static %}web/src/utils/cartManager.js"></script>
-    <script type="text/babel" src="{% load static %}web/src/utils/router.js"></script>
-    <script type="text/babel" src="{% load static %}web/src/components/Header.js"></script>
-    <script type="text/babel" src="{% load static %}web/src/components/Footer.js"></script>
-    <script type="text/babel" src="{% load static %}web/src/components/ProductList.js"></script>
-    <script type="text/babel" src="{% load static %}web/src/components/ProductDetail.js"></script>
-    <script type="text/babel" src="{% load static %}web/src/components/Cart.js"></script>
-    <script type="text/babel" src="{% load static %}web/src/components/SearchPage.js"></script>
-    <script type="text/babel" src="{% load static %}web/src/components/CheckoutSuccess.js"></script>
-    <script type="text/babel" src="{% load static %}web/src/App.js"></script>
+    <script src="{% static 'web/src/i18n.js' %}"></script>
+    <script type="text/babel" src="{% static 'web/src/config.js' %}"></script>
+    <script type="text/babel" src="{% static 'web/src/utils/auth.js' %}"></script>
+    <script type="text/babel" src="{% static 'web/src/utils/api.js' %}"></script>
+    <script type="text/babel" src="{% static 'web/src/components/Header.js' %}"></script>
+    <script type="text/babel" src="{% static 'web/src/components/Footer.js' %}"></script>
+    <script type="text/babel" src="{% static 'web/src/App.js' %}"></script>
+    
+    <!-- Initialize App -->
+    <script type="text/babel">
+        // Wait for i18n to be ready, then render the app
+        function initializeApp() {
+            if (window.i18n && window.Components && window.Components.App) {
+                const root = ReactDOM.createRoot(document.getElementById('root'));
+                root.render(React.createElement(window.Components.App));
+            } else {
+                // Retry after a short delay
+                setTimeout(initializeApp, 100);
+            }
+        }
+        
+        // Start initialization
+        initializeApp();
+    </script>
 </body>
 </html>

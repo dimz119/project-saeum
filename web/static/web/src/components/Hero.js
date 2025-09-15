@@ -1,5 +1,8 @@
 // Hero 섹션 컴포넌트
 const Hero = () => {
+    // i18n hook 사용 - Header/Footer와 동일한 방식
+    const { t } = window.useTranslation ? window.useTranslation() : { t: window.t || ((key) => key) };
+
     const handleShopNow = () => {
         if (window.Router) {
             window.Router.navigate('/products');
@@ -11,17 +14,17 @@ const Hero = () => {
         React.createElement('div', { className: 'container' },
             React.createElement('div', { className: 'hero-content' },
                 React.createElement('div', { className: 'hero-text' },
-                    React.createElement('h1', null, '매월 새로운 스타일'),
-                    React.createElement('p', null, '트렌디한 패션과 라이프스타일을 매월 새롭게 만나보세요'),
+                    React.createElement('h1', null, t('hero.title')),
+                    React.createElement('p', null, t('hero.subtitle')),
                     React.createElement('div', { className: 'hero-actions' },
                         React.createElement('button', { 
                             className: 'btn btn-primary btn-large',
                             onClick: handleShopNow
-                        }, '지금 쇼핑하기'),
+                        }, t('hero.shop_now')),
                         React.createElement('button', { 
                             className: 'btn btn-outline btn-large',
                             onClick: () => document.getElementById('featured-products')?.scrollIntoView({ behavior: 'smooth' })
-                        }, '컬렉션 보기')
+                        }, t('hero.view_collection'))
                     )
                 ),
                 React.createElement('div', { className: 'hero-image' },
@@ -30,13 +33,13 @@ const Hero = () => {
                         React.createElement('div', { className: 'floating-product floating-1' },
                             React.createElement('img', {
                                 src: '/static/web/img/main1.jpeg',
-                                alt: 'New Collection'
+                                alt: t('hero.new_collection_alt')
                             })
                         ),
                         React.createElement('div', { className: 'floating-product floating-2' },
                             React.createElement('img', {
                                 src: '/static/web/img/main2.jpeg',
-                                alt: 'Premium'
+                                alt: t('hero.premium_alt')
                             })
                         )
                     )

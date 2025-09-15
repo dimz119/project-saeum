@@ -1,5 +1,8 @@
 // 상품 카드 컴포넌트
 const ProductCard = ({ product }) => {
+    // i18n hook 사용 - Header/Footer와 동일한 방식
+    const { t } = window.useTranslation ? window.useTranslation() : { t: window.t || ((key) => key) };
+    
     const [isWishlisted, setIsWishlisted] = React.useState(false);
     const [isLoading, setIsLoading] = React.useState(false);
     
@@ -180,7 +183,7 @@ const ProductCard = ({ product }) => {
                         // 로그인 확인
                         const user = window.auth?.getCurrentUserSync();
                         if (!user) {
-                            alert('로그인이 필요한 서비스입니다.');
+                            alert(t('auth.login_required'));
                             if (window.Router) {
                                 window.Router.navigate('/login/');
                             }
@@ -190,12 +193,12 @@ const ProductCard = ({ product }) => {
                         if (window.CartManager) {
                             window.CartManager.addToCart(product, 1);
                             // 성공 메시지 표시
-                            alert(`${product.name}이(가) 장바구니에 추가되었습니다.`);
+                            alert(`${product.name}${t('product.added_to_cart_message')}`);
                         } else {
-                            alert('장바구니 기능을 초기화 중입니다. 잠시 후 다시 시도해주세요.');
+                            alert(t('product.cart_initializing'));
                         }
                     }
-                }, '장바구니'),
+                }, t('product.add_to_cart')),
                 React.createElement('button', {
                     className: `btn-wishlist ${isWishlisted ? 'active' : ''}`,
                     onClick: handleWishlistToggle,

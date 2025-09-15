@@ -20,6 +20,72 @@
     <link rel="stylesheet" href="{% static 'web/css/style.css' %}">
     {% endcompress %}
     
+    <style>
+        /* Language Switcher Styles */
+        .footer .language-section {
+            min-width: 150px;
+        }
+
+        .footer .language-switcher {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .footer .language-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            min-width: 60px;
+        }
+
+        .footer .language-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .footer .language-btn.active {
+            background: #007bff;
+            border-color: #007bff;
+            color: white;
+        }
+
+        .footer .language-btn.active:hover {
+            background: #0056b3;
+            border-color: #0056b3;
+        }
+
+        /* Responsive design for language switcher */
+        @media (max-width: 768px) {
+            .footer .language-switcher {
+                justify-content: center;
+                margin-top: 15px;
+            }
+            
+            .footer .language-section {
+                text-align: center;
+            }
+        }
+
+        /* Footer content responsive adjustments */
+        @media (max-width: 768px) {
+            .footer .footer-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            
+            .footer .footer-section {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+    
     <!-- React CDN -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -43,6 +109,8 @@
         window.Components = window.Components || {};
         console.log('Components object initialized:', window.Components);
     </script>
+    <!-- i18n System (must load first) -->
+    <script src="{% static 'web/src/i18n.js' %}"></script>
     <script src="{% static 'web/src/config.js' %}"></script>
     <script src="{% static 'web/src/utils/api.js' %}"></script>
     <script src="{% static 'web/src/utils/cart.js' %}"></script>
@@ -60,6 +128,7 @@
     <script src="{% static 'web/src/components/WishlistPage.js' %}"></script>
     <script src="{% static 'web/src/components/SearchPage.js' %}"></script>
     <script src="{% static 'web/src/components/AnnouncementDetail.js' %}"></script>
+    <script src="{% static 'web/src/components/Footer.js' %}"></script>
     <script src="{% static 'web/src/App.js' %}"></script>
     
     <script>
@@ -86,12 +155,14 @@
                         Components: !!window.Components,
                         App: !!(window.Components && window.Components.App),
                         AuthProvider: !!window.AuthProvider,
+                        i18n: !!window.i18n,
                         React: !!window.React,
                         ReactDOM: !!window.ReactDOM
                     });
                     
-                    if (window.Components && window.Components.App) {
-                        console.log('Rendering App with AuthProvider');
+                    // i18n과 App 컴포넌트가 모두 준비되었는지 확인
+                    if (window.Components && window.Components.App && window.i18n) {
+                        console.log('Rendering App with i18n and AuthProvider');
                         // AuthProvider와 App을 한번에 렌더링
                         if (window.AuthProvider) {
                             ReactDOM.render(
@@ -107,12 +178,12 @@
                                 root
                             );
                         }
-                        console.log('App successfully rendered');
+                        console.log('App successfully rendered with i18n support');
                     } else if (attempts < maxAttempts) {
-                        console.log('App component not ready, retrying...');
+                        console.log('App component or i18n not ready, retrying...');
                         setTimeout(renderApp, 100);
                     } else {
-                        console.error('Failed to load App component after maximum attempts');
+                        console.error('Failed to load App component or i18n after maximum attempts');
                         root.innerHTML = '<div style="padding: 20px; text-align: center; color: red;"><h2>앱 로딩 실패</h2><p>페이지를 새로고침해주세요.</p></div>';
                     }
                 };

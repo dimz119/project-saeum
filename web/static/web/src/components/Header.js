@@ -4,6 +4,9 @@ const Header = () => {
     const [cartCount, setCartCount] = React.useState(0);
     const [announcement, setAnnouncement] = React.useState({ title: '', id: null });
     
+    // Translation hook with fallback
+    const { t } = window.useTranslation ? window.useTranslation() : { t: window.t || ((key) => key) };
+    
     // 공지사항 로드 함수
     const loadAnnouncement = React.useCallback(async () => {
         try {
@@ -109,31 +112,31 @@ const Header = () => {
                         href: '/', 
                         className: 'logo',
                         onClick: (e) => handleNavigation('/', e)
-                    }, 'monthlylook'),
+                    }, t('header.brand')),
                     React.createElement('ul', { className: 'nav-menu' },
                         React.createElement('li', null,
                             React.createElement('a', { 
                                 href: '/products/featured',
                                 onClick: (e) => handleNavigation('/products/featured', e)
-                            }, '추천상품')
+                            }, t('header.featured_products'))
                         ),
                         React.createElement('li', null,
                             React.createElement('a', { 
                                 href: '/brands',
                                 onClick: (e) => handleNavigation('/brands', e)
-                            }, '브랜드')
+                            }, t('header.brands'))
                         ),
                         React.createElement('li', null,
                             React.createElement('a', { 
                                 href: '/products/new',
                                 onClick: (e) => handleNavigation('/products/new', e)
-                            }, '신상품')
+                            }, t('header.new_products'))
                         ),
                         React.createElement('li', null,
                             React.createElement('a', { 
                                 href: '/products/sale',
                                 onClick: (e) => handleNavigation('/products/sale', e)
-                            }, '세일')
+                            }, t('header.sale'))
                         )
                     ),
                     React.createElement('div', { className: 'nav-icons' },
@@ -146,7 +149,7 @@ const Header = () => {
                                 }
                             },
                             style: { cursor: 'pointer' },
-                            title: '검색'
+                            title: t('header.search')
                         }),
                         React.createElement('div', { 
                             className: 'wishlist-icon-container'
@@ -157,7 +160,7 @@ const Header = () => {
                                     e.preventDefault();
                                     const user = window.auth.getCurrentUserSync();
                                     if (!user) {
-                                        alert('로그인이 필요한 서비스입니다.');
+                                        alert(t('auth.login_required'));
                                         if (window.Router) {
                                             window.Router.navigate('/login/');
                                         }
@@ -168,7 +171,7 @@ const Header = () => {
                                     }
                                 },
                                 style: { cursor: 'pointer' },
-                                title: '찜목록'
+                                title: t('header.wishlist')
                             }),
                             wishlistCount > 0 && React.createElement('span', {
                                 className: 'count-badge'
@@ -186,7 +189,7 @@ const Header = () => {
                                     }
                                 },
                                 style: { cursor: 'pointer' },
-                                title: '장바구니'
+                                title: t('header.cart')
                             }),
                             cartCount > 0 && React.createElement('span', {
                                 className: 'count-badge'
@@ -199,13 +202,13 @@ const Header = () => {
                                     href: '/login/',
                                     className: 'auth-link',
                                     onClick: (e) => handleNavigation('/login/', e),
-                                    title: '로그인'
+                                    title: t('header.login')
                                 }, React.createElement('i', { className: 'fas fa-sign-in-alt' })),
                                 React.createElement('a', { 
                                     href: '/register/',
                                     className: 'auth-link',
                                     onClick: (e) => handleNavigation('/register/', e),
-                                    title: '회원가입'
+                                    title: t('header.register')
                                 }, React.createElement('i', { className: 'fas fa-user-plus' }))
                             )
                     )

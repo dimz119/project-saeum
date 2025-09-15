@@ -7,8 +7,10 @@ window.Components = window.Components || {};
 // 모든 컴포넌트 파일들을 로드하는 함수
 function loadComponents() {
     const componentFiles = [
+        '/static/web/src/i18n.js',  // i18n system first
         '/static/web/src/utils/api.js',
         '/static/web/src/components/Header.js',
+        '/static/web/src/components/Footer.js',
         '/static/web/src/components/Hero.js',
         '/static/web/src/components/ProductCard.js',
         '/static/web/src/components/ProductList.js',

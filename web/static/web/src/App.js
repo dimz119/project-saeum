@@ -2,6 +2,54 @@
 const App = () => {
     const [currentPage, setCurrentPage] = React.useState('home');
     const [selectedProductId, setSelectedProductId] = React.useState(null);
+    const [language, setLanguage] = React.useState('ko');
+    const [i18nReady, setI18nReady] = React.useState(false);
+
+    // Safe translation hook
+    const t = React.useCallback((key) => {
+        if (window.useTranslation && i18nReady) {
+            try {
+                const { t: translateFn } = window.useTranslation();
+                return translateFn(key);
+            } catch (error) {
+                console.warn('Translation error:', error);
+            }
+        }
+        if (window.t) {
+            return window.t(key);
+        }
+        return key;
+    }, [i18nReady]);
+
+    // Language change handler
+    const handleLanguageChange = React.useCallback((newLanguage) => {
+        setLanguage(newLanguage);
+    }, []);
+
+    // Initialize i18n system
+    React.useEffect(() => {
+        const initI18n = () => {
+            if (window.i18n) {
+                // Set initial language
+                setLanguage(window.i18n.getCurrentLanguage());
+                
+                // Add language change listener
+                window.i18n.addLanguageChangeListener(handleLanguageChange);
+                
+                // Mark i18n as ready
+                setI18nReady(true);
+                
+                return () => {
+                    window.i18n.removeLanguageChangeListener(handleLanguageChange);
+                };
+            } else {
+                // Retry after a short delay if i18n is not ready
+                setTimeout(initI18n, 100);
+            }
+        };
+
+        initI18n();
+    }, [handleLanguageChange]);
 
     // 현재 URL을 기반으로 초기 상태 설정
     React.useEffect(() => {
@@ -186,7 +234,7 @@ const App = () => {
                 return React.createElement(window.Components.AnnouncementDetail);
             
             default:
-                return React.createElement('div', null, '페이지를 찾을 수 없습니다.');
+                return React.createElement('div', null, t('pages.not_found'));
         }
     };
 
@@ -198,29 +246,7 @@ const App = () => {
         React.createElement('main', null, renderPage()),
         
         // Footer
-        React.createElement('footer', { className: 'footer' },
-            React.createElement('div', { className: 'container' },
-                React.createElement('div', { className: 'footer-content' },
-                    React.createElement('div', { className: 'footer-section' },
-                        React.createElement('h3', null, 'MonthlyLook'),
-                        React.createElement('p', null, '매월 새로운 스타일을 제안하는 프리미엄 패션 플랫폼')
-                    ),
-                    React.createElement('div', { className: 'footer-section' },
-                        React.createElement('h3', null, '고객센터'),
-                        React.createElement('p', null, '전화: 1588-0000'),
-                        React.createElement('p', null, '이메일: support@monthlylook.com')
-                    ),
-                    React.createElement('div', { className: 'footer-section' },
-                        React.createElement('h3', null, '정보'),
-                        React.createElement('p', null, '이용약관'),
-                        React.createElement('p', null, '개인정보처리방침')
-                    )
-                ),
-                React.createElement('div', { className: 'footer-bottom' },
-                    React.createElement('p', null, '© 2024 MonthlyLook. All rights reserved.')
-                )
-            )
-        )
+        React.createElement(window.Components.Footer)
     );
 };
 
