@@ -1,5 +1,7 @@
 // 로그인 컴포넌트
 const LoginForm = () => {
+    // Translation hook with fallback
+    const { t } = window.useTranslation ? window.useTranslation() : { t: window.t || ((key) => key) };
     const [formData, setFormData] = React.useState({
         email: '',
         password: ''
@@ -48,13 +50,13 @@ const LoginForm = () => {
 
     return React.createElement('div', { className: 'auth-container' },
         React.createElement('div', { className: 'auth-form' },
-            React.createElement('h2', { className: 'auth-title' }, '로그인'),
+            React.createElement('h2', { className: 'auth-title' }, t('auth.login')),
             
             message && React.createElement('div', { className: 'success-message' }, message),
             
             React.createElement('form', { onSubmit: handleSubmit },
                 React.createElement('div', { className: 'form-group' },
-                    React.createElement('label', { htmlFor: 'email' }, '이메일'),
+                    React.createElement('label', { htmlFor: 'email' }, t('auth.email')),
                     React.createElement('input', {
                         type: 'email',
                         id: 'email',
@@ -68,7 +70,7 @@ const LoginForm = () => {
                 ),
                 
                 React.createElement('div', { className: 'form-group' },
-                    React.createElement('label', { htmlFor: 'password' }, '비밀번호'),
+                    React.createElement('label', { htmlFor: 'password' }, t('auth.password')),
                     React.createElement('input', {
                         type: 'password',
                         id: 'password',
@@ -88,10 +90,10 @@ const LoginForm = () => {
                     type: 'submit',
                     disabled: loading,
                     className: 'submit-btn'
-                }, loading ? '로그인 중...' : '로그인'),
+                }, loading ? t('auth.logging_in') : t('auth.login')),
                 
                 React.createElement('div', { className: 'auth-links' },
-                    React.createElement('a', { href: '/register' }, '계정이 없으신가요? 회원가입'),
+                    React.createElement('a', { href: '/register' }, t('auth.no_account_register')),
                 )
             )
         )

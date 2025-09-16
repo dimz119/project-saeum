@@ -190,6 +190,11 @@ class I18nProvider {
 // Create global i18n instance
 window.i18n = new I18nProvider();
 
+// Provide fallback translation function
+window.t = window.t || function(key) {
+    return key; // Return the key itself as fallback
+};
+
 // Initialize i18n when DOM is ready
 function initializeI18n() {
     window.i18n.init().catch(error => {

@@ -1,5 +1,7 @@
 // 회원가입 컴포넌트
 const RegisterForm = () => {
+    // Translation hook with fallback
+    const { t } = window.useTranslation ? window.useTranslation() : { t: window.t || ((key) => key) };
     const [formData, setFormData] = React.useState({
         email: '',
         username: '',
@@ -44,14 +46,14 @@ const RegisterForm = () => {
 
     return React.createElement('div', { className: 'auth-container' },
         React.createElement('div', { className: 'auth-form register-form' },
-            React.createElement('h2', { className: 'auth-title' }, '회원가입'),
+            React.createElement('h2', { className: 'auth-title' }, t('auth.register')),
             
             message && React.createElement('div', { className: 'success-message' }, message),
             
             React.createElement('form', { onSubmit: handleSubmit },
                 React.createElement('div', { className: 'form-row' },
                     React.createElement('div', { className: 'form-group' },
-                        React.createElement('label', { htmlFor: 'email' }, '이메일 *'),
+                        React.createElement('label', { htmlFor: 'email' }, t('auth.email_required')),
                         React.createElement('input', {
                             type: 'email',
                             id: 'email',
@@ -65,7 +67,7 @@ const RegisterForm = () => {
                     ),
                     
                     React.createElement('div', { className: 'form-group' },
-                        React.createElement('label', { htmlFor: 'username' }, '사용자명 *'),
+                        React.createElement('label', { htmlFor: 'username' }, t('auth.username_required')),
                         React.createElement('input', {
                             type: 'text',
                             id: 'username',
@@ -81,7 +83,7 @@ const RegisterForm = () => {
                 
                 React.createElement('div', { className: 'form-row' },
                     React.createElement('div', { className: 'form-group' },
-                        React.createElement('label', { htmlFor: 'password' }, '비밀번호 *'),
+                        React.createElement('label', { htmlFor: 'password' }, t('auth.password_required')),
                         React.createElement('input', {
                             type: 'password',
                             id: 'password',
@@ -95,7 +97,7 @@ const RegisterForm = () => {
                     ),
                     
                     React.createElement('div', { className: 'form-group' },
-                        React.createElement('label', { htmlFor: 'password_confirm' }, '비밀번호 확인 *'),
+                        React.createElement('label', { htmlFor: 'password_confirm' }, t('auth.confirm_password_required')),
                         React.createElement('input', {
                             type: 'password',
                             id: 'password_confirm',
@@ -111,7 +113,7 @@ const RegisterForm = () => {
                 
                 React.createElement('div', { className: 'form-row' },
                     React.createElement('div', { className: 'form-group' },
-                        React.createElement('label', { htmlFor: 'first_name' }, '이름'),
+                        React.createElement('label', { htmlFor: 'first_name' }, t('auth.first_name')),
                         React.createElement('input', {
                             type: 'text',
                             id: 'first_name',
@@ -124,7 +126,7 @@ const RegisterForm = () => {
                     ),
                     
                     React.createElement('div', { className: 'form-group' },
-                        React.createElement('label', { htmlFor: 'last_name' }, '성'),
+                        React.createElement('label', { htmlFor: 'last_name' }, t('auth.last_name')),
                         React.createElement('input', {
                             type: 'text',
                             id: 'last_name',
@@ -139,7 +141,7 @@ const RegisterForm = () => {
                 
                 React.createElement('div', { className: 'form-row' },
                     React.createElement('div', { className: 'form-group' },
-                        React.createElement('label', { htmlFor: 'phone_number' }, '전화번호'),
+                        React.createElement('label', { htmlFor: 'phone_number' }, t('auth.phone_number')),
                         React.createElement('input', {
                             type: 'tel',
                             id: 'phone_number',
@@ -153,7 +155,7 @@ const RegisterForm = () => {
                     ),
                     
                     React.createElement('div', { className: 'form-group' },
-                        React.createElement('label', { htmlFor: 'date_of_birth' }, '생년월일'),
+                        React.createElement('label', { htmlFor: 'date_of_birth' }, t('auth.date_of_birth')),
                         React.createElement('input', {
                             type: 'date',
                             id: 'date_of_birth',
@@ -173,10 +175,10 @@ const RegisterForm = () => {
                     type: 'submit',
                     disabled: loading,
                     className: 'submit-btn'
-                }, loading ? '가입 중...' : '회원가입'),
+                }, loading ? t('auth.registering') : t('auth.register')),
                 
                 React.createElement('div', { className: 'auth-links' },
-                    React.createElement('a', { href: '/login' }, '이미 계정이 있으신가요? 로그인'),
+                    React.createElement('a', { href: '/login' }, t('auth.have_account_login')),
                 )
             )
         )

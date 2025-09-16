@@ -4,26 +4,84 @@
 {% block title %}로그인 - MonthlyLook{% endblock %}
 
 {% block content %}
+<div id="header-root"></div>
 <div id="login-root"></div>
+<div id="footer-root"></div>
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'web/src/config.js' %}"></script>
-<script src="{% static 'web/src/utils/auth.js' %}"></script>
-<script src="{% static 'web/src/components/AuthProvider.js' %}"></script>
 <script src="{% static 'web/src/components/LoginForm.js' %}"></script>
 <script>
     // 로그인 페이지 렌더링
     document.addEventListener('DOMContentLoaded', function() {
-        const root = document.getElementById('login-root');
-        if (root) {
-            ReactDOM.render(
-                React.createElement(window.AuthProvider, null,
-                    React.createElement(window.LoginForm)
-                ),
-                root
-            );
-        }
+        let attempts = 0;
+        const maxAttempts = 20;
+        
+        const renderLoginPage = () => {
+            attempts++;
+            console.log(`Login page render attempt ${attempts}/${maxAttempts}`);
+            
+            // 필요한 컴포넌트들이 로드되었는지 확인
+            if (window.Components && window.Components.Header && window.Components.Footer && 
+                window.LoginForm && window.i18n && window.AuthProvider) {
+                
+                console.log('Rendering login page with header and footer');
+                
+                // 모든 컴포넌트를 하나의 AuthProvider로 감싸서 렌더링
+                const headerRoot = document.getElementById('header-root');
+                const loginRoot = document.getElementById('login-root'); 
+                const footerRoot = document.getElementById('footer-root');
+                
+                // 언어 변경 리렌더링 함수
+                const renderComponents = () => {
+                    if (headerRoot) {
+                        ReactDOM.render(
+                            React.createElement(window.Components.Header),
+                            headerRoot
+                        );
+                    }
+                    
+                    if (loginRoot) {
+                        ReactDOM.render(
+                            React.createElement(window.LoginForm),
+                            loginRoot
+                        );
+                    }
+                    
+                    if (footerRoot) {
+                        ReactDOM.render(
+                            React.createElement(window.Components.Footer),
+                            footerRoot
+                        );
+                    }
+                };
+                
+                // 초기 렌더링
+                renderComponents();
+                
+                // 언어 변경 이벤트 리스너 추가
+                if (window.i18n) {
+                    window.i18n.addLanguageChangeListener(() => {
+                        console.log('Language changed, re-rendering login page components');
+                        setTimeout(renderComponents, 100);
+                    });
+                }
+                
+                console.log('Login page components successfully rendered');
+            } else if (attempts < maxAttempts) {
+                console.log('Components not ready, retrying...');
+                setTimeout(renderLoginPage, 100);
+            } else {
+                console.error('Failed to load login page components after maximum attempts');
+                const loginRoot = document.getElementById('login-root');
+                if (loginRoot) {
+                    loginRoot.innerHTML = '<div style="padding: 20px; text-align: center; color: red;"><h2>로딩 실패</h2><p>페이지를 새로고침해주세요.</p></div>';
+                }
+            }
+        };
+        
+        // 약간의 지연 후 렌더링 시작
+        setTimeout(renderLoginPage, 300);
     });
 </script>
 {% endblock %}
