@@ -7,6 +7,7 @@ class I18nProvider {
         this.translations = {};
         this.fallbackLanguage = 'en';
         this.listeners = [];
+        this.initialized = false;
     }
 
     // Get language from localStorage
@@ -71,8 +72,16 @@ class I18nProvider {
         
         // Setup global useTranslation hook
         this.setupUseTranslation();
+        
+        // Mark as initialized
+        this.initialized = true;
 
         console.log(`i18n initialized with language: ${this.currentLanguage}`);
+    }
+
+    // Check if i18n system is fully initialized
+    isInitialized() {
+        return this.initialized === true;
     }
 
     // Setup global translation function

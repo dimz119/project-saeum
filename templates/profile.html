@@ -41,44 +41,57 @@
                 window.Components.ProfilePage &&
                 window.i18n) {
                 
-                // Initialize i18n
-                window.i18n.init();
-                
-                // Create header
-                const headerElement = React.createElement(window.Components.Header);
-                ReactDOM.render(headerElement, document.getElementById('header'));
-                
-                // Create footer  
-                const footerElement = React.createElement(window.Components.Footer);
-                ReactDOM.render(footerElement, document.getElementById('footer'));
-                
-                // Create profile page
-                const profileElement = React.createElement(window.Components.ProfilePage);
-                ReactDOM.render(profileElement, document.getElementById('profile-page'));
+                // Initialize i18n and wait for it to be ready
+                window.i18n.init().then(() => {
+                    console.log('i18n initialized, rendering components...');
+                    
+                    // Create header
+                    const headerElement = React.createElement(window.Components.Header);
+                    ReactDOM.render(headerElement, document.getElementById('header'));
+                    
+                    // Create footer  
+                    const footerElement = React.createElement(window.Components.Footer);
+                    ReactDOM.render(footerElement, document.getElementById('footer'));
+                    
+                    // Create profile page
+                    const profileElement = React.createElement(window.Components.ProfilePage);
+                    ReactDOM.render(profileElement, document.getElementById('profile-page'));
 
-                // Set up language change listener for re-rendering
-                const handleLanguageChange = () => {
-                    // Safety check
-                    if (window.Components && window.Components.Header && window.Components.Footer && window.Components.ProfilePage) {
-                        try {
-                            const headerElement = React.createElement(window.Components.Header);
-                            ReactDOM.render(headerElement, document.getElementById('header'));
-                            
-                            const footerElement = React.createElement(window.Components.Footer);
-                            ReactDOM.render(footerElement, document.getElementById('footer'));
-                            
-                            const profileElement = React.createElement(window.Components.ProfilePage);
-                            ReactDOM.render(profileElement, document.getElementById('profile-page'));
-                        } catch (error) {
-                            console.warn('Error re-rendering components:', error);
+                    // Set up language change listener for re-rendering
+                    const handleLanguageChange = () => {
+                        // Safety check
+                        if (window.Components && window.Components.Header && window.Components.Footer && window.Components.ProfilePage) {
+                            try {
+                                const headerElement = React.createElement(window.Components.Header);
+                                ReactDOM.render(headerElement, document.getElementById('header'));
+                                
+                                const footerElement = React.createElement(window.Components.Footer);
+                                ReactDOM.render(footerElement, document.getElementById('footer'));
+                                
+                                const profileElement = React.createElement(window.Components.ProfilePage);
+                                ReactDOM.render(profileElement, document.getElementById('profile-page'));
+                            } catch (error) {
+                                console.warn('Error re-rendering components:', error);
+                            }
                         }
-                    }
-                };
+                    };
 
-                // Add language change listener
-                window.addEventListener('languageChanged', handleLanguageChange);
-                
-                console.log('Profile page initialized successfully');
+                    // Add language change listener
+                    window.addEventListener('languageChanged', handleLanguageChange);
+                    
+                    console.log('Profile page initialized successfully');
+                }).catch(error => {
+                    console.error('i18n initialization failed:', error);
+                    // Fallback: render components anyway
+                    const headerElement = React.createElement(window.Components.Header);
+                    ReactDOM.render(headerElement, document.getElementById('header'));
+                    
+                    const footerElement = React.createElement(window.Components.Footer);
+                    ReactDOM.render(footerElement, document.getElementById('footer'));
+                    
+                    const profileElement = React.createElement(window.Components.ProfilePage);
+                    ReactDOM.render(profileElement, document.getElementById('profile-page'));
+                });
             } else {
                 // Retry after a short delay
                 setTimeout(initializeApp, 100);

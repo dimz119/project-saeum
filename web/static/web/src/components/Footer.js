@@ -1,9 +1,19 @@
 // Footer component with language switcher
 const Footer = () => {
     const [currentLanguage, setCurrentLanguage] = React.useState('ko');
+    const [isI18nReady, setIsI18nReady] = React.useState(false);
     
-    // Translation hook with fallback
-    const { t } = window.useTranslation ? window.useTranslation() : { t: window.t || ((key) => key) };
+    // Translation hook with enhanced fallback
+    const { t } = window.useTranslation ? window.useTranslation() : { 
+        t: (key) => {
+            // Enhanced fallback with global function
+            if (window.t && typeof window.t === 'function') {
+                return window.t(key);
+            }
+            // Return key if no translation function available
+            return key;
+        }
+    };
 
     // Language change handler
     const handleLanguageChange = React.useCallback((newLanguage) => {
@@ -12,17 +22,25 @@ const Footer = () => {
 
     // Initialize language listener
     React.useEffect(() => {
-        if (window.i18n) {
-            // Set initial language
-            setCurrentLanguage(window.i18n.getCurrentLanguage());
-            
-            // Add language change listener
-            window.i18n.addLanguageChangeListener(handleLanguageChange);
-            
-            return () => {
-                window.i18n.removeLanguageChangeListener(handleLanguageChange);
-            };
-        }
+        const checkI18nReady = () => {
+            if (window.i18n && window.i18n.isInitialized && window.i18n.isInitialized()) {
+                setIsI18nReady(true);
+                // Set initial language
+                setCurrentLanguage(window.i18n.getCurrentLanguage());
+                
+                // Add language change listener
+                window.i18n.addLanguageChangeListener(handleLanguageChange);
+                
+                return () => {
+                    window.i18n.removeLanguageChangeListener(handleLanguageChange);
+                };
+            } else {
+                // Retry after a short delay
+                setTimeout(checkI18nReady, 50);
+            }
+        };
+        
+        checkI18nReady();
     }, [handleLanguageChange]);
 
     // Handle language switch
@@ -31,6 +49,20 @@ const Footer = () => {
             window.i18n.changeLanguage(language);
         }
     };
+
+    // Show loading state if i18n is not ready
+    if (!isI18nReady) {
+        return React.createElement('footer', { className: 'footer' },
+            React.createElement('div', { className: 'container' },
+                React.createElement('div', { 
+                    className: 'footer-content',
+                    style: { textAlign: 'center', padding: '2rem' }
+                },
+                    React.createElement('p', null, 'Loading...')
+                )
+            )
+        );
+    }
 
     return React.createElement('footer', { className: 'footer' },
         React.createElement('div', { className: 'container' },
