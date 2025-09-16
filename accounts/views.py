@@ -245,3 +245,72 @@ def delete_eye_exam(request):
         return Response({
             'error': f'파일 삭제 중 오류가 발생했습니다: {str(e)}'
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@csrf_exempt
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def download_eye_exam(request):
+    """Eye exam 파일 다운로드 URL 제공"""
+    try:
+        if not request.user.eye_exam_file:
+            return Response({
+                'error': '다운로드할 파일이 없습니다.'
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        from django.conf import settings
+        import boto3
+        from botocore.exceptions import ClientError
+        import os
+        from urllib.parse import quote
+        
+        file_path = request.user.eye_exam_file.name
+        
+        # S3 사용 시 presigned URL 생성
+        if getattr(settings, 'USE_S3', False):
+            try:
+                s3_client = boto3.client(
+                    's3',
+                    aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+                    aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+                    region_name=settings.AWS_S3_REGION_NAME
+                )
+                
+                bucket_name = os.getenv('AWS_USER_BUCKET_NAME', 'monthly-look-user')
+                
+                # 파일 이름을 위한 Content-Disposition 헤더 설정
+                original_filename = os.path.basename(file_path)
+                
+                # Presigned URL 생성 (1시간 유효)
+                download_url = s3_client.generate_presigned_url(
+                    'get_object',
+                    Params={
+                        'Bucket': bucket_name, 
+                        'Key': file_path,
+                        'ResponseContentDisposition': f'attachment; filename="{quote(original_filename)}"'
+                    },
+                    ExpiresIn=3600  # 1시간
+                )
+                
+                return Response({
+                    'download_url': download_url,
+                    'filename': original_filename,
+                    'expires_in': 3600  # 초 단위
+                }, status=status.HTTP_200_OK)
+                
+            except ClientError as e:
+                return Response({
+                    'error': f'파일 다운로드 URL 생성 실패: {str(e)}'
+                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            # 로컬 파일 시스템 사용 시
+            file_url = request.build_absolute_uri(request.user.eye_exam_file.url)
+            return Response({
+                'download_url': file_url,
+                'filename': os.path.basename(file_path),
+                'expires_in': None  # 로컬 파일은 만료 없음
+            }, status=status.HTTP_200_OK)
+            
+    except Exception as e:
+        return Response({
+            'error': f'파일 다운로드 URL 생성 중 오류가 발생했습니다: {str(e)}'
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

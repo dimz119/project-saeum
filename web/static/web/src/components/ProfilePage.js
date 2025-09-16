@@ -339,6 +339,81 @@ const ProfilePage = () => {
         }
     };
 
+    // Eye exam 파일 다운로드
+    const handleEyeExamDownload = async () => {
+        setEyeExamUploading(true);
+        setError(null);
+
+        const getDownloadUrl = async (token) => {
+            const response = await fetch('/api/auth/download-eye-exam/', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                }
+            });
+            return response;
+        };
+
+        try {
+            const token = localStorage.getItem('access_token');
+            let response = await getDownloadUrl(token);
+
+            // 401 에러 시 토큰 갱신 시도
+            if (response.status === 401) {
+                const refreshToken = localStorage.getItem('refresh_token');
+                if (refreshToken) {
+                    const refreshResponse = await fetch('/api/token/refresh/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            refresh: refreshToken
+                        })
+                    });
+
+                    if (refreshResponse.ok) {
+                        const refreshData = await refreshResponse.json();
+                        localStorage.setItem('access_token', refreshData.access);
+                        // 새 토큰으로 다시 시도
+                        response = await getDownloadUrl(refreshData.access);
+                    } else {
+                        setError(t('auth.login_required'));
+                        setEyeExamUploading(false);
+                        return;
+                    }
+                } else {
+                    setError(t('auth.login_required'));
+                    setEyeExamUploading(false);
+                    return;
+                }
+            }
+
+            if (response.ok) {
+                const result = await response.json();
+                
+                // 새 창에서 파일 다운로드
+                const link = document.createElement('a');
+                link.href = result.download_url;
+                link.download = result.filename || 'eye_exam_file';
+                link.target = '_blank';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+            } else {
+                const errorData = await response.json();
+                setError(errorData.error || t('profile.eye_exam_download_error'));
+            }
+        } catch (error) {
+            console.error('Eye exam download error:', error);
+            setError(t('profile.eye_exam_download_error'));
+        } finally {
+            setEyeExamUploading(false);
+        }
+    };
+
     if (loading) {
         return React.createElement('div', {
             className: 'container',
@@ -685,8 +760,27 @@ const ProfilePage = () => {
                     style: { marginBottom: '1rem' }
                 },
                     user.has_eye_exam ? 
-                        // 파일이 있는 경우 - 삭제 버튼
-                        React.createElement('div', null,
+                        // 파일이 있는 경우 - 다운로드 및 삭제 버튼
+                        React.createElement('div', {
+                            style: { 
+                                display: 'flex', 
+                                gap: '0.5rem',
+                                flexWrap: 'wrap'
+                            }
+                        },
+                            React.createElement('button', {
+                                onClick: handleEyeExamDownload,
+                                disabled: eyeExamUploading,
+                                style: {
+                                    padding: '0.75rem 1.5rem',
+                                    backgroundColor: '#007bff',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '4px',
+                                    cursor: eyeExamUploading ? 'not-allowed' : 'pointer',
+                                    opacity: eyeExamUploading ? 0.6 : 1
+                                }
+                            }, eyeExamUploading ? t('profile.saving') : t('profile.download_eye_exam')),
                             React.createElement('button', {
                                 onClick: handleEyeExamDelete,
                                 disabled: eyeExamUploading,

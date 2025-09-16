@@ -11,4 +11,5 @@ urlpatterns = [
     path('user-info/', views.user_info, name='user_info'),
     path('upload-eye-exam/', views.upload_eye_exam, name='upload_eye_exam'),
     path('delete-eye-exam/', views.delete_eye_exam, name='delete_eye_exam'),
+    path('download-eye-exam/', views.download_eye_exam, name='download_eye_exam'),
 ]
