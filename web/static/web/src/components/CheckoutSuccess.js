@@ -8,19 +8,19 @@ const CheckoutSuccess = () => {
         const urlParams = new URLSearchParams(window.location.search);
         const sessionId = urlParams.get('session_id');
         
-        console.log('CheckoutSuccess 컴포넌트 로드됨, session_id:', sessionId);
+        console.log('CheckoutSuccess component loaded, session_id:', sessionId);
         
         if (sessionId) {
             processCheckoutSuccess(sessionId);
         } else {
-            console.log('session_id가 없습니다.');
+            console.log('No session_id found.');
             setLoading(false);
         }
         
         // 장바구니 비우기
         if (window.CartManager) {
             window.CartManager.clearCart();
-            console.log('장바구니가 비워졌습니다.');
+            console.log('Cart has been cleared.');
         }
     }, []);
 

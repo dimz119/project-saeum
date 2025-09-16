@@ -5,7 +5,7 @@ const Cart = () => {
     const [loading, setLoading] = React.useState(false);
     const [user, setUser] = React.useState(null);
 
-    console.log('Cart 컴포넌트 렌더링됨');
+    console.log('Cart component rendered');
 
     React.useEffect(() => {
         // 로그인 상태 확인
@@ -99,7 +99,7 @@ const Cart = () => {
     };
 
     const proceedToCheckout = async () => {
-        console.log('Stripe checkout 직접 진행');
+        console.log('Proceeding with Stripe checkout directly');
         setLoading(true);
         
         try {
@@ -131,7 +131,7 @@ const Cart = () => {
                 alert(t('order.errors.payment_preparation_error', { error: errorData.error || t('common.errors.unknown') }));
             }
         } catch (error) {
-            console.error('체크아웃 오류:', error);
+            console.error('Checkout error:', error);
             alert('네트워크 오류가 발생했습니다. 다시 시도해주세요.');
         }
         

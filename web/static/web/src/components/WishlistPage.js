@@ -56,7 +56,7 @@ const WishlistPage = () => {
                 alert(t('wishlist.added_to_cart'));
             }
         } catch (error) {
-            console.error('장바구니 추가 실패:', error);
+            console.error('Failed to add to cart:', error);
             alert('장바구니 추가에 실패했습니다. 다시 시도해주세요.');
         }
     };

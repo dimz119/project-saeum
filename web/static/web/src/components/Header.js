@@ -10,17 +10,17 @@ const Header = () => {
     // 공지사항 로드 함수
     const loadAnnouncement = React.useCallback(async () => {
         try {
-            console.log('공지사항 로드 시작');
+            console.log('Loading announcement...');
             const response = await fetch('/api/products/announcements/latest/');
             if (response.ok) {
                 const data = await response.json();
-                console.log('공지사항 데이터:', data);
+                console.log('Announcement data:', data);
                 setAnnouncement({ title: data.title, id: data.id });
             } else {
-                console.log('공지사항 응답 실패:', response.status);
+                console.log('Announcement response failed:', response.status);
             }
         } catch (error) {
-            console.error('공지사항 로드 실패:', error);
+            console.error('Failed to load announcement:', error);
         }
     }, []);
     
@@ -58,7 +58,6 @@ const Header = () => {
     React.useEffect(() => {
         updateWishlistCount();
         updateCartCount();
-        loadAnnouncement();
         
         // 전역 함수로 등록하여 다른 컴포넌트에서 호출 가능하게 함
         window.updateWishlistCount = updateWishlistCount;
@@ -69,7 +68,12 @@ const Header = () => {
             delete window.updateWishlistCount;
             delete window.updateCartCount;
         };
-    }, [updateWishlistCount, updateCartCount, loadAnnouncement]);
+    }, [updateWishlistCount, updateCartCount]);
+
+    // 공지사항 로드 (한 번만 실행)
+    React.useEffect(() => {
+        loadAnnouncement();
+    }, []); // 빈 의존성 배열로 한 번만 실행
 
     const handleNavigation = (path, e) => {
         e.preventDefault();
@@ -82,13 +86,13 @@ const Header = () => {
 
     const handleAnnouncementClick = (e) => {
         e.preventDefault();
-        console.log('공지사항 클릭됨:', announcement);
-        console.log('Router 존재 여부:', !!window.Router);
+        console.log('Announcement clicked:', announcement);
+        console.log('Router exists:', !!window.Router);
         if (announcement.id && window.Router) {
-            console.log('네비게이션 실행:', `/announcements/${announcement.id}`);
+            console.log('Navigating to:', `/announcements/${announcement.id}`);
             window.Router.navigate(`/announcements/${announcement.id}`);
         } else {
-            console.log('네비게이션 실패 - announcement.id:', announcement.id, 'Router:', !!window.Router);
+            console.log('Navigation failed - announcement.id:', announcement.id, 'Router:', !!window.Router);
             // 폴백으로 일반 페이지 이동 시도
             if (announcement.id) {
                 window.location.href = `/announcements/${announcement.id}`;

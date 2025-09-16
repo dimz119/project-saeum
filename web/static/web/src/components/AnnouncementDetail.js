@@ -24,7 +24,7 @@ const AnnouncementDetail = () => {
                 setError('공지사항을 찾을 수 없습니다.');
             }
         } catch (err) {
-            console.error('공지사항 로드 실패:', err);
+            console.error('Failed to load announcement:', err);
             setError('공지사항을 불러오는데 실패했습니다.');
         } finally {
             setLoading(false);
