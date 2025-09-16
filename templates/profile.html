@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>프로필 - 먼슬리룩</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'web/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'web/css/language-switcher.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+</head>
+<body>
+    <div id="header"></div>
+    <main id="profile-page"></main>
+    <div id="footer"></div>
+
+    <!-- Core scripts -->
+    <script src="{% static 'web/src/config.js' %}"></script>
+    <script src="{% static 'web/src/utils/api.js' %}"></script>
+    <script src="{% static 'web/src/utils/auth.js' %}"></script>
+    <script src="{% static 'web/src/i18n.js' %}"></script>
+    
+    <!-- Components -->
+    <script type="text/babel" src="{% static 'web/src/components/AuthProvider.js' %}"></script>
+    <script type="text/babel" src="{% static 'web/src/components/Header.js' %}"></script>
+    <script type="text/babel" src="{% static 'web/src/components/Footer.js' %}"></script>
+    <script type="text/babel" src="{% static 'web/src/components/ProfilePage.js' %}"></script>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Initialize components when everything is loaded
+        const initializeApp = () => {
+            // Check if all required components are loaded
+            if (window.Components && 
+                window.Components.Header && 
+                window.Components.Footer && 
+                window.Components.ProfilePage &&
+                window.i18n) {
+                
+                // Initialize i18n
+                window.i18n.init();
+                
+                // Create header
+                const headerElement = React.createElement(window.Components.Header);
+                ReactDOM.render(headerElement, document.getElementById('header'));
+                
+                // Create footer  
+                const footerElement = React.createElement(window.Components.Footer);
+                ReactDOM.render(footerElement, document.getElementById('footer'));
+                
+                // Create profile page
+                const profileElement = React.createElement(window.Components.ProfilePage);
+                ReactDOM.render(profileElement, document.getElementById('profile-page'));
+
+                // Set up language change listener for re-rendering
+                const handleLanguageChange = () => {
+                    // Safety check
+                    if (window.Components && window.Components.Header && window.Components.Footer && window.Components.ProfilePage) {
+                        try {
+                            const headerElement = React.createElement(window.Components.Header);
+                            ReactDOM.render(headerElement, document.getElementById('header'));
+                            
+                            const footerElement = React.createElement(window.Components.Footer);
+                            ReactDOM.render(footerElement, document.getElementById('footer'));
+                            
+                            const profileElement = React.createElement(window.Components.ProfilePage);
+                            ReactDOM.render(profileElement, document.getElementById('profile-page'));
+                        } catch (error) {
+                            console.warn('Error re-rendering components:', error);
+                        }
+                    }
+                };
+
+                // Add language change listener
+                window.addEventListener('languageChanged', handleLanguageChange);
+                
+                console.log('Profile page initialized successfully');
+            } else {
+                // Retry after a short delay
+                setTimeout(initializeApp, 100);
+            }
+        };
+
+        // Start initialization when DOM is loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeApp);
+        } else {
+            initializeApp();
+        }
+    </script>
+</body>
+</html>

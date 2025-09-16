@@ -51,6 +51,7 @@
     "profile": "Profile"
   },
   "auth": {
+    "welcome_message": "Hello, {{name}}!",
     "login_required": "Login is required for this service.",
     "login": "Login",
     "register": "Register",
@@ -73,6 +74,28 @@
     "go_to_login": "Go to Login",
     "profile_update_error": "An error occurred while updating profile."
   },
+  "profile": {
+    "title": "Profile",
+    "loading": "Loading profile information...",
+    "loading_wait": "Please wait a moment.",
+    "error_title": "Error",
+    "load_error": "Failed to load profile information.",
+    "save_error": "Failed to save profile.",
+    "save_success": "Profile saved successfully.",
+    "error": "An error occurred while processing profile.",
+    "personal_info": "Personal Information",
+    "shipping_info": "Default Shipping Information",
+    "edit": "Edit",
+    "save": "Save",
+    "saving": "Saving...",
+    "cancel": "Cancel",
+    "not_set": "Not set",
+    "date_of_birth_note": "If date of birth is empty, it will be set to default (1990-01-01)",
+    "email_readonly": "Email cannot be changed",
+    "shipping_address": "Shipping Address",
+    "shipping_zipcode": "Zip Code",
+    "shipping_phone": "Shipping Phone"
+  },
   "product": {
     "price": "Price",
     "sale_price": "Sale Price",
@@ -88,6 +111,7 @@
     "features": "Features",
     "reviews": "Reviews",
     "view_details": "View Product",
+    "ordered_items": "Ordered Items",
     "added_to_cart_message": " has been added to your cart.",
     "cart_initializing": "Cart system is initializing. Please try again in a moment.",
     "errors": {
@@ -129,10 +153,27 @@
     "load_error": "Failed to load order list.",
     "info": "Order Information",
     "shipping_info": "Shipping Information",
+    "recipient": "Recipient",
+    "email": "Email",
+    "contact": "Contact",
+    "address": "Address",
+    "zipcode": "Zip Code",
     "no_info": "Loading order information or session has expired.",
     "back_to_cart": "Back to Cart",
     "go_home": "Go Home",
     "view_orders": "View Orders",
+    "status_pending": "Pending",
+    "status_confirmed": "Confirmed",
+    "status_preparing": "Preparing",
+    "status_shipped": "Shipped",
+    "status_delivered": "Delivered",
+    "status_cancelled": "Cancelled",
+    "loading": "Loading order list...",
+    "loading_wait": "Please wait a moment.",
+    "error_title": "Error Occurred",
+    "no_orders": "No order history",
+    "no_orders_message": "You haven't placed any orders yet.",
+    "shop_now": "Shop Now",
     "errors": {
       "payment_preparation_error": "Payment preparation error: {{error}}"
     }

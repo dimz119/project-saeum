@@ -70,30 +70,24 @@ def logout_view(request):
             'error': '유효하지 않은 토큰입니다.'
         }, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET'])
+@api_view(['GET', 'PUT', 'PATCH'])
 @permission_classes([IsAuthenticated])
 def profile(request):
-    """사용자 프로필 조회"""
-    serializer = UserSerializer(request.user)
-    return Response(serializer.data)
-
-@csrf_exempt
-@api_view(['PUT', 'PATCH'])
-@permission_classes([IsAuthenticated])
-def profile_update(request):
-    """사용자 프로필 수정"""
-    serializer = UserProfileUpdateSerializer(
-        request.user, 
-        data=request.data, 
-        partial=request.method == 'PATCH'
-    )
-    if serializer.is_valid():
-        serializer.save()
-        return Response({
-            'message': '프로필이 업데이트되었습니다.',
-            'user': UserSerializer(request.user).data
-        })
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    """사용자 프로필 조회 및 수정"""
+    if request.method == 'GET':
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data)
+    
+    elif request.method in ['PUT', 'PATCH']:
+        serializer = UserProfileUpdateSerializer(
+            request.user, 
+            data=request.data, 
+            partial=request.method == 'PATCH'
+        )
+        if serializer.is_valid():
+            serializer.save()
+            return Response(UserSerializer(request.user).data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @csrf_exempt
 @api_view(['GET'])

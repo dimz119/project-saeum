@@ -51,6 +51,7 @@
     "profile": "프로필"
   },
   "auth": {
+    "welcome_message": "안녕하세요, {{name}}님",
     "login_required": "로그인이 필요한 서비스입니다.",
     "login": "로그인",
     "register": "회원가입",
@@ -73,6 +74,28 @@
     "go_to_login": "로그인하러 가기",
     "profile_update_error": "프로필 업데이트 중 오류가 발생했습니다."
   },
+  "profile": {
+    "title": "프로필",
+    "loading": "프로필 정보 로딩 중...",
+    "loading_wait": "잠시만 기다려주세요.",
+    "error_title": "오류",
+    "load_error": "프로필 정보를 불러오는데 실패했습니다.",
+    "save_error": "프로필 저장에 실패했습니다.",
+    "save_success": "프로필이 성공적으로 저장되었습니다.",
+    "error": "프로필 처리 중 오류가 발생했습니다.",
+    "personal_info": "개인 정보",
+    "shipping_info": "기본 배송지 정보",
+    "edit": "수정",
+    "save": "저장",
+    "saving": "저장 중...",
+    "cancel": "취소",
+    "not_set": "설정되지 않음",
+    "date_of_birth_note": "생년월일이 비어있으면 기본값(1990-01-01)으로 설정됩니다",
+    "email_readonly": "이메일은 변경할 수 없습니다",
+    "shipping_address": "배송 주소",
+    "shipping_zipcode": "우편번호",
+    "shipping_phone": "배송지 연락처"
+  },
   "product": {
     "price": "가격",
     "sale_price": "할인가",
@@ -88,6 +111,7 @@
     "features": "상품특징",
     "reviews": "리뷰",
     "view_details": "상품 보기",
+    "ordered_items": "주문 상품",
     "added_to_cart_message": "이(가) 장바구니에 추가되었습니다.",
     "cart_initializing": "장바구니 기능을 초기화 중입니다. 잠시 후 다시 시도해주세요.",
     "errors": {
@@ -129,10 +153,27 @@
     "load_error": "주문 목록을 불러오는데 실패했습니다.",
     "info": "주문 정보",
     "shipping_info": "배송 정보",
+    "recipient": "받는 분",
+    "email": "이메일",
+    "contact": "연락처",
+    "address": "주소",
+    "zipcode": "우편번호",
     "no_info": "주문 정보를 불러오는 중이거나 세션이 만료되었습니다.",
     "back_to_cart": "장바구니로 돌아가기",
     "go_home": "홈으로",
     "view_orders": "주문내역 보기",
+    "status_pending": "대기중",
+    "status_confirmed": "주문확인",
+    "status_preparing": "상품준비중",
+    "status_shipped": "배송중",
+    "status_delivered": "배송완료",
+    "status_cancelled": "취소됨",
+    "loading": "주문내역을 불러오는 중...",
+    "loading_wait": "잠시만 기다려주세요.",
+    "error_title": "오류 발생",
+    "no_orders": "주문내역이 없습니다",
+    "no_orders_message": "아직 주문한 상품이 없습니다.",
+    "shop_now": "쇼핑하기",
     "errors": {
       "payment_preparation_error": "결제 준비 중 오류가 발생했습니다: {{error}}"
     }

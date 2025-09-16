@@ -45,10 +45,12 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'email', 'username', 'first_name', 'last_name', 
-                 'phone_number', 'date_of_birth', 'date_joined', 'is_active')
+                 'phone_number', 'date_of_birth', 'shipping_address', 
+                 'shipping_zipcode', 'shipping_phone', 'date_joined', 'is_active')
         read_only_fields = ('id', 'date_joined', 'is_active')
 
 class UserProfileUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'phone_number', 'date_of_birth')
+        fields = ('first_name', 'last_name', 'phone_number', 'date_of_birth',
+                 'shipping_address', 'shipping_zipcode', 'shipping_phone')

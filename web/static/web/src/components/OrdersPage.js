@@ -1,4 +1,6 @@
 const OrdersPage = () => {
+    // Translation hook with fallback
+    const { t } = window.useTranslation ? window.useTranslation() : { t: window.t || ((key) => key) };
     const [orders, setOrders] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(null);
@@ -11,7 +13,7 @@ const OrdersPage = () => {
         try {
             const token = localStorage.getItem('access_token');
             if (!token) {
-                setError('로그인이 필요합니다.');
+                setError(t('auth.login_required'));
                 setLoading(false);
                 return;
             }
@@ -48,13 +50,13 @@ const OrdersPage = () => {
                         return;
                     }
                 }
-                setError('로그인이 필요합니다.');
+                setError(t('auth.login_required'));
             } else {
-                setError('주문 목록을 불러오는데 실패했습니다.');
+                setError(t('order.load_error'));
             }
         } catch (error) {
-            console.error('주문 목록 로딩 오류:', error);
-            setError('네트워크 오류가 발생했습니다.');
+            console.error('Order list loading error:', error);
+            setError(t('order.error'));
         } finally {
             setLoading(false);
         }
@@ -73,12 +75,12 @@ const OrdersPage = () => {
 
     const getStatusText = (status) => {
         const statusMap = {
-            'pending': '대기중',
-            'confirmed': '주문확인',
-            'preparing': '상품준비중',
-            'shipped': '배송중',
-            'delivered': '배송완료',
-            'cancelled': '주문취소'
+            'pending': t('order.status_pending'),
+            'confirmed': t('order.status_confirmed'),
+            'preparing': t('order.status_preparing'),
+            'shipped': t('order.status_shipped'),
+            'delivered': t('order.status_delivered'),
+            'cancelled': t('order.status_cancelled')
         };
         return statusMap[status] || status;
     };
@@ -100,8 +102,8 @@ const OrdersPage = () => {
             className: 'container',
             style: { padding: '2rem', textAlign: 'center' }
         },
-            React.createElement('h2', null, '주문내역을 불러오는 중...'),
-            React.createElement('p', null, '잠시만 기다려주세요.')
+            React.createElement('h2', null, t('order.loading')),
+            React.createElement('p', null, t('order.loading_wait'))
         );
     }
 
@@ -110,7 +112,7 @@ const OrdersPage = () => {
             className: 'container',
             style: { padding: '2rem', textAlign: 'center' }
         },
-            React.createElement('h2', null, '오류 발생'),
+            React.createElement('h2', null, t('order.error_title')),
             React.createElement('p', { style: { color: '#e74c3c' } }, error),
             React.createElement('button', {
                 className: 'btn btn-primary',
@@ -119,7 +121,7 @@ const OrdersPage = () => {
                         window.Router.navigate('/');
                     }
                 }
-            }, '홈으로 돌아가기')
+            }, t('pages.go_home'))
         );
     }
 
@@ -128,8 +130,8 @@ const OrdersPage = () => {
             className: 'container',
             style: { padding: '2rem', textAlign: 'center' }
         },
-            React.createElement('h2', null, '주문내역이 없습니다'),
-            React.createElement('p', null, '아직 주문한 상품이 없습니다.'),
+            React.createElement('h2', null, t('order.no_orders')),
+            React.createElement('p', null, t('order.no_orders_message')),
             React.createElement('button', {
                 className: 'btn btn-primary',
                 onClick: () => {
@@ -137,7 +139,7 @@ const OrdersPage = () => {
                         window.Router.navigate('/');
                     }
                 }
-            }, '쇼핑하러 가기')
+            }, t('order.shop_now'))
         );
     }
 
@@ -147,7 +149,7 @@ const OrdersPage = () => {
     },
         React.createElement('h1', {
             style: { marginBottom: '2rem', color: '#2c3e50' }
-        }, '주문내역'),
+        }, t('order.title')),
         
         React.createElement('div', {
             style: { display: 'flex', flexDirection: 'column', gap: '1.5rem' }
@@ -177,10 +179,10 @@ const OrdersPage = () => {
                         React.createElement('div', null,
                             React.createElement('h3', {
                                 style: { margin: '0 0 0.5rem 0', color: '#2c3e50' }
-                            }, `주문번호: ${order.order_number}`),
+                            }, `${t('order.order_number')}: ${order.order_number}`),
                             React.createElement('p', {
                                 style: { margin: '0', color: '#7f8c8d', fontSize: '0.9rem' }
-                            }, `주문일시: ${formatDate(order.created_at)}`)
+                            }, `${t('order.date')}: ${formatDate(order.created_at)}`)
                         ),
                         React.createElement('div', {
                             style: {
@@ -199,7 +201,7 @@ const OrdersPage = () => {
                             }, getStatusText(order.status)),
                             React.createElement('p', {
                                 style: { margin: '0.5rem 0 0 0', fontSize: '1.1rem', fontWeight: 'bold', color: '#2c3e50' }
-                            }, `₩${Number(order.final_amount).toLocaleString()}`)
+                            }, `${t('order.total')}: ₩${Number(order.final_amount).toLocaleString()}`)
                         )
                     ),
                     
@@ -209,15 +211,15 @@ const OrdersPage = () => {
                     },
                         React.createElement('h4', {
                             style: { margin: '0 0 0.5rem 0', color: '#27ae60' }
-                        }, '배송 정보'),
+                        }, t('order.shipping_info')),
                         React.createElement('div', {
                             style: { fontSize: '0.9rem', color: '#555' }
                         },
-                            React.createElement('p', { style: { margin: '0.25rem 0' } }, `받는 분: ${order.shipping_name}`),
-                            order.shipping_email && React.createElement('p', { style: { margin: '0.25rem 0' } }, `이메일: ${order.shipping_email}`),
-                            order.shipping_phone && React.createElement('p', { style: { margin: '0.25rem 0' } }, `연락처: ${order.shipping_phone}`),
-                            order.shipping_address && React.createElement('p', { style: { margin: '0.25rem 0' } }, `주소: ${order.shipping_address}`),
-                            order.shipping_zipcode && React.createElement('p', { style: { margin: '0.25rem 0' } }, `우편번호: ${order.shipping_zipcode}`)
+                            React.createElement('p', { style: { margin: '0.25rem 0' } }, `${t('order.recipient')}: ${order.shipping_name}`),
+                            order.shipping_email && React.createElement('p', { style: { margin: '0.25rem 0' } }, `${t('order.email')}: ${order.shipping_email}`),
+                            order.shipping_phone && React.createElement('p', { style: { margin: '0.25rem 0' } }, `${t('order.contact')}: ${order.shipping_phone}`),
+                            order.shipping_address && React.createElement('p', { style: { margin: '0.25rem 0' } }, `${t('order.address')}: ${order.shipping_address}`),
+                            order.shipping_zipcode && React.createElement('p', { style: { margin: '0.25rem 0' } }, `${t('order.zipcode')}: ${order.shipping_zipcode}`)
                         )
                     ),
                     
@@ -225,7 +227,7 @@ const OrdersPage = () => {
                     order.items && order.items.length > 0 && React.createElement('div', null,
                         React.createElement('h4', {
                             style: { margin: '0 0 0.5rem 0', color: '#2c3e50' }
-                        }, '주문 상품'),
+                        }, t('product.ordered_items')),
                         React.createElement('div', {
                             style: { display: 'flex', flexDirection: 'column', gap: '0.5rem' }
                         },

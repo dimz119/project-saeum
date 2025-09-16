@@ -115,6 +115,8 @@ const AuthProvider = ({ children }) => {
 
 // UserInfo 컴포넌트 (헤더에서 사용)
 const UserInfo = () => {
+    // Translation hook with fallback
+    const { t } = window.useTranslation ? window.useTranslation() : { t: window.t || ((key) => key) };
     const [user, setUser] = React.useState(null);
     const [isAuthenticated, setIsAuthenticated] = React.useState(false);
     const [loading, setLoading] = React.useState(true);
@@ -154,14 +156,14 @@ const UserInfo = () => {
             React.createElement('a', { 
                 href: '/login/', 
                 className: 'auth-link',
-                title: '로그인'
+                title: t('auth.login')
             }, 
                 React.createElement('i', { className: 'fas fa-sign-in-alt' })
             ),
             React.createElement('a', { 
                 href: '/register/', 
                 className: 'auth-link',
-                title: '회원가입'
+                title: t('auth.register')
             }, 
                 React.createElement('i', { className: 'fas fa-user-plus' })
             )
@@ -169,18 +171,18 @@ const UserInfo = () => {
     }
 
     return React.createElement('div', { className: 'user-info' },
-        React.createElement('span', { className: 'user-greeting' }, `안녕하세요, ${user.first_name || user.username}님`),
+        React.createElement('span', { className: 'user-greeting' }, t('auth.welcome_message').replace('{{name}}', user.first_name || user.username)),
         React.createElement('div', { className: 'user-menu' },
-            React.createElement('a', { href: '/profile', className: 'user-link', title: '프로필' }, 
+            React.createElement('a', { href: '/profile', className: 'user-link', title: t('pages.profile') }, 
                 React.createElement('i', { className: 'fas fa-user' })
             ),
-            React.createElement('a', { href: '/orders', className: 'user-link', title: '주문내역' }, 
+            React.createElement('a', { href: '/orders', className: 'user-link', title: t('pages.orders') }, 
                 React.createElement('i', { className: 'fas fa-box' })
             ),
             React.createElement('button', { 
                 onClick: handleLogout, 
                 className: 'logout-btn',
-                title: '로그아웃'
+                title: t('auth.logout')
             }, React.createElement('i', { className: 'fas fa-sign-out-alt' }))
         )
     );

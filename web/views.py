@@ -11,3 +11,7 @@ def login_view(request):
 def register_view(request):
     """회원가입 페이지"""
     return render(request, 'web/register.html')
+
+def profile_view(request):
+    """프로필 페이지"""
+    return render(request, 'profile.html')
