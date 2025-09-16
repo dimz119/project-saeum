@@ -42,15 +42,26 @@ class UserLoginSerializer(serializers.Serializer):
             raise serializers.ValidationError('이메일과 비밀번호를 입력해주세요.')
 
 class UserSerializer(serializers.ModelSerializer):
+    has_eye_exam = serializers.ReadOnlyField()
+    
     class Meta:
         model = User
         fields = ('id', 'email', 'username', 'first_name', 'last_name', 
                  'phone_number', 'date_of_birth', 'shipping_address', 
-                 'shipping_zipcode', 'shipping_phone', 'date_joined', 'is_active')
-        read_only_fields = ('id', 'date_joined', 'is_active')
+                 'shipping_zipcode', 'shipping_phone', 'date_joined', 'is_active',
+                 'eye_exam_file', 'eye_exam_uploaded_at', 'has_eye_exam')
+        read_only_fields = ('id', 'date_joined', 'is_active', 'eye_exam_uploaded_at', 'has_eye_exam')
 
 class UserProfileUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'phone_number', 'date_of_birth',
-                 'shipping_address', 'shipping_zipcode', 'shipping_phone')
+                 'shipping_address', 'shipping_zipcode', 'shipping_phone', 'eye_exam_file')
+
+    def update(self, instance, validated_data):
+        # eye_exam_file이 업로드되면 업로드 시간 설정
+        if 'eye_exam_file' in validated_data and validated_data['eye_exam_file']:
+            from django.utils import timezone
+            instance.eye_exam_uploaded_at = timezone.now()
+        
+        return super().update(instance, validated_data)

@@ -8,6 +8,10 @@ const ProfilePage = () => {
     const [error, setError] = React.useState(null);
     const [success, setSuccess] = React.useState(false);
     
+    // Eye exam 관련 상태
+    const [eyeExamUploading, setEyeExamUploading] = React.useState(false);
+    const [selectedFile, setSelectedFile] = React.useState(null);
+    
     const [formData, setFormData] = React.useState({
         first_name: '',
         last_name: '',
@@ -156,6 +160,183 @@ const ProfilePage = () => {
         });
         setEditing(false);
         setError(null);
+    };
+
+    // Eye exam 파일 선택 처리
+    const handleFileSelect = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            // 파일 크기 검증 (5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                setError(t('profile.eye_exam_file_size_error'));
+                return;
+            }
+            
+            // 파일 확장자 검증
+            const allowedTypes = ['pdf', 'jpg', 'jpeg', 'png', 'gif'];
+            const fileExtension = file.name.split('.').pop().toLowerCase();
+            if (!allowedTypes.includes(fileExtension)) {
+                setError(t('profile.eye_exam_file_type_error'));
+                return;
+            }
+            
+            setSelectedFile(file);
+            setError(null);
+        }
+    };
+
+    // Eye exam 파일 업로드
+    const handleEyeExamUpload = async () => {
+        if (!selectedFile) {
+            setError(t('profile.eye_exam_select_file'));
+            return;
+        }
+
+        setEyeExamUploading(true);
+        setError(null);
+
+        const uploadFile = async (token) => {
+            const formData = new FormData();
+            formData.append('eye_exam_file', selectedFile);
+
+            const response = await fetch('/api/auth/upload-eye-exam/', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: formData
+            });
+
+            return response;
+        };
+
+        try {
+            const token = localStorage.getItem('access_token');
+            let response = await uploadFile(token);
+
+            // 401 에러 시 토큰 갱신 시도
+            if (response.status === 401) {
+                const refreshToken = localStorage.getItem('refresh_token');
+                if (refreshToken) {
+                    const refreshResponse = await fetch('/api/token/refresh/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            refresh: refreshToken
+                        })
+                    });
+
+                    if (refreshResponse.ok) {
+                        const refreshData = await refreshResponse.json();
+                        localStorage.setItem('access_token', refreshData.access);
+                        // 새 토큰으로 다시 시도
+                        response = await uploadFile(refreshData.access);
+                    } else {
+                        setError(t('auth.login_required'));
+                        setEyeExamUploading(false);
+                        return;
+                    }
+                } else {
+                    setError(t('auth.login_required'));
+                    setEyeExamUploading(false);
+                    return;
+                }
+            }
+
+            if (response.ok) {
+                const result = await response.json();
+                setUser(result.user);
+                setSelectedFile(null);
+                setSuccess(true);
+                setTimeout(() => setSuccess(false), 3000);
+                
+                // 파일 입력 필드 초기화
+                const fileInput = document.getElementById('eye-exam-file-input');
+                if (fileInput) fileInput.value = '';
+                
+            } else {
+                const errorData = await response.json();
+                setError(errorData.error || t('profile.eye_exam_upload_error'));
+            }
+        } catch (error) {
+            console.error('Eye exam upload error:', error);
+            setError(t('profile.eye_exam_upload_error'));
+        } finally {
+            setEyeExamUploading(false);
+        }
+    };
+
+    // Eye exam 파일 삭제
+    const handleEyeExamDelete = async () => {
+        if (!window.confirm(t('profile.delete_eye_exam') + '?')) {
+            return;
+        }
+
+        setEyeExamUploading(true);
+        setError(null);
+
+        const deleteFile = async (token) => {
+            const response = await fetch('/api/auth/delete-eye-exam/', {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            });
+            return response;
+        };
+
+        try {
+            const token = localStorage.getItem('access_token');
+            let response = await deleteFile(token);
+
+            // 401 에러 시 토큰 갱신 시도
+            if (response.status === 401) {
+                const refreshToken = localStorage.getItem('refresh_token');
+                if (refreshToken) {
+                    const refreshResponse = await fetch('/api/token/refresh/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            refresh: refreshToken
+                        })
+                    });
+
+                    if (refreshResponse.ok) {
+                        const refreshData = await refreshResponse.json();
+                        localStorage.setItem('access_token', refreshData.access);
+                        // 새 토큰으로 다시 시도
+                        response = await deleteFile(refreshData.access);
+                    } else {
+                        setError(t('auth.login_required'));
+                        setEyeExamUploading(false);
+                        return;
+                    }
+                } else {
+                    setError(t('auth.login_required'));
+                    setEyeExamUploading(false);
+                    return;
+                }
+            }
+
+            if (response.ok) {
+                const result = await response.json();
+                setUser(result.user);
+                setSuccess(true);
+                setTimeout(() => setSuccess(false), 3000);
+            } else {
+                const errorData = await response.json();
+                setError(errorData.error || t('profile.eye_exam_delete_error'));
+            }
+        } catch (error) {
+            console.error('Eye exam delete error:', error);
+            setError(t('profile.eye_exam_delete_error'));
+        } finally {
+            setEyeExamUploading(false);
+        }
     };
 
     if (loading) {
@@ -440,6 +621,129 @@ const ProfilePage = () => {
                                 style: { margin: 0, padding: '0.5rem', backgroundColor: '#f8f9fa', borderRadius: '4px' }
                             }, formData.shipping_phone || t('profile.not_set'))
                     )
+                )
+            ),
+            
+            // Eye Exam 정보 섹션
+            React.createElement('div', {
+                style: { borderTop: '1px solid #eee', paddingTop: '2rem' }
+            },
+                React.createElement('h3', {
+                    style: { marginBottom: '1rem', color: '#2c3e50' }
+                }, t('profile.eye_exam_info')),
+                
+                // Eye exam 상태 표시
+                React.createElement('div', {
+                    style: { marginBottom: '1rem' }
+                },
+                    React.createElement('label', {
+                        style: { display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }
+                    }, t('profile.eye_exam_status')),
+                    React.createElement('div', {
+                        style: { 
+                            padding: '0.75rem',
+                            backgroundColor: user.has_eye_exam ? '#d4edda' : '#f8d7da',
+                            border: `1px solid ${user.has_eye_exam ? '#c3e6cb' : '#f5c6cb'}`,
+                            borderRadius: '4px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem'
+                        }
+                    },
+                        React.createElement('span', {
+                            style: {
+                                width: '8px',
+                                height: '8px',
+                                borderRadius: '50%',
+                                backgroundColor: user.has_eye_exam ? '#28a745' : '#dc3545'
+                            }
+                        }),
+                        React.createElement('span', {
+                            style: { 
+                                fontWeight: 'bold',
+                                color: user.has_eye_exam ? '#155724' : '#721c24'
+                            }
+                        }, user.has_eye_exam ? t('profile.eye_exam_uploaded') : t('profile.eye_exam_not_uploaded'))
+                    )
+                ),
+                
+                // 업로드 날짜 표시 (파일이 있는 경우)
+                user.has_eye_exam && user.eye_exam_uploaded_at ? 
+                    React.createElement('div', {
+                        style: { marginBottom: '1rem' }
+                    },
+                        React.createElement('label', {
+                            style: { display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }
+                        }, t('profile.eye_exam_upload_date')),
+                        React.createElement('p', {
+                            style: { margin: 0, padding: '0.5rem', backgroundColor: '#f8f9fa', borderRadius: '4px' }
+                        }, new Date(user.eye_exam_uploaded_at).toLocaleDateString())
+                    ) : null,
+                
+                // 파일 업로드 또는 삭제 버튼
+                React.createElement('div', {
+                    style: { marginBottom: '1rem' }
+                },
+                    user.has_eye_exam ? 
+                        // 파일이 있는 경우 - 삭제 버튼
+                        React.createElement('div', null,
+                            React.createElement('button', {
+                                onClick: handleEyeExamDelete,
+                                disabled: eyeExamUploading,
+                                style: {
+                                    padding: '0.75rem 1.5rem',
+                                    backgroundColor: '#dc3545',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '4px',
+                                    cursor: eyeExamUploading ? 'not-allowed' : 'pointer',
+                                    opacity: eyeExamUploading ? 0.6 : 1
+                                }
+                            }, eyeExamUploading ? t('profile.saving') : t('profile.delete_eye_exam'))
+                        ) :
+                        // 파일이 없는 경우 - 업로드 섹션
+                        React.createElement('div', null,
+                            React.createElement('div', {
+                                style: { marginBottom: '1rem' }
+                            },
+                                React.createElement('input', {
+                                    type: 'file',
+                                    id: 'eye-exam-file-input',
+                                    accept: '.pdf,.jpg,.jpeg,.png,.gif',
+                                    onChange: handleFileSelect,
+                                    style: { marginBottom: '0.5rem' }
+                                }),
+                                React.createElement('small', {
+                                    style: { color: '#6c757d', display: 'block' }
+                                }, t('profile.eye_exam_file_type_error'))
+                            ),
+                            selectedFile && React.createElement('div', {
+                                style: { 
+                                    marginBottom: '1rem',
+                                    padding: '0.5rem',
+                                    backgroundColor: '#e9ecef',
+                                    borderRadius: '4px'
+                                }
+                            },
+                                React.createElement('strong', null, t('profile.eye_exam_select_file'), ': '),
+                                selectedFile.name,
+                                React.createElement('small', {
+                                    style: { display: 'block', color: '#6c757d' }
+                                }, `${(selectedFile.size / 1024 / 1024).toFixed(2)} MB`)
+                            ),
+                            React.createElement('button', {
+                                onClick: handleEyeExamUpload,
+                                disabled: !selectedFile || eyeExamUploading,
+                                style: {
+                                    padding: '0.75rem 1.5rem',
+                                    backgroundColor: (!selectedFile || eyeExamUploading) ? '#6c757d' : '#007bff',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '4px',
+                                    cursor: (!selectedFile || eyeExamUploading) ? 'not-allowed' : 'pointer'
+                                }
+                            }, eyeExamUploading ? t('profile.eye_exam_uploading') : t('profile.upload_eye_exam'))
+                        )
                 )
             )
         )

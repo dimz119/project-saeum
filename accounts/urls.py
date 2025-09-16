@@ -9,4 +9,6 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('profile/', views.profile, name='profile'),
     path('user-info/', views.user_info, name='user_info'),
+    path('upload-eye-exam/', views.upload_eye_exam, name='upload_eye_exam'),
+    path('delete-eye-exam/', views.delete_eye_exam, name='delete_eye_exam'),
 ]
