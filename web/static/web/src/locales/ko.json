@@ -2,9 +2,9 @@
   "header": {
     "brand": "먼슬리룩",
     "featured_products": "추천상품",
-    "brands": "브랜드",
     "new_products": "신상품",
     "sale": "세일",
+    "celebrity_look": "셀레브 룩",
     "search": "검색",
     "wishlist": "위시리스트",
     "cart": "장바구니",
@@ -278,5 +278,13 @@
     "place_order": "주문하기",
     "success": "주문이 성공적으로 완료되었습니다!",
     "thank_you": "주문해 주셔서 감사합니다"
+  },
+  "celebrity": {
+    "page_title": "셀레브 룩",
+    "page_description": "셀레브리티들의 스타일링을 확인해보세요",
+    "error_loading": "셀레브 사진을 불러오는 중 오류가 발생했습니다.",
+    "no_image": "이미지 없음",
+    "no_celebrities": "등록된 셀레브 사진이 없습니다",
+    "no_celebrities_description": "아직 등록된 셀레브 룩이 없습니다. 곧 멋진 스타일을 만나보실 수 있습니다!"
   }
 }

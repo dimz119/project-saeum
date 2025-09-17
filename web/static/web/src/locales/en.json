@@ -2,9 +2,9 @@
   "header": {
     "brand": "MonthlyLook",
     "featured_products": "Featured Products",
-    "brands": "Brands",
     "new_products": "New Products",
     "sale": "Sale",
+    "celebrity_look": "Celebrity Look",
     "search": "Search",
     "wishlist": "Wishlist",
     "cart": "Cart",
@@ -278,5 +278,13 @@
     "place_order": "Place Order",
     "success": "Order placed successfully!",
     "thank_you": "Thank you for your order"
+  },
+  "celebrity": {
+    "page_title": "Celebrity Look",
+    "page_description": "Check out celebrity styling",
+    "error_loading": "Error loading celebrity photos.",
+    "no_image": "No Image",
+    "no_celebrities": "No celebrity photos registered",
+    "no_celebrities_description": "No celebrity looks have been registered yet. Check back soon for amazing styles!"
   }
 }

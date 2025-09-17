@@ -123,15 +123,15 @@ const Header = () => {
                         ),
                         React.createElement('li', null,
                             React.createElement('a', { 
-                                href: '/brands',
-                                onClick: (e) => handleNavigation('/brands', e)
-                            }, t('header.brands'))
-                        ),
-                        React.createElement('li', null,
-                            React.createElement('a', { 
                                 href: '/products/new',
                                 onClick: (e) => handleNavigation('/products/new', e)
                             }, t('header.new_products'))
+                        ),
+                        React.createElement('li', null,
+                            React.createElement('a', { 
+                                href: '/celebrity-look',
+                                onClick: (e) => handleNavigation('/celebrity-look', e)
+                            }, t('header.celebrity_look'))
                         ),
                         React.createElement('li', null,
                             React.createElement('a', { 

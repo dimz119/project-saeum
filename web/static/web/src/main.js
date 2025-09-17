@@ -14,6 +14,7 @@ function loadComponents() {
         '/static/web/src/components/Hero.js',
         '/static/web/src/components/ProductCard.js',
         '/static/web/src/components/ProductList.js',
+        '/static/web/src/components/CelebrityLook.js',
         '/static/web/src/App.js'
     ];
 

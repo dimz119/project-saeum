@@ -74,6 +74,9 @@ const App = () => {
         } else if (path === '/products/sale' || path === '/products/sale/') {
             setCurrentPage('products-sale');
             setSelectedProductId(null);
+        } else if (path === '/celebrity-look' || path === '/celebrity-look/') {
+            setCurrentPage('celebrity-look');
+            setSelectedProductId(null);
         } else if (path === '/brands' || path === '/brands/') {
             setCurrentPage('brands');
             setSelectedProductId(null);
@@ -227,6 +230,9 @@ const App = () => {
             case 'search':
                 return React.createElement(window.Components.SearchPage);
             
+            case 'celebrity-look':
+                return React.createElement(window.Components.CelebrityLook);
+
             case 'checkout-success':
                 return React.createElement(window.Components.CheckoutSuccess);
             
