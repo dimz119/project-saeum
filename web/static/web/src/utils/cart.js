@@ -29,12 +29,20 @@ window.CartManager = {
         if (existingItem) {
             existingItem.quantity += quantity;
         } else {
+            // 제품 이미지 URL 결정
+            let imageUrl = '/static/web/img/glass.png'; // 기본 이미지
+            if (product.images && product.images.length > 0) {
+                imageUrl = product.images[0].image;
+            } else if (product.main_image) {
+                imageUrl = product.main_image;
+            }
+
             cart.push({
                 id: product.id,
                 name: product.name,
                 price: product.current_price,
                 originalPrice: product.price,
-                image: product.main_image || '/static/web/img/glass.png',
+                image_url: imageUrl,  // image_url로 통일
                 quantity: quantity,
                 brand: product.brand?.name || '브랜드'
             });

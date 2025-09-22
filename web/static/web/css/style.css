@@ -1531,7 +1531,7 @@ body {
 
 .user-greeting {
     font-family: 'Inter', 'Noto Sans KR', sans-serif; /* 일관된 폰트 */
-    font-size: 0.9rem;
+    font-size: 0.7rem;
     color: #374151;
     font-weight: 400;
 }

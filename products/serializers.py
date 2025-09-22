@@ -36,6 +36,7 @@ class ProductListSerializer(serializers.ModelSerializer):
     brand = BrandSerializer(read_only=True)
     category = CategorySerializer(read_only=True)
     tags = TagSerializer(many=True, read_only=True)
+    images = ProductImageSerializer(many=True, read_only=True)
     main_image = serializers.SerializerMethodField()
     current_price = serializers.SerializerMethodField()
     average_rating = serializers.SerializerMethodField()
@@ -45,16 +46,27 @@ class ProductListSerializer(serializers.ModelSerializer):
         model = Product
         fields = [
             'id', 'name', 'slug', 'short_description', 'price', 'sale_price',
-            'current_price', 'brand', 'category', 'tags', 'main_image', 'is_featured',
+            'current_price', 'brand', 'category', 'tags', 'images', 'main_image', 'is_featured',
             'average_rating', 'review_count'
         ]
     
     def get_main_image(self, obj):
+        # 1. is_main=True인 이미지 찾기
         main_image = obj.images.filter(is_main=True).first()
         if main_image:
             request = self.context.get('request')
             if request:
                 return request.build_absolute_uri(main_image.image.url)
+            return main_image.image.url
+        
+        # 2. is_main=True인 이미지가 없으면 첫 번째 이미지 사용
+        first_image = obj.images.first()
+        if first_image:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(first_image.image.url)
+            return first_image.image.url
+        
         return None
     
     def get_current_price(self, obj):

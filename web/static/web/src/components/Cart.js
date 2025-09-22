@@ -27,12 +27,19 @@ const Cart = () => {
                     const response = await fetch(`/api/products/${item.id}/`);
                     if (response.ok) {
                         const productData = await response.json();
+                        // 첫 번째 이미지 URL 가져오기
+                        let imageUrl = '/static/web/img/model.jpg'; // 기본 이미지
+                        if (productData.images && productData.images.length > 0) {
+                            imageUrl = productData.images[0].image;
+                        }
+                        
                         return {
                             ...item,
                             price: productData.current_price,
                             originalPrice: parseFloat(productData.price),
                             name: productData.name,
-                            brand: productData.brand?.name || '브랜드'
+                            brand: productData.brand?.name || t('product.brand'),
+                            image_url: imageUrl
                         };
                     }
                 } catch (error) {
@@ -82,7 +89,7 @@ const Cart = () => {
 
     const handleCheckout = async () => {
         if (!user) {
-            alert('로그인이 필요한 서비스입니다.');
+            alert(t('cart.login_required'));
             if (window.Router) {
                 window.Router.navigate('/login/');
             }
@@ -180,7 +187,7 @@ const Cart = () => {
                                 window.Router.navigate('/login/');
                             }
                         }
-                    }, '로그인하기')
+                    }, t('auth.login'))
                 )
             )
         );
@@ -211,7 +218,7 @@ const Cart = () => {
                                 window.Router.navigate('/');
                             }
                         }
-                    }, '쇼핑하러 가기')
+                    }, t('cart.continue_shopping'))
                 )
             )
         );
@@ -254,7 +261,7 @@ const Cart = () => {
                                 }, item.name),
                                 React.createElement('p', {
                                     className: 'cart-item-brand'
-                                }, item.brand || '브랜드'),
+                                }, item.brand || t('product.brand')),
                                 React.createElement('div', {
                                     className: 'cart-item-price'
                                 },
@@ -287,7 +294,7 @@ const Cart = () => {
                                 className: 'remove-btn',
                                 onClick: () => removeFromCart(item.id),
                                 disabled: loading,
-                                title: '삭제'
+                                title: t('cart.remove')
                             }, '🗑️')
                         )
                     )
@@ -300,7 +307,7 @@ const Cart = () => {
                     React.createElement('div', {
                         className: 'summary-row total'
                     },
-                        React.createElement('span', null, '총 금액'),
+                        React.createElement('span', null, t('cart.total')),
                         React.createElement('span', null, '₩' + formatPrice(getTotalPrice()))
                     ),
                     React.createElement('div', {
@@ -318,12 +325,12 @@ const Cart = () => {
                                     window.Router.navigate('/');
                                 }
                             }
-                        }, '쇼핑 계속하기'),
+                        }, t('cart.continue_shopping')),
                         React.createElement('button', {
                             className: 'btn btn-primary',
                             onClick: handleCheckout,
                             disabled: loading
-                        }, loading ? '주문 처리 중...' : '주문하기')
+                        }, loading ? t('order.processing') : t('cart.checkout'))
                     )
                 )
             )
