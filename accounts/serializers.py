@@ -48,15 +48,16 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'email', 'username', 'first_name', 'last_name', 
                  'phone_number', 'date_of_birth', 'shipping_address', 
-                 'shipping_zipcode', 'shipping_phone', 'date_joined', 'is_active',
-                 'eye_exam_file', 'eye_exam_uploaded_at', 'has_eye_exam')
+                 'shipping_zipcode', 'shipping_phone', 'shipping_country', 'shipping_city',
+                 'date_joined', 'is_active', 'eye_exam_file', 'eye_exam_uploaded_at', 'has_eye_exam')
         read_only_fields = ('id', 'date_joined', 'is_active', 'eye_exam_uploaded_at', 'has_eye_exam')
 
 class UserProfileUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'phone_number', 'date_of_birth',
-                 'shipping_address', 'shipping_zipcode', 'shipping_phone', 'eye_exam_file')
+                 'shipping_address', 'shipping_zipcode', 'shipping_phone', 
+                 'shipping_country', 'shipping_city', 'eye_exam_file')
 
     def update(self, instance, validated_data):
         # eye_exam_file이 업로드되면 업로드 시간 설정

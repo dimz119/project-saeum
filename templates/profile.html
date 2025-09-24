@@ -21,6 +21,7 @@
     <script src="{% static 'web/src/config.js' %}"></script>
     <script src="{% static 'web/src/utils/api.js' %}"></script>
     <script src="{% static 'web/src/utils/auth.js' %}"></script>
+    <script src="{% static 'web/src/utils/cart.js' %}"></script>
     <script src="{% static 'web/src/i18n.js' %}"></script>
     
     <!-- Components -->
@@ -59,9 +60,13 @@
 
                     // Set up language change listener for re-rendering
                     const handleLanguageChange = () => {
+                        console.log('Profile page received language change event');
+                        
                         // Safety check
                         if (window.Components && window.Components.Header && window.Components.Footer && window.Components.ProfilePage) {
                             try {
+                                console.log('Re-rendering components after language change');
+                                
                                 const headerElement = React.createElement(window.Components.Header);
                                 ReactDOM.render(headerElement, document.getElementById('header'));
                                 
@@ -70,9 +75,13 @@
                                 
                                 const profileElement = React.createElement(window.Components.ProfilePage);
                                 ReactDOM.render(profileElement, document.getElementById('profile-page'));
+                                
+                                console.log('Components re-rendered successfully');
                             } catch (error) {
                                 console.warn('Error re-rendering components:', error);
                             }
+                        } else {
+                            console.warn('Components not available for re-rendering');
                         }
                     };
 

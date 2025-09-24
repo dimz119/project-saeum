@@ -20,7 +20,9 @@ const ProfilePage = () => {
         date_of_birth: '',
         shipping_address: '',
         shipping_zipcode: '',
-        shipping_phone: ''
+        shipping_phone: '',
+        shipping_country: '',
+        shipping_city: ''
     });
 
     React.useEffect(() => {
@@ -54,7 +56,9 @@ const ProfilePage = () => {
                     date_of_birth: userData.date_of_birth || '',
                     shipping_address: userData.shipping_address || '',
                     shipping_zipcode: userData.shipping_zipcode || '',
-                    shipping_phone: userData.shipping_phone || ''
+                    shipping_phone: userData.shipping_phone || '',
+                    shipping_country: userData.shipping_country || '',
+                    shipping_city: userData.shipping_city || ''
                 });
             } else if (response.status === 401) {
                 // 토큰 갱신 시도
@@ -130,7 +134,9 @@ const ProfilePage = () => {
                     date_of_birth: updatedUser.date_of_birth || '',
                     shipping_address: updatedUser.shipping_address || '',
                     shipping_zipcode: updatedUser.shipping_zipcode || '',
-                    shipping_phone: updatedUser.shipping_phone || ''
+                    shipping_phone: updatedUser.shipping_phone || '',
+                    shipping_country: updatedUser.shipping_country || '',
+                    shipping_city: updatedUser.shipping_city || ''
                 });
                 setEditing(false);
                 setSuccess(true);
@@ -156,7 +162,9 @@ const ProfilePage = () => {
             date_of_birth: user.date_of_birth || '',
             shipping_address: user.shipping_address || '',
             shipping_zipcode: user.shipping_zipcode || '',
-            shipping_phone: user.shipping_phone || ''
+            shipping_phone: user.shipping_phone || '',
+            shipping_country: user.shipping_country || '',
+            shipping_city: user.shipping_city || ''
         });
         setEditing(false);
         setError(null);
@@ -695,6 +703,48 @@ const ProfilePage = () => {
                             React.createElement('p', {
                                 style: { margin: 0, padding: '0.5rem', backgroundColor: '#f8f9fa', borderRadius: '4px' }
                             }, formData.shipping_phone || t('profile.not_set'))
+                    ),
+                    React.createElement('div', null,
+                        React.createElement('label', {
+                            style: { display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }
+                        }, t('profile.shipping_country')),
+                        editing ? 
+                            React.createElement('input', {
+                                type: 'text',
+                                value: formData.shipping_country,
+                                onChange: handleInputChange('shipping_country'),
+                                placeholder: t('profile.shipping_country_placeholder'),
+                                style: {
+                                    width: '100%',
+                                    padding: '0.5rem',
+                                    border: '1px solid #ddd',
+                                    borderRadius: '4px'
+                                }
+                            }) :
+                            React.createElement('p', {
+                                style: { margin: 0, padding: '0.5rem', backgroundColor: '#f8f9fa', borderRadius: '4px' }
+                            }, formData.shipping_country || t('profile.not_set'))
+                    ),
+                    React.createElement('div', null,
+                        React.createElement('label', {
+                            style: { display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }
+                        }, t('profile.shipping_city')),
+                        editing ? 
+                            React.createElement('input', {
+                                type: 'text',
+                                value: formData.shipping_city,
+                                onChange: handleInputChange('shipping_city'),
+                                placeholder: t('profile.shipping_city_placeholder'),
+                                style: {
+                                    width: '100%',
+                                    padding: '0.5rem',
+                                    border: '1px solid #ddd',
+                                    borderRadius: '4px'
+                                }
+                            }) :
+                            React.createElement('p', {
+                                style: { margin: 0, padding: '0.5rem', backgroundColor: '#f8f9fa', borderRadius: '4px' }
+                            }, formData.shipping_city || t('profile.not_set'))
                     )
                 )
             ),

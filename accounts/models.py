@@ -23,6 +23,8 @@ class User(AbstractUser):
     shipping_address = models.TextField(blank=True, help_text="기본 배송 주소")
     shipping_zipcode = models.CharField(max_length=10, blank=True, help_text="기본 배송지 우편번호")
     shipping_phone = models.CharField(max_length=15, blank=True, help_text="기본 배송지 연락처")
+    shipping_country = models.CharField(max_length=100, blank=True, help_text="국가")
+    shipping_city = models.CharField(max_length=100, blank=True, help_text="도시")
     
     # Eye exam 파일
     eye_exam_file = models.FileField(

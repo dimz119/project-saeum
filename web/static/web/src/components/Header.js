@@ -41,12 +41,14 @@ const Header = () => {
     const updateCartCount = React.useCallback(async () => {
         try {
             const user = window.auth.getCurrentUserSync();
-            if (user && window.cartUtils) {
-                const cartItems = window.cartUtils.getCartItems();
+            if (user && window.CartManager) {
+                const cartItems = window.CartManager.getCart();
                 const totalCount = cartItems.reduce((total, item) => total + item.quantity, 0);
                 setCartCount(totalCount);
+                console.log('Cart count updated:', totalCount, 'items:', cartItems);
             } else {
                 setCartCount(0);
+                console.log('Cart count set to 0 - user:', !!user, 'CartManager:', !!window.CartManager);
             }
         } catch (error) {
             console.error(t('cart.errors.count_update_failed'), error);
@@ -56,12 +58,19 @@ const Header = () => {
     
     // 컴포넌트 마운트 시 카운트 로드
     React.useEffect(() => {
+        console.log('Header mounted, updating counts...');
         updateWishlistCount();
         updateCartCount();
         
         // 전역 함수로 등록하여 다른 컴포넌트에서 호출 가능하게 함
         window.updateWishlistCount = updateWishlistCount;
         window.updateCartCount = updateCartCount;
+        
+        console.log('Global functions registered:', {
+            updateWishlistCount: !!window.updateWishlistCount,
+            updateCartCount: !!window.updateCartCount,
+            CartManager: !!window.CartManager
+        });
         
         return () => {
             // 컴포넌트 언마운트 시 전역 함수 제거
@@ -159,6 +168,8 @@ const Header = () => {
                                 className: 'fas fa-heart wishlist-icon',
                                 onClick: (e) => {
                                     e.preventDefault();
+                                    e.stopPropagation();
+                                    console.log('Wishlist icon clicked, Router available:', !!window.Router);
                                     const user = window.auth.getCurrentUserSync();
                                     if (!user) {
                                         alert(t('auth.login_required'));
@@ -168,7 +179,11 @@ const Header = () => {
                                         return;
                                     }
                                     if (window.Router) {
+                                        console.log('Navigating to wishlist...');
                                         window.Router.navigate('/wishlist');
+                                    } else {
+                                        console.log('Router not available, using fallback');
+                                        window.location.href = '/wishlist';
                                     }
                                 },
                                 style: { cursor: 'pointer' },
@@ -185,8 +200,14 @@ const Header = () => {
                                 className: 'fas fa-shopping-bag cart-icon',
                                 onClick: (e) => {
                                     e.preventDefault();
+                                    e.stopPropagation();
+                                    console.log('Cart icon clicked, Router available:', !!window.Router);
                                     if (window.Router) {
+                                        console.log('Navigating to cart...');
                                         window.Router.navigate('/cart');
+                                    } else {
+                                        console.log('Router not available, using fallback');
+                                        window.location.href = '/cart';
                                     }
                                 },
                                 style: { cursor: 'pointer' },

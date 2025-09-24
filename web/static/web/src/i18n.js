@@ -138,7 +138,12 @@ class I18nProvider {
 
     // Change language
     async changeLanguage(language) {
-        if (language === this.currentLanguage) return;
+        console.log(`Attempting to change language from ${this.currentLanguage} to ${language}`);
+        
+        if (language === this.currentLanguage) {
+            console.log('Language is already current, skipping change');
+            return;
+        }
 
         // Load new language translations
         await this.loadTranslations(language);
@@ -152,7 +157,7 @@ class I18nProvider {
         // Notify listeners
         this.notifyListeners();
         
-        console.log(`Language changed to: ${language}`);
+        console.log(`Language successfully changed to: ${language}`);
     }
 
     // Add language change listener
@@ -174,6 +179,14 @@ class I18nProvider {
                 console.error('Error in language change listener:', error);
             }
         });
+        
+        // Also dispatch DOM event for components that use addEventListener
+        if (typeof window !== 'undefined' && window.dispatchEvent) {
+            const event = new CustomEvent('languageChanged', {
+                detail: { language: this.currentLanguage }
+            });
+            window.dispatchEvent(event);
+        }
     }
 
     // Get current language

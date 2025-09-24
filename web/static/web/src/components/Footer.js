@@ -45,8 +45,15 @@ const Footer = () => {
 
     // Handle language switch
     const switchLanguage = (language) => {
+        console.log(`Footer switchLanguage called with: ${language}, current: ${currentLanguage}`);
+        
         if (window.i18n && language !== currentLanguage) {
+            console.log('Calling i18n.changeLanguage');
             window.i18n.changeLanguage(language);
+        } else if (!window.i18n) {
+            console.error('i18n not available');
+        } else {
+            console.log('Language is already current');
         }
     };
 
